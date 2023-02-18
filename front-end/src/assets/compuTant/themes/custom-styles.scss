@@ -1,0 +1,137 @@
+/*body {
+    --bs-body-font-size: 12px;
+}*/
+
+/*.table-wrapper {
+  max-height: 750px;
+  overflow: auto;
+}
+
+.content-value {
+  background-color: #FFFFE1;
+  display: inline-block;
+  width: 80px;
+  text-align: right;
+  border: 0.5px solid black;
+}
+
+.usr-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.usr-card .usr-card-content {
+  flex: 1 1 auto;
+}*/
+
+/*.mytable > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    padding: 2px 3px;
+    vertical-align: middle;
+}
+*/
+
+.container-flex {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.container-flex > div {
+    width: 235px;
+    margin: 10px;
+    background-color: white;
+}
+
+.tile-title {
+    color: #9A9A9A;
+    font-size: 16px;
+    line-height: 1.4em;
+    padding-top: 10px;
+}
+
+.title-value {
+    font-size: 1.8em;
+    margin-bottom: 0rem;
+    left: 10px;
+    padding-right: 10px;
+    margin-bottom: 10px;
+}
+
+.title-value-icon {
+    padding-left: 10px;
+    margin-bottom: 10px;
+}
+/******************************************/
+.container-flex-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-flex-2 div.flex-2-item {
+    margin: 10px;
+    background-color: white;
+}
+
+.tile-title-2 {
+    color: #9A9A9A;
+    font-size: 1.7em;
+    line-height: 1em;
+    margin-bottom: 0;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.tile-title-2-sub {
+    color: #9A9A9A;
+    font-size: 1em;
+    line-height: 1.4em;
+    padding-top: 10px;
+    padding-left: 10px;
+}
+
+.cmpt-tb-td.table td {
+    padding: 0.5rem;
+}
+
+.container-salesmen {
+    height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.container-graph {
+    background-color: white;
+    padding: 10px;
+/*    height: 200px;*/
+}
+
+.dsfd {
+
+}
+
+.zIndexBtn {
+    z-index: 1;
+    position: absolute;
+}
+
+a.showDetails {
+    color: #262dce;
+
+    &:focus {
+        color: #262dce;
+    }
+
+    &:hover {
+        color: #262dce;
+        text-decoration: none;
+    }
+}
+
+#scheduler {
+    .dx-scheduler-cell-sizes-vertical {
+        height: 75px;
+    }
+
+    .dx-scheduler-cell-sizes-horizontal {
+        width: 120px;
+    }
+}
