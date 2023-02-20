@@ -2,15 +2,15 @@ import React, { useState, useCallback, useEffect } from 'react';
 
 // import '../../assets/compuTant/themes/custom-styles.scss';
 
-import { Row, Col } from 'reactstrap';
+// import { Row, Col } from 'reactstrap';
 
 import 'devextreme/dist/css/dx.light.css';
 
 import { isSet } from '../../utils/util';
 
-import DropDownBox from 'devextreme-react/drop-down-box';
-import DataGrid, { Selection, Paging, FilterRow, Scrolling, } from 'devextreme-react/data-grid';
-import 'whatwg-fetch';
+// import DropDownBox from 'devextreme-react/drop-down-box';
+// import DataGrid, { Selection, Paging, FilterRow, Scrolling, } from 'devextreme-react/data-grid';
+// import 'whatwg-fetch';
 
 import Scheduler from '../../components/Schedulers/Scheduler';
 
@@ -20,9 +20,9 @@ export default () => {
 	let [workOrders, setWorkOrders] = useState([]);
 	let [scheduleData, setScheduleData] = useState([]);
 
-	const [gridBoxValue, setGridBoxValue] = useState([3]);
-	const [isGridBoxOpened, setIsGridBoxOpened] = useState(false);
-	const gridColumns = ['id', 'custNo', 'billNam', 'text'];
+	// const [gridBoxValue, setGridBoxValue] = useState([]);
+	// const [isGridBoxOpened, setIsGridBoxOpened] = useState(false);
+	// const gridColumns = ['id', 'custNo', 'billNam', 'text'];
 
 	const adminUrl = 'http://localhost:8080/admin';
 
@@ -90,6 +90,7 @@ export default () => {
 			const tmp = {
 							id: workOrders.data[x].id.toString(),
 							text: workOrders.data[x].text,
+							text2: workOrders.data[x].id + ' - ' + workOrders.data[x].billNam,
 							// docId: workOrders.data[x].docId,
 							custNo: workOrders.data[x].custNo,
 							billNam: workOrders.data[x].billNam,
@@ -127,47 +128,47 @@ export default () => {
 	}	
 
 
-	function dataGridRender() {
-		return (
-			<DataGrid dataSource={workOrders}
-				columns={gridColumns}
-				hoverStateEnabled={true}
-				selectedRowKeys={gridBoxValue}
-				onSelectionChanged={dataGridOnSelectionChanged}
-				height="100%">
-				<Selection mode="single" />
-				<Scrolling mode="virtual" />
-				<Paging enabled={true} pageSize={10} />
-				<FilterRow visible={true} />
-			</DataGrid>
-		);
-	}
+	// function dataGridRender() {
+	// 	return (
+	// 		<DataGrid dataSource={workOrders}
+	// 			columns={gridColumns}
+	// 			hoverStateEnabled={true}
+	// 			selectedRowKeys={gridBoxValue}
+	// 			onSelectionChanged={dataGridOnSelectionChanged}
+	// 			height="100%">
+	// 			<Selection mode="single" />
+	// 			<Scrolling mode="virtual" />
+	// 			<Paging enabled={true} pageSize={10} />
+	// 			<FilterRow visible={true} />
+	// 		</DataGrid>
+	// 	);
+	// }
 
-	function syncDataGridSelection(e) {
-		setGridBoxValue(e.value);
-	}
+	// function syncDataGridSelection(e) {
+	// 	// console.log(e.value);
+	// 	setGridBoxValue(e.value);
+	// }
 
-	function dataGridOnSelectionChanged(e) {
-		setGridBoxValue(e.selectedRowKeys);
-		setIsGridBoxOpened(false);
-	}
+	// function dataGridOnSelectionChanged(e) {
+	// 	setGridBoxValue(e.selectedRowKeys);
+	// 	setIsGridBoxOpened(false);
+	// }
 
-	function gridBoxDisplayExpr(item) {
-		// console.log("gridBoxDisplayExpr: ", item);
-		return item && `${item.id}`;
-	}
+	// function gridBoxDisplayExpr(item) {
+	// 	// console.log("gridBoxDisplayExpr: ", item);
+	// 	return item && `${item.id}`;
+	// }
 
-	function onGridBoxOpened(e) {
-		if (e.name === 'opened') {
-			setIsGridBoxOpened(e.value);
-		}
-	}
-
+	// function onGridBoxOpened(e) {
+	// 	if (e.name === 'opened') {
+	// 		setIsGridBoxOpened(e.value);
+	// 	}
+	// }
 
     return (
     	<div className="content">
-    		<div className="row">
-    			<div className="col-6">
+    		{/*<div className="row">
+				<div className="col-6">
 					<DropDownBox value={gridBoxValue}
 						opened={isGridBoxOpened}
 						deferRendering={true}
@@ -178,15 +179,17 @@ export default () => {
 						onValueChanged={syncDataGridSelection}
 						onOptionChanged={onGridBoxOpened}
 						contentRender={dataGridRender}
-						stylingMode="outlined"
-						labelMode="static"
+						// stylingMode="outlined"
+						// labelMode="static"
 					/>
 				</div>
-    		</div>
+    		</div>*/}
 
     		<div className="row">
     			<div id="dx-viewport scheduler">
-					<Scheduler scheduleData={scheduleData} technicians={technicians} workOrders={workOrders} />
+					<Scheduler scheduleData={scheduleData}
+						technicians={technicians}
+						workOrders={workOrders} />
 				</div>
     		</div>			
 		</div>

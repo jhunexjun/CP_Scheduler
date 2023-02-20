@@ -7,12 +7,10 @@ import notify from 'devextreme/ui/notify';
 import { uriEncode, isSet } from '../../utils/util';
 
 
-
 const Sched = ({scheduleData, technicians, workOrders}) => {
-	const token = localStorage.getItem("token");
-
 	const groups = ['technicianIds'];
 	let [currentDate] = useState(new Date());
+	const [popupVisible, setPopupVisible] = useState(false);
 	
 
 	const url = 'http://localhost:8080/admin/schedule';
@@ -58,7 +56,7 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: uriEncoded,
 		};
-		return await fetch(`${url}${token}`, optionHeaders)
+		return await fetch(`${url}`, optionHeaders)
 			.then((res) => {
 				return res.json()
 			})
@@ -114,7 +112,7 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 			body: uriEncoded,
 		};
 
-		return await fetch(`${url}${token}`, optionHeaders)
+		return await fetch(`${url}`, optionHeaders)
 			.then((res) => {
 				return res.json()
 			})
@@ -140,7 +138,7 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
 			body: uriEncoded,
 		};
-		return await fetch(`${url}${token}`, optionHeaders)
+		return await fetch(`${url}`, optionHeaders)
 			.then((res) => {
 				return res.json()
 			})
@@ -170,9 +168,8 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 	}
 
 	function onAppointmentFormOpening(e) {
-		const { form } = e;
 		let invoiceInfo = getWorkOrderById(e.appointmentData.invoiceNo) || {};
-		// let { startDate } = e.appointmentData;
+		const { form } = e;
 
 		form.option('items', [
 			{
@@ -217,9 +214,9 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 				isRequired: true,
 				colSpan: 2,
 				editorOptions: {
-					width: '50%',
+					width: '100%',
 					items: workOrders,
-					displayExpr: 'id',
+					displayExpr: 'text2',
 					valueExpr: 'id',
 					searchEnabled: true,
 					onValueChanged(args) {
@@ -236,7 +233,7 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 				editorOptions: {
 					value: invoiceInfo.text,
 					readOnly: true,
-					height: '120px'
+					height: '140px'
 				},
 			},
 			{
@@ -248,7 +245,8 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 					items: technicians,
 					displayExpr: 'id',
 					valueExpr: 'id',
-					hint: 'Select 1 or more technicians.'
+					hint: 'Select 1 or more technicians.',
+					searchEnabled: true,
 				},
 				colSpan: 2,
 				width: '50%',
@@ -258,46 +256,48 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 
 
 	return (
-		<Scheduler height={700}
-			dataSource={scheduleData}
-			// dataCellComponent={DataCell}
-			// resourceCellComponent={ResourceCell}
-	        groups={groups}
-	        defaultCurrentView="Week view"
-	        defaultCurrentDate={currentDate}
-	        startDayHour={8}
-	        endDayHour={18}
-	        crossScrollingEnabled={true}
-	        showAllDayPanel={false}
-	        editing={{allowAdding: true, allowEditing: true}}
-			onAppointmentAdded={onAppointmentAddedAsync}
-			onAppointmentAdding={onAppointmentAdding}
-			onAppointmentUpdating={onAppointmentUpdating}
-			onAppointmentUpdated={onAppointmentUpdatedAsync}
-			onAppointmentDeleting={onAppointmentDeleting}
-			onAppointmentDeleted={onAppointmentDeletedAsync}
-			onAppointmentFormOpening={onAppointmentFormOpening}>
-		<View
-			name="Week"
-			type="week"
-			groupOrientation="vertical"
-			cellDuration={30}
-			intervalCount={2}
-		/>
-		<View
-			name="Month"
-			type="month"
-			groupOrientation="horizontal"
-			// cellDuration={30}
-			// intervalCount={2}
-		/>
-		<Resource label="Technicians"
-			fieldExpr="technicianIds"
-			dataSource={technicians}
-			allowMultiple={true}
-			displayExpr="id"
-		/>
-	</Scheduler>
+		<>
+			<Scheduler height={700}
+				dataSource={scheduleData}
+				// dataCellComponent={DataCell}
+				// resourceCellComponent={ResourceCell}
+				groups={groups}
+				defaultCurrentView="Week view"
+				defaultCurrentDate={currentDate}
+				startDayHour={8}
+				endDayHour={18}
+				crossScrollingEnabled={true}
+				showAllDayPanel={false}
+				editing={{allowAdding: true, allowEditing: true}}
+				onAppointmentAdded={onAppointmentAddedAsync}
+				onAppointmentAdding={onAppointmentAdding}
+				onAppointmentUpdating={onAppointmentUpdating}
+				onAppointmentUpdated={onAppointmentUpdatedAsync}
+				onAppointmentDeleting={onAppointmentDeleting}
+				onAppointmentDeleted={onAppointmentDeletedAsync}
+				onAppointmentFormOpening={onAppointmentFormOpening}>
+				<View
+					name="Week"
+					type="week"
+					groupOrientation="vertical"
+					cellDuration={30}
+					intervalCount={2}
+				/>
+				<View
+					name="Month"
+					type="month"
+					groupOrientation="horizontal"
+					// cellDuration={30}
+					// intervalCount={2}
+				/>
+				<Resource label="Technicians"
+					fieldExpr="technicianIds"
+					dataSource={technicians}
+					allowMultiple={true}
+					displayExpr="id"
+				/>
+			</Scheduler>
+		</>
 	);
 }
 
