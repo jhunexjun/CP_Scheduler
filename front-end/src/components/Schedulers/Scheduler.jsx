@@ -197,14 +197,14 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 				},
 			},
 			{
-				name: 'endDate',
+				// name: 'endDate',
 				dataField: 'endDate',
 				editorType: 'dxDateBox',
 				isRequired: true,
 				editorOptions: {
 					width: '100%',
 					type: 'datetime',
-					readOnly: true,
+					// readOnly: true,
 				},
 			},
 			{

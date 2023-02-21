@@ -90,7 +90,7 @@ export default () => {
 			const tmp = {
 							id: workOrders.data[x].id.toString(),
 							text: workOrders.data[x].text,
-							text2: workOrders.data[x].id + ' - ' + workOrders.data[x].billNam,
+							text2: workOrders.data[x].id.concat(' - ', (workOrders.data[x].billNam === null) ? '' : workOrders.data[x].billNam),
 							// docId: workOrders.data[x].docId,
 							custNo: workOrders.data[x].custNo,
 							billNam: workOrders.data[x].billNam,
