@@ -86,18 +86,44 @@ export default () => {
 	function appendInvoices(workOrders) {
 		const initWorkOrders = [];
 
-		for(let x = 0; x < workOrders.data.length; x++) {
-			const tmp = {
-							id: workOrders.data[x].id.toString(),
-							text: workOrders.data[x].text,
-							text2: workOrders.data[x].id.concat(' - ', (workOrders.data[x].billNam === null) ? '' : workOrders.data[x].billNam),
-							// docId: workOrders.data[x].docId,
-							custNo: workOrders.data[x].custNo,
-							billNam: workOrders.data[x].billNam,
-						}
-			initWorkOrders.push(tmp);
-		}
-		setWorkOrders(initWorkOrders);
+
+		const initWorkOrders2 = workOrders.data.reduce((previousValue, currentValue) => {
+			const { id } = currentValue;
+
+			if (id != null) {
+				// const hr = new Date(extractDateTimeOnly(id)).getHours();
+				let obj = previousValue.find(o => o.id === id);
+
+				if (obj === undefined) {
+					let x = { 	id: currentValue.id,
+								text: currentValue.text,
+								text2: currentValue.id.concat(' - ', (currentValue.billNam === null) ? '' : currentValue.billNam),
+								custNo: currentValue.custNo,
+								billNam: currentValue.billNam
+							};
+					previousValue.push(x);
+				} else {
+					obj.text += currentValue.text;
+				}
+			}
+
+			return previousValue;
+		}, []);
+
+		setWorkOrders(initWorkOrders2);
+
+		// for(let x = 0; x < workOrders.data.length; x++) {
+		// 	const tmp = {
+		// 					id: workOrders.data[x].id.toString(),
+		// 					text: workOrders.data[x].text,
+		// 					text2: workOrders.data[x].id.concat(' - ', (workOrders.data[x].billNam === null) ? '' : workOrders.data[x].billNam),
+		// 					// docId: workOrders.data[x].docId,
+		// 					custNo: workOrders.data[x].custNo,
+		// 					billNam: workOrders.data[x].billNam,
+		// 				}
+		// 	initWorkOrders.push(tmp);
+		// }
+		// setWorkOrders(initWorkOrders);
 		// console.log("workOrders: ", workOrders);
 	}
 
