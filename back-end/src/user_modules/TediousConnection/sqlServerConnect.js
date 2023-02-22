@@ -25,9 +25,12 @@ var Singleton = (function() {
                 database: process.env.DB_DATABASE,
                 // database: 'WHOLESALE_CPPractice',
                 trustServerCertificate: true,
-                instanceName: '', // 'SQLEXPRESS2016',
+                // instanceName: process.env.DB_INSTANCE,
             },
         };
+
+        if (process.env.DB_INSTANCE !== "")
+            config.options.instanceName = process.env.DB_INSTANCE;  // 'SQLEXPRESS2016'
 
         const connection = new Connection(config);
         connection.connect();
