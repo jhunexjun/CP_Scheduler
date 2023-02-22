@@ -2,28 +2,30 @@
 // Move this to RediousConnection folder.
 
 const Connection = require('tedious').Connection
+const dotenv = require('dotenv');
 
 
 var Singleton = (function() {
     var instance;
+    dotenv.config();
 
     async function createInstance() {
         const config = {
             // server: 'LAPTOP-OJBCF2RO',
-            server: 'localhost',
+            server: process.env.DB_SERVER,
             authentication: {
                 type: 'default',
                 options: {
-                    userName: 'sa',
-                    password: '1234',
+                    userName: process.env.DB_USERNAME,
+                    password: process.env.DB_PASSWORD,
                 }
             },
             options: {
                 //database: 'RODEO_11182022',
-                database: 'TOTAL_OFFROAD_Practice',
+                database: process.env.DB_DATABASE,
                 // database: 'WHOLESALE_CPPractice',
                 trustServerCertificate: true,
-                //instanceName: 'SQLEXPRESS2016',
+                instanceName: '', // 'SQLEXPRESS2016',
             },
         };
 
