@@ -1,1 +1,1 @@
-start chrome http://localhost:3000/admin/appointment
+start "" http://localhost:3000/admin/appointment

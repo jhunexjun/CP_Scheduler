@@ -24,7 +24,7 @@ export default () => {
 	// const [isGridBoxOpened, setIsGridBoxOpened] = useState(false);
 	// const gridColumns = ['id', 'custNo', 'billNam', 'text'];
 
-	const adminUrl = 'http://localhost:8080/admin';
+	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
 
 	const fetchData = useCallback(async () => {

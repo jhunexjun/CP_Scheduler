@@ -13,7 +13,7 @@ const Sched = ({scheduleData, technicians, workOrders}) => {
 	const [popupVisible, setPopupVisible] = useState(false);
 	
 
-	const url = 'http://localhost:8080/admin/schedule';
+	const url = process.env.REACT_APP_API_DOMAIN + '/admin/schedule';
 
 
 	function onAppointmentAdding(e) {
