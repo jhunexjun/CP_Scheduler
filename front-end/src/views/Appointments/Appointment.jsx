@@ -103,7 +103,7 @@ export default () => {
 							};
 					previousValue.push(x);
 				} else {
-					obj.text += currentValue.text;
+					obj.text += "\n\n" + currentValue.text;
 				}
 			}
 
