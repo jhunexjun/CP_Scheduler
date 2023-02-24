@@ -47,12 +47,10 @@ function getTechnicians() {
 }
 
 function getInvoices() {
-	//return "select TKT_NO, STR_ID, STA_ID, CUST_NO, BILL_NAM_UPR from VI_PS_DOC_HDR";
 	return "select HDR.TKT_NO, HDR.DOC_ID, NOTES.NOTE_TXT, HDR.CUST_NO, HDR.BILL_NAM " +
 			"from VI_PS_DOC_HDR HDR left join VI_PS_DOC_NOTE NOTES " +
 				"on HDR.DOC_ID = NOTES.DOC_ID " +
 				"and HDR.STA_ID = NOTES.STA_ID and hdr.STR_ID = NOTES.STR_ID " +
-			"order by NOTES.NOTE_SEQ_NO";
-			//"where HDR.DOC_ID = '102370370894'";
-			// need more for filtering as to what document.
+			"where HDR.DOC_TYP = 'O' " +
+			"order by HDR.TKT_DT desc";
 }

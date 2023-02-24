@@ -1,15 +1,10 @@
-Copy database Lefty's for big stores.
-
 To do's:
-Add new schedule 
-Test the scheduler by creating invoice from 
-Create batch file and call it from Counterpoint.
-
-Drop down for the top 5 stores.
-Make data visible for the top 5 graphs.
 
 
 Done:
+Create batch file and call it from Counterpoint.
+Test the scheduler by creating invoice from
+Add new schedule
 Searchable technician and Work order.
 Remove other menus and remain the scheduler.
 Remove login

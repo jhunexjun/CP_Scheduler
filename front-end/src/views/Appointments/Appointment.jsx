@@ -19,6 +19,9 @@ export default () => {
 	let [technicians, setTechnicians] = useState([]);
 	let [workOrders, setWorkOrders] = useState([]);
 	let [scheduleData, setScheduleData] = useState([]);
+	const refreshInMinutes = 1;	// the frequency of refresh
+	const [countdown, setCountdown] = useState(refreshInMinutes * 60);
+	let [intervalCounter, setIntervalCounter] = useState();
 
 	// const [gridBoxValue, setGridBoxValue] = useState([]);
 	// const [isGridBoxOpened, setIsGridBoxOpened] = useState(false);
@@ -61,6 +64,22 @@ export default () => {
 		fetchData();
 	}, []);
 
+	// useEffect(() => {
+	// 	intervalCounter = setInterval(() => {
+	// 		setCountdown((countdown) => {
+	// 			if (countdown <= 0) {
+	// 				fetchData();
+	// 				return refreshInMinutes * 60;
+	// 			} else {
+	// 				return countdown - 1;
+	// 			}
+
+	// 		});
+	// 	}, 1000);
+
+	// 	return () => clearInterval(intervalCounter);
+	// }, []);
+
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];
 		for(let x = 0; x < technicians.data.length; x++) {
@@ -84,14 +103,13 @@ export default () => {
 	}
 
 	function appendInvoices(workOrders) {
-		const initWorkOrders = [];
+		// const initWorkOrders = [];
 
 
 		const initWorkOrders2 = workOrders.data.reduce((previousValue, currentValue) => {
 			const { id } = currentValue;
 
 			if (id != null) {
-				// const hr = new Date(extractDateTimeOnly(id)).getHours();
 				let obj = previousValue.find(o => o.id === id);
 
 				if (obj === undefined) {
@@ -103,7 +121,7 @@ export default () => {
 							};
 					previousValue.push(x);
 				} else {
-					obj.text += "\n\n" + currentValue.text;
+					obj.text += "\n" + currentValue.text;
 				}
 			}
 
@@ -151,7 +169,11 @@ export default () => {
 		}
 
 		setScheduleData(initScheduleData);
-	}	
+	}
+
+	const stopTimer = useCallback(() => {
+		clearInterval(intervalCounter);
+	}, [intervalCounter])
 
 
 	// function dataGridRender() {
@@ -210,12 +232,18 @@ export default () => {
 					/>
 				</div>
     		</div>*/}
+			{/*<div className="row">
+				<div className="col-2">
+					{ countdown }
+				</div>
+			</div>*/}
 
     		<div className="row">
     			<div id="dx-viewport scheduler">
 					<Scheduler scheduleData={scheduleData}
 						technicians={technicians}
-						workOrders={workOrders} />
+						workOrders={workOrders}
+						stopTimer={stopTimer} />
 				</div>
     		</div>			
 		</div>
