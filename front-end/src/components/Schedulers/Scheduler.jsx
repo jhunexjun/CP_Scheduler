@@ -7,7 +7,7 @@ import notify from 'devextreme/ui/notify';
 import { uriEncode, isSet } from '../../utils/util';
 
 
-const Sched = ({scheduleData, technicians, workOrders, stopTimer}) => {
+const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) => {
 	const groups = ['technicianIds'];
 	let [currentDate] = useState(new Date());
 	const [popupVisible, setPopupVisible] = useState(false);
@@ -168,7 +168,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer}) => {
 	}
 
 	function onAppointmentFormOpening(e) {
-		// stopTimer();
+		stopTimer();
 
 		let invoiceInfo = getWorkOrderById(e.appointmentData.invoiceNo) || {};
 		const { form } = e;
@@ -254,6 +254,10 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer}) => {
 				width: '50%',
 			},
 		]);
+
+		e.popup.option('onHiding', function(args) {
+			startTimer();
+		});
 	}
 
 

@@ -64,21 +64,10 @@ export default () => {
 		fetchData();
 	}, []);
 
-	// useEffect(() => {
-	// 	intervalCounter = setInterval(() => {
-	// 		setCountdown((countdown) => {
-	// 			if (countdown <= 0) {
-	// 				fetchData();
-	// 				return refreshInMinutes * 60;
-	// 			} else {
-	// 				return countdown - 1;
-	// 			}
-
-	// 		});
-	// 	}, 1000);
-
-	// 	return () => clearInterval(intervalCounter);
-	// }, []);
+	useEffect(() => {
+		let interval = startTimer();
+		return () => clearInterval(interval);
+	}, []);
 
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];
@@ -173,7 +162,24 @@ export default () => {
 
 	const stopTimer = useCallback(() => {
 		clearInterval(intervalCounter);
-	}, [intervalCounter])
+	}, [intervalCounter]);
+
+	const startTimer = useCallback(() => {
+		let interval = setInterval(() => {
+			setCountdown((countdown) => {
+				if (countdown <= 0) {
+					fetchData();
+					return refreshInMinutes * 60;
+				} else {
+					return countdown - 1;
+				}
+
+			});
+		}, 1000);
+
+		setIntervalCounter(interval);
+		return interval;
+	}, [])
 
 
 	// function dataGridRender() {
@@ -243,10 +249,10 @@ export default () => {
 					<Scheduler scheduleData={scheduleData}
 						technicians={technicians}
 						workOrders={workOrders}
-						stopTimer={stopTimer} />
+						stopTimer={stopTimer}
+						startTimer={startTimer} />
 				</div>
     		</div>			
 		</div>
     );
 }
-
