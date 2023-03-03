@@ -9,13 +9,15 @@ module.exports = {
 	getTechnicians,
 }
 
-async function getTechnicians() {
+async function getTechnicians(params) {
 	try {
 		const sql = schedulerSql.getTechnicians();
 		let request = new Request(sql, (err) => {
 			if (err)
 				console.log(err);
 		});
+
+		request.addParameter('sessionId', TYPES.VarChar, params.sessionId);
 
 		const technicians = await utils.executeRequestAsync(request);
 

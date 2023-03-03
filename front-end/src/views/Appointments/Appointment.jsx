@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { Link, useParams } from "react-router-dom";
 
 // import '../../assets/compuTant/themes/custom-styles.scss';
 
@@ -6,13 +7,14 @@ import React, { useState, useCallback, useEffect } from 'react';
 
 import 'devextreme/dist/css/dx.light.css';
 
-import { isSet } from '../../utils/util';
+import { isSet, isSetScalar } from '../../utils/util';
 
 // import DropDownBox from 'devextreme-react/drop-down-box';
 // import DataGrid, { Selection, Paging, FilterRow, Scrolling, } from 'devextreme-react/data-grid';
 // import 'whatwg-fetch';
 
 import Scheduler from '../../components/Schedulers/Scheduler';
+import TagBox from 'devextreme-react/tag-box';
 
 
 export default () => {
@@ -29,9 +31,11 @@ export default () => {
 
 	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
+	let { sessionId } = useParams();
+
 
 	const fetchData = useCallback(async () => {
-		await fetch(`${adminUrl}/technicians`)
+		await fetch(`${adminUrl}/technicians/${sessionId}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -61,16 +65,24 @@ export default () => {
 	} ,[]);
 
 	useEffect(() => {
+		if (!isSetScalar(sessionId))
+			return;
+
 		fetchData();
 	}, []);
 
-	useEffect(() => {
-		let interval = startTimer();
-		return () => clearInterval(interval);
-	}, []);
+	// useEffect(() => {
+	// 	let interval = startTimer();
+	// 	return () => clearInterval(interval);
+	// }, []);
 
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];
+		if (technicians.data === undefined) {
+			setTechnicians([]);
+			return;
+		}
+
 		for(let x = 0; x < technicians.data.length; x++) {
 			// console.log('technicians.data[x].avatar: ', technicians.data[x].avatar);
 
@@ -87,6 +99,8 @@ export default () => {
 
 			initTechnicians.push(obj);
 		}
+
+		// console.log("initTechnicians: ", initTechnicians);
 
 		setTechnicians(initTechnicians);
 	}
@@ -219,6 +233,19 @@ export default () => {
 	// 	}
 	// }
 
+	function refreshData() {
+
+	}
+
+	function updateNow(e) {
+		e.preventDefault();
+		refreshData();
+	}
+
+	function techniciansOnValueChanged(e) {
+		//console.log("onValueChanged: ", e);
+	}
+
     return (
     	<div className="content">
     		{/*<div className="row">
@@ -238,11 +265,26 @@ export default () => {
 					/>
 				</div>
     		</div>*/}
-			{/*<div className="row">
+			<div className="row">
 				<div className="col-2">
-					{ countdown }
+					<div className="cpt-update-box">
+						<span className="float-left"><Link to="" className="showDetails" onClick={(e) => updateNow(e)}>Update Now</Link></span>
+						<span className="float-end">{ countdown }</span>
+					</div>
 				</div>
-			</div>*/}
+				<div className="col-4">
+					<TagBox dataSource={technicians}
+						displayExpr="text"
+						valueExpr="id"
+						searchEnabled={true}
+						hint={'Select 1 or more technicians.'}
+						placeholder="Technician(s)"
+						maxDisplayedTags={3}
+						showMultiTagOnly={false}
+						onValueChanged={(e) => techniciansOnValueChanged(e)}
+					/>
+				</div>
+			</div>
 
     		<div className="row">
     			<div id="dx-viewport scheduler">
@@ -250,7 +292,8 @@ export default () => {
 						technicians={technicians}
 						workOrders={workOrders}
 						stopTimer={stopTimer}
-						startTimer={startTimer} />
+						startTimer={startTimer}
+					/>
 				</div>
     		</div>			
 		</div>

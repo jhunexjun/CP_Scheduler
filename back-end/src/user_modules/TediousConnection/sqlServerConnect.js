@@ -11,7 +11,6 @@ var Singleton = (function() {
 
     async function createInstance() {
         const config = {
-            // server: 'LAPTOP-OJBCF2RO',
             server: process.env.DB_SERVER,
             authentication: {
                 type: 'default',
@@ -21,11 +20,8 @@ var Singleton = (function() {
                 }
             },
             options: {
-                //database: 'RODEO_11182022',
                 database: process.env.DB_DATABASE,
-                // database: 'WHOLESALE_CPPractice',
                 trustServerCertificate: true,
-                // instanceName: process.env.DB_INSTANCE,
             },
         };
 
@@ -57,58 +53,3 @@ var Singleton = (function() {
 })();
 
 module.exports = Singleton;
-
-
-
-
-
-
-
-
-
-
-// let conn;
-
-// module.exports = {
-//     connectDatabase,
-//     dbConnection,
-// };
-
-// function connectDatabase() {
-//     const config = {
-//         server: 'LAPTOP-OJBCF2RO',
-//         authentication: {
-//             type: 'default',
-//             options: {
-//                 userName: 'sa',
-//                 password: '1234',
-//             }
-//         },
-//         options: {
-//             //database: 'RODEO_11182022',
-//             database: 'TestGolf_1',
-//             // database: 'WHOLESALE_CPPractice',
-//             trustServerCertificate: true,
-//             //instanceName: 'SQLEXPRESS2016',
-//         },
-//     };
-
-//     const connection = new Connection(config);
-
-//     connection.connect();
-//     //app.locals.dbConnection = connection;
-
-//     connection.on('connect', (err) => {
-//         if (err) {
-//             console.log(err);
-//         }
-//     });
-
-//     conn = connection;
-// }
-
-// function dbConnection() {
-//     return conn;
-// }
-
-

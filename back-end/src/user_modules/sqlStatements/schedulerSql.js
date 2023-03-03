@@ -43,7 +43,7 @@ function getMembersById() {
 }
 
 function getTechnicians() {
-	return "select USR_ID, NAM, PHONE_1 from SY_USR";
+	return "exec dbo.USER_SP_GET_Technicians @sessionId";
 }
 
 function getInvoices() {

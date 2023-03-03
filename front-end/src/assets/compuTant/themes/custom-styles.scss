@@ -115,6 +115,7 @@
 
 a.showDetails {
     color: #262dce;
+    text-decoration: none;
 
     &:focus {
         color: #262dce;
@@ -122,7 +123,6 @@ a.showDetails {
 
     &:hover {
         color: #262dce;
-        text-decoration: none;
     }
 }
 
@@ -134,4 +134,10 @@ a.showDetails {
     .dx-scheduler-cell-sizes-horizontal {
         width: 120px;
     }
+}
+
+.cpt-update-box {
+    background-color: white;
+    padding: 7px;
+    margin-bottom: 8px;
 }

@@ -256,7 +256,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 		]);
 
 		e.popup.option('onHiding', function(args) {
-			startTimer();
+			// startTimer();
 		});
 	}
 
@@ -268,7 +268,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 				// dataCellComponent={DataCell}
 				// resourceCellComponent={ResourceCell}
 				groups={groups}
-				defaultCurrentView="Week view"
+				defaultCurrentView="day"
 				defaultCurrentDate={currentDate}
 				startDayHour={8}
 				endDayHour={18}
@@ -282,6 +282,12 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 				onAppointmentDeleting={onAppointmentDeleting}
 				onAppointmentDeleted={onAppointmentDeletedAsync}
 				onAppointmentFormOpening={onAppointmentFormOpening}>
+				<View
+					name="Day"
+					type="day"
+					groupOrientation="vertical"
+					cellDuration={30}
+				/>
 				<View
 					name="Week"
 					type="week"

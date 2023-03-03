@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 // import Login from './views/Login/Login';
 
 import 'bootstrap-scss/bootstrap.scss';	// version 5.2.3.
+// import 'bootstrap/dist/css/bootstrap.css';  // the bootstrap 4.6.
 
 // paper-dashboard; This uses-bootstrap.
 import "./assets/paper-dashboard/scss/paper-dashboard.scss?v=1.3.0";

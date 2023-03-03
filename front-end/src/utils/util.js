@@ -26,5 +26,12 @@ function isSet(object, property) {
 		return false;
 }
 
+function isSetScalar(param) {
+	if (param === undefined || param === null || param === "")
+		return false;
+	else
+		return true;
+}
 
-export { getRandomColor, uriEncode, isSet }
+
+export { getRandomColor, uriEncode, isSet, isSetScalar }
