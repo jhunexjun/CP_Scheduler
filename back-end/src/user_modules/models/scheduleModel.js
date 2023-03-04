@@ -111,29 +111,51 @@ function datesAreValid(params) {
 	/*************************************************************/
 }
 
-async function updateSchedule(params) {
+async function sessionIsValid(sessionId) {
 	try {
-		if (utils.isSet(params, "utcDateFrom") && utils.isSet(params, "utcDateTo")) {
-			let retVal = datesAreValid(params);
+		let request = new Request('exec dbo.USER_CheckSessionValidity @sessionId', (err, rowCount) => {
+			if (err)
+				console.log(err);
+		});
+
+		request.addParameter('sessionId', TYPES.NVarChar, sessionId);
+		let returnval = await utils.executeRequestAsync(request);
+
+		if (returnval[0].errorNo == 0)
+			return true;
+		else
+			return false
+	} catch(e) {
+		throw e;
+	}
+}
+
+async function updateSchedule(req) {
+	try {
+		if (!await sessionIsValid(req.params.sessionId))
+			return { status: 'Error', message: 'Session is invalid.' };
+
+		if (utils.isSet(req.body, "utcDateFrom") && utils.isSet(req.body, "utcDateTo")) {
+			let retVal = datesAreValid(req.body);
 			if (retVal.status == "Error")
 				return retVal;
 		}
 
 		let sql = "update USR_schedules set invoiceNo = @invoiceNo, utcUpdateDate = getutcdate()";
 
-		if (utils.isSet(params, "utcDateFrom"))
+		if (utils.isSet(req.body, "utcDateFrom"))
 			sql += ", utcDateFrom = @utcDateFrom";
-		if (utils.isSet(params, "utcDateTo"))
+		if (utils.isSet(req.body, "utcDateTo"))
 			sql += ", utcDateTo = @utcDateTo";
-		if (utils.isSet(params, "subject"))
+		if (utils.isSet(req.body, "subject"))
 			sql += ", subject = @subject";
-		if (utils.isSet(params, "description"))
+		if (utils.isSet(req.body, "description"))
 			sql += ", description = @description";
-		if (utils.isSet(params, "allDay") && (params.allDay === 'true'))
+		if (utils.isSet(req.body, "allDay") && (req.body.allDay === 'true'))
 			sql += ", allDay = 'Y'";
-		else if (utils.isSet(params, "allDay") && (params.allDay === 'false'))
+		else if (utils.isSet(req.body, "allDay") && (req.body.allDay === 'false'))
 			sql += ", allDay = 'N'";
-		if (utils.isSet(params, 'recurrenceRule'))
+		if (utils.isSet(req.body, 'recurrenceRule'))
 			sql += ", recurrenceRule = @recurrenceRule";
 
 		sql += " where id = @id";
@@ -143,23 +165,23 @@ async function updateSchedule(params) {
 				console.log(err);
 		});
 
-		if (utils.isSet(params, "subject"))
-			request.addParameter('subject', TYPES.NVarChar, params.subject);
-		if (utils.isSet(params, "utcDateFrom"))
-			request.addParameter('utcDateFrom', TYPES.DateTime, params.utcDateFrom);
-		if (utils.isSet(params, "utcDateTo"))
-			request.addParameter('utcDateTo', TYPES.DateTime, params.utcDateTo);
-		if (utils.isSet(params, "description"))
-			request.addParameter('description', TYPES.NVarChar, params.description);
-		if (utils.isSet(params, 'recurrenceRule'))
-			request.addParameter('recurrenceRule', TYPES.NVarChar, params.recurrenceRule);
+		if (utils.isSet(req.body, "subject"))
+			request.addParameter('subject', TYPES.NVarChar, req.body.subject);
+		if (utils.isSet(req.body, "utcDateFrom"))
+			request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
+		if (utils.isSet(req.body, "utcDateTo"))
+			request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
+		if (utils.isSet(req.body, "description"))
+			request.addParameter('description', TYPES.NVarChar, req.body.description);
+		if (utils.isSet(req.body, 'recurrenceRule'))
+			request.addParameter('recurrenceRule', TYPES.NVarChar, req.body.recurrenceRule);
 
 
-		request.addParameter('invoiceNo', TYPES.NVarChar, params.invoiceNo);
-		request.addParameter('id', TYPES.Int, parseInt(params.id));
+		request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
+		request.addParameter('id', TYPES.Int, parseInt(req.body.id));
 		await utils.executeRequestAsync(request);	// We just assume running sql was successful bc it's not capturing the rows affected.
 
-		await updateSchedsCustomers(params);
+		await updateSchedsCustomers(req);
 
 		return { status: "OK" , message: "Schedule was updated successfully" };
 	} catch(e) {
@@ -167,9 +189,9 @@ async function updateSchedule(params) {
 	}
 }
 
-async function updateSchedsCustomers(params) {
+async function updateSchedsCustomers(req) {
 	try {
-		if (!utils.isSet(params, 'technicianIds'))
+		if (!utils.isSet(req.body, 'technicianIds'))
 			return { status: "Error" , message: "Technician id is missing. " };
 
 		// let sql = schedulerSql.deleteScheduleCustomer();
@@ -180,16 +202,16 @@ async function updateSchedsCustomers(params) {
 			if (err)
 				console.log(err);
 		});
-		request.addParameter('schedId', TYPES.Int, parseInt(params.id));
+		request.addParameter('schedId', TYPES.Int, parseInt(req.body.id));
 
 		await utils.executeRequestAsync(request);
 
-		// console.log("params: ", params);	// params.technicianIds:  MGR,ADMIN
-		// console.log("params.technicianIds: ", params.technicianIds);	// params.technicianIds:  MGR,ADMIN
-		const newArray = params.technicianIds.replace("'", "").split(",");
-		params.technicianIds = newArray;
+		// console.log("req.body: ", req.body);	// req.body.technicianIds:  MGR,ADMIN
+		// console.log("req.body.technicianIds: ", req.body.technicianIds);	// req.body.technicianIds:  MGR,ADMIN
+		const newArray = req.body.technicianIds.replace("'", "").split(",");
+		req.body.technicianIds = newArray;
 
-		await insertIntoSchedTechnicians(params);
+		await insertIntoSchedTechnicians(req);
 	} catch(e) {
 		throw e;
 	}

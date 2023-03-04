@@ -90,7 +90,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 	}
 
 	async function onAppointmentUpdatedAsync(e) {
-		await updateScheduleAsync(e.appointmentData);
+		let retVal = await updateScheduleAsync(e.appointmentData);
 		showToast('Edited', e.appointmentData.text, 'success');
 	}
 

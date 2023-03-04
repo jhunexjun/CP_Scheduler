@@ -59,11 +59,11 @@ function validParams(params) {
 }
 
 async function addSchedule(req) {
-	console.log('req.params: ', req.params);
 	if (req.params.sessionId === undefined || !req.params.sessionId)
 		return { status: 'Error', message: 'sessionId is missing.' };
 	if (req.body.subject === undefined || !req.body.subject)
-		throw "subject param is missing.";
+		return { status: 'Error', message: 'subject param is missing.' };
+		// throw "subject param is missing.";
 	if (req.body.utcDateFrom === undefined || !req.body.utcDateFrom)
 		return { status: 'Error', message: 'utcDateFrom is missing.' };
 	if (req.body.utcDateTo === undefined || !req.body.utcDateTo)
@@ -99,7 +99,7 @@ async function updateSchedule(req) {
 	if (valid !== true)
 		return valid;
 
-	return await scheduleModel.updateSchedule(req.body);
+	return await scheduleModel.updateSchedule(req);
 }
 
 async function deleteSchedule(req) {
