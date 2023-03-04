@@ -11,6 +11,7 @@ Some label changes.
 To copy database of Lefty's and restore it to my SQL Server.
 Replace my current express ed. of SQL server to standard.
 ----------------------------
+let clonedArray = JSON.parse(JSON.stringify(nodesArray))
 
 
 
@@ -22,6 +23,13 @@ location
 store
 Counterpoint workgroup
 employee by workgroup
+Started to add more features based on the meeting yesterday.
+ * To added a virtual login.
+ * To add session log-out.
+ * To add a dropdown list of technicians as filter of the scheduler.
+ * Filter out scheds only to specific location.
+ * Location from other stores cannot add sched from another store.
+ * etc.
 
 
 

@@ -8,30 +8,42 @@ module.exports = {
 }
 
 function getSchedule() {
-	return "select scheds.id, scheds.subject, scheds.utcDateFrom, scheds.utcDateTo, scheds.description, scheds.invoiceNo, schedmem.technicianId" +
-			", allDay, recurrenceRule " +
-			"from USR_schedules scheds left join USR_schedules_technicians schedmem on scheds.id = schedmem.schedId " +
-			"order by scheds.id";
+	// return "select scheds.id, scheds.subject, scheds.utcDateFrom, scheds.utcDateTo, scheds.description, scheds.invoiceNo, schedmem.technicianId" +
+	// 		", allDay, recurrenceRule " +
+	// 		"from USR_schedules scheds left join USR_schedules_technicians schedmem on scheds.id = schedmem.schedId " +
+	// 		"order by scheds.id";
+	return "exec dbo.USER_SP_GET_Schedules @sessionId, @technicianId";
 }
 
 function addSchedule(allDay, recurrenceRule) {
-	let sql = 'insert into USR_schedules(subject, utcDateFrom, utcDateTo, description, invoiceNo';
+	/*
+		exec dbo.USER_SCHD_Add '6796B252-7279-47D1-9BE9-986EDD99D6C8',
+								'Test from sp',
+								'2023-03-15 12:00PM',
+								'2023-03-15 13:00PM',
+								'The is the description',
+								'PEL-W-214020';
+	*/
 
-	if (allDay)
-		sql += ', allDay';
-	if (recurrenceRule)
-		sql += ', recurrenceRule';
+	return "exec dbo.USER_SCHD_Add @sessionId, @subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo";
 
-	sql += ') values(@subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo';
+	// let sql = 'insert into USR_schedules(subject, utcDateFrom, utcDateTo, description, invoiceNo';
 
-	if (allDay)
-		sql += ', @allDay';
-	if (recurrenceRule)
-		sql += ', @recurrenceRule';
+	// if (allDay)
+	// 	sql += ', allDay';
+	// if (recurrenceRule)
+	// 	sql += ', recurrenceRule';
 
-	sql += '); select @@identity as newId';
+	// sql += ') values(@subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo';
 
-	return sql;
+	// if (allDay)
+	// 	sql += ', @allDay';
+	// if (recurrenceRule)
+	// 	sql += ', @recurrenceRule';
+
+	// sql += '); select @@identity as newId';
+
+	// return sql;
 }
 
 function deleteSchedule() {

@@ -3,8 +3,6 @@ import { Link, useParams } from "react-router-dom";
 
 // import '../../assets/compuTant/themes/custom-styles.scss';
 
-// import { Row, Col } from 'reactstrap';
-
 import 'devextreme/dist/css/dx.light.css';
 
 import { isSet, isSetScalar } from '../../utils/util';
@@ -14,11 +12,23 @@ import { isSet, isSetScalar } from '../../utils/util';
 // import 'whatwg-fetch';
 
 import Scheduler from '../../components/Schedulers/Scheduler';
-import TagBox from 'devextreme-react/tag-box';
+// import TagBox from 'devextreme-react/tag-box';
+import SelectBox from 'devextreme-react/select-box';
 
 
 export default () => {
-	let [technicians, setTechnicians] = useState([]);
+
+	const [selectedTechnicianId, setSelectedTechnicianId] = useState('ALL');
+	const selectedTechnician = {
+			id: 'ALL',
+			text: 'ALL',
+			color: '#56ca85',
+			avatar: 'coach-man.png',
+			age: 0,
+			phone1: "",
+		};
+	let [_technicians, setTechnicians] = useState([selectedTechnician]);
+
 	let [workOrders, setWorkOrders] = useState([]);
 	let [scheduleData, setScheduleData] = useState([]);
 	const refreshInMinutes = 1;	// the frequency of refresh
@@ -53,7 +63,7 @@ export default () => {
 					appendInvoices(workOrders);
 			});
 
-	    await fetch(`${adminUrl}/schedule`)
+	    await fetch(`${adminUrl}/schedule/${sessionId}/${selectedTechnicianId}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -72,20 +82,19 @@ export default () => {
 	}, []);
 
 	// useEffect(() => {
+
+	// });
+
+	// useEffect(() => {
 	// 	let interval = startTimer();
 	// 	return () => clearInterval(interval);
 	// }, []);
 
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];
-		if (technicians.data === undefined) {
-			setTechnicians([]);
-			return;
-		}
+		initTechnicians.push(_technicians[0]);
 
 		for(let x = 0; x < technicians.data.length; x++) {
-			// console.log('technicians.data[x].avatar: ', technicians.data[x].avatar);
-
 			let obj = {
 				id: technicians.data[x].id.toString(),
 				text: technicians.data[x].text,
@@ -99,8 +108,6 @@ export default () => {
 
 			initTechnicians.push(obj);
 		}
-
-		// console.log("initTechnicians: ", initTechnicians);
 
 		setTechnicians(initTechnicians);
 	}
@@ -243,37 +250,21 @@ export default () => {
 	}
 
 	function techniciansOnValueChanged(e) {
-		//console.log("onValueChanged: ", e);
+		console.log("onValueChanged: ", e);
+		//setSelectedTechnicianId(e.value[0]);
 	}
 
     return (
     	<div className="content">
-    		{/*<div className="row">
-				<div className="col-6">
-					<DropDownBox value={gridBoxValue}
-						opened={isGridBoxOpened}
-						deferRendering={true}
-						displayExpr={gridBoxDisplayExpr}
-						placeholder="Select work order to add schedule"
-						showClearButton={true}
-						dataSource={workOrders}
-						onValueChanged={syncDataGridSelection}
-						onOptionChanged={onGridBoxOpened}
-						contentRender={dataGridRender}
-						// stylingMode="outlined"
-						// labelMode="static"
-					/>
-				</div>
-    		</div>*/}
 			<div className="row">
-				<div className="col-2">
+				{/*<div className="col-2">
 					<div className="cpt-update-box">
 						<span className="float-left"><Link to="" className="showDetails" onClick={(e) => updateNow(e)}>Update Now</Link></span>
 						<span className="float-end">{ countdown }</span>
 					</div>
-				</div>
-				<div className="col-4">
-					<TagBox dataSource={technicians}
+				</div>*/}
+				<div className="col-3">
+					{/*<TagBox dataSource={technicians}
 						displayExpr="text"
 						valueExpr="id"
 						searchEnabled={true}
@@ -282,6 +273,18 @@ export default () => {
 						maxDisplayedTags={3}
 						showMultiTagOnly={false}
 						onValueChanged={(e) => techniciansOnValueChanged(e)}
+					/>*/}
+					<SelectBox dataSource={_technicians}
+						displayExpr="text"
+						searchEnabled={true}
+						searchMode="contains"
+						searchExpr="text"
+						searchTimeout={200}
+						minSearchLength={0}
+						showDataBeforeSearch={false}
+						onValueChanged={(e) => techniciansOnValueChanged(e)}
+						placeholder="Select technicians"
+						defaultValue={_technicians[0]}
 					/>
 				</div>
 			</div>
@@ -289,7 +292,7 @@ export default () => {
     		<div className="row">
     			<div id="dx-viewport scheduler">
 					<Scheduler scheduleData={scheduleData}
-						technicians={technicians}
+						technicians={_technicians}
 						workOrders={workOrders}
 						stopTimer={stopTimer}
 						startTimer={startTimer}

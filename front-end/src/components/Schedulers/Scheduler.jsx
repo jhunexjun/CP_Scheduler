@@ -1,4 +1,5 @@
 import React, { useState, memo } from 'react';
+import { useParams } from 'react-router-dom';
 
 import Scheduler, { Resource, View } from 'devextreme-react/scheduler';
 import Query from 'devextreme/data/query';
@@ -11,9 +12,17 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 	const groups = ['technicianIds'];
 	let [currentDate] = useState(new Date());
 	const [popupVisible, setPopupVisible] = useState(false);
-	
 
-	const url = process.env.REACT_APP_API_DOMAIN + '/admin/schedule';
+	let techs = [];
+
+	if (technicians !== undefined && technicians.length > 0) {
+		techs = JSON.parse(JSON.stringify(technicians));
+		if (techs !== undefined && techs.length > 0 && techs[0].id === 'ALL') {
+			techs.shift();
+		}
+	}
+	let { sessionId } = useParams();
+	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule/${sessionId}`;
 
 
 	function onAppointmentAdding(e) {
@@ -26,8 +35,6 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 			showToast('', 'Please select technician.', 'warning');
 			e.cancel = true;
 		}
-
-		// e.cancel = true;
 	}
 
 	async function onAppointmentAddedAsync(e) {
@@ -304,7 +311,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 				/>
 				<Resource label="Technicians"
 					fieldExpr="technicianIds"
-					dataSource={technicians}
+					dataSource={techs}
 					allowMultiple={true}
 					displayExpr="id"
 				/>

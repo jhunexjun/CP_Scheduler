@@ -8,15 +8,24 @@ let resData;
 
 module.exports = async function(req, res) {
 	try {
+		if (!utils.isSet(req.params, 'sessionId')) {
+			res.json({ status: "Error" , message: "session id is missing." });
+			return;
+		}
+
 		switch(req.method) {
 			case 'POST':
 				resData = await addSchedule(req);
 				res.json(resData);
 				break;
 			case 'GET':
-				const scheds = await getSchedules();
-				resData = { status: "OK", message: "Okay", data: scheds, }
-				res.json(resData);
+				const scheds = await getSchedules(req.params);
+				if (scheds[0].hasOwnProperty('errorNo')) {
+					res.json({ status: "Error", message: scheds[0].errMsg, data: [] });
+				} else {
+					resData = { status: "OK", message: "Okay", data: scheds }
+					res.json(resData);
+				}
 				break;
 			case 'PUT':
 				resData = await updateSchedule(req);
@@ -34,8 +43,8 @@ module.exports = async function(req, res) {
 	}
 };
 
-async function getSchedules() {
-	return scheduleModel.getSchedule();
+async function getSchedules(params) {
+	return scheduleModel.getSchedule(params);
 }
 
 function validParams(params) {
@@ -50,6 +59,9 @@ function validParams(params) {
 }
 
 async function addSchedule(req) {
+	console.log('req.params: ', req.params);
+	if (req.params.sessionId === undefined || !req.params.sessionId)
+		return { status: 'Error', message: 'sessionId is missing.' };
 	if (req.body.subject === undefined || !req.body.subject)
 		throw "subject param is missing.";
 	if (req.body.utcDateFrom === undefined || !req.body.utcDateFrom)
@@ -76,7 +88,7 @@ async function addSchedule(req) {
 	// 	invoiceNo: req.body.invoiceNo,
 	// }
 
-	return await scheduleModel.addSchedule(req.body);
+	return await scheduleModel.addSchedule(req);
 }
 
 async function updateSchedule(req) {

@@ -21,13 +21,17 @@ async function getTechnicians(params) {
 
 		const technicians = await utils.executeRequestAsync(request);
 
-		const techsArray = [];
-		technicians.forEach((item) => {
-			let objTechnician = { id: item.USR_ID, text: item.NAM, phone1: item.PHONE_1, avatar: item.avatar || '' }
-			techsArray.push(objTechnician);
-		})
+		if (technicians[0].hasOwnProperty('errorNo')) {
+			return technicians;
+		} else {
+			const techsArray = [];
+			technicians.forEach((item) => {
+				let objTechnician = { id: item.USR_ID, text: item.NAM, phone1: item.PHONE_1, avatar: item.avatar || '' }
+				techsArray.push(objTechnician);
+			})
 
-		return techsArray;
+			return techsArray;
+		}
 	} catch(e) {
 		throw e;
 	}

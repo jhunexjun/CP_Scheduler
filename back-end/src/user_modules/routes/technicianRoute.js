@@ -12,7 +12,11 @@ module.exports = async function(req, res) {
 		}
 
 		const technicians = await technicianModel.getTechnicians(req.params);
-		res.json({ status: "OK", data: technicians, });
+
+		if (technicians[0].hasOwnProperty('errorNo'))
+			res.json({ status: "Error", message: technicians[0].errMsg, data: [] });
+		else
+			res.json({ status: "OK", data: technicians, });
 	} catch(e) {
 		console.log("Error in workerRoute: ", e);
 	}

@@ -12,7 +12,7 @@ module.exports = {
 	deleteSchedule,
 }
 
-async function getSchedule() {
+async function getSchedule(params) {
 	try {
 		const sql = schedulerSql.getSchedule();
 		let request = new Request(sql, (err, rowCount) => {
@@ -20,42 +20,49 @@ async function getSchedule() {
 				console.log(err);
 		});
 
+		request.addParameter('sessionId', TYPES.VarChar, params.sessionId);
+		request.addParameter('technicianId', TYPES.VarChar, params.technicianId);
+
 		const scheds = await utils.executeRequestAsync(request);
 
-		let schedsGroupedById = scheds.reduce((previousValue, currentValue) => {
-			const { id } = currentValue;
-			let obj = previousValue.find(o => o.id === id);
+		if (scheds[0].hasOwnProperty('errorNo')) {
+			return scheds;
+		} else {
+			let schedsGroupedById = scheds.reduce((prevValue, currentValue) => {
+				const { id } = currentValue;
+				let obj = prevValue.find(o => o.id === id);
 
-			if (obj === undefined) {
-				let x = {	id: id,
-							subject: currentValue.subject,
-							utcDateFrom: currentValue.utcDateFrom,
-							utcDateTo: currentValue.utcDateTo,
-							description: currentValue.description,
-							technicianIds: (currentValue.technicianId == null) ? [] : [currentValue.technicianId],
-							invoiceNo: currentValue.invoiceNo,	// invoice no. is mandatory.
-							allDay: currentValue.allDay,
-							recurrenceRule: currentValue.recurrenceRule,
-						};
-				previousValue.push(x);
-			} else {
-				obj.technicianIds.push(currentValue.technicianId);
-			}
+				if (obj === undefined) {
+					let x = {	id: id,
+								subject: currentValue.subject,
+								utcDateFrom: currentValue.utcDateFrom,
+								utcDateTo: currentValue.utcDateTo,
+								description: currentValue.description,
+								technicianIds: (currentValue.technicianId == null) ? [] : [currentValue.technicianId],
+								invoiceNo: currentValue.invoiceNo,	// invoice no. is mandatory.
+								allDay: currentValue.allDay,
+								recurrenceRule: currentValue.recurrenceRule,
+							};
+					prevValue.push(x);
+				} else {
+					obj.technicianIds.push(currentValue.technicianId);
+				}
 
-			return previousValue;
-		}, []);
+				return prevValue;
+			}, []);
 
-		return schedsGroupedById;
+			return schedsGroupedById;
+		}
 	} catch(e) {
 		throw e;
 	}
 }
 
-async function addSchedule(params) {
+async function addSchedule(req) {
 	try {
 		let sql = schedulerSql.addSchedule(
-			utils.isSet(params, 'allDay'),
-			utils.isSet(params, 'recurrenceRule')
+			utils.isSet(req.body, 'allDay'),
+			utils.isSet(req.body, 'recurrenceRule')
 		);
 
 		let request = new Request(sql, (err, rowCount) => {
@@ -63,24 +70,25 @@ async function addSchedule(params) {
 				console.log(err);
 		});
 
-		request.addParameter('subject', TYPES.NVarChar, params.subject);
-		request.addParameter('utcDateFrom', TYPES.DateTime, params.utcDateFrom);
-		request.addParameter('utcDateTo', TYPES.DateTime, params.utcDateTo);
-		request.addParameter('description', TYPES.NVarChar, utils.isSet(params, "description") ? params.description : null);
-		request.addParameter('invoiceNo', TYPES.NVarChar, params.invoiceNo);
+		request.addParameter('sessionId', TYPES.VarChar, req.params.sessionId);
+		request.addParameter('subject', TYPES.NVarChar, req.body.subject);
+		request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
+		request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
+		request.addParameter('description', TYPES.NVarChar, utils.isSet(req.body, "description") ? req.body.description : null);
+		request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
 
-		// console.log("params: ", params);
-
-		if (utils.isSet(params, 'allDay'))
+		if (utils.isSet(req.body, 'allDay'))
 			request.addParameter('allDay', TYPES.Char, 'Y');
-		if (utils.isSet(params, 'recurrenceRule'))
-			request.addParameter('recurrenceRule', TYPES.NVarChar, params.recurrenceRule);
+		if (utils.isSet(req.body, 'recurrenceRule'))
+			request.addParameter('recurrenceRule', TYPES.NVarChar, req.body.recurrenceRule);
 
 		let schedId = await utils.executeRequestAsync(request);
-		params.id = schedId[0].newId;
-		params.technicianIds = params.technicianIds.split(",");	// string to array.
+		// console.log("schedId: ", schedId);
 
-		await insertIntoSchedTechnicians(params);
+		req.body.id = schedId[0].newId;
+		req.body.technicianIds = req.body.technicianIds.split(",");	// string to array.
+
+		await insertIntoSchedTechnicians(req);
 
 		return { status: "OK" , message: "New schedule was added successfully" };
 	} catch(e) {
@@ -187,13 +195,13 @@ async function updateSchedsCustomers(params) {
 	}
 }
 
-async function insertIntoSchedTechnicians(params) {
-	if (!utils.isSet(params, "technicianIds"))
+async function insertIntoSchedTechnicians(req) {
+	if (!utils.isSet(req.body, "technicianIds"))
 		return { status: "Error" , message: "Technician id is missing." };
 
 	let sql = "";
-	params.technicianIds.forEach((value) => {	// there's a better way to do this.
-		sql += `insert into USR_schedules_technicians(schedId, technicianId) values(${params.id}, '${value}');`;
+	req.body.technicianIds.forEach((value) => {	// there's a better way to do this.
+		sql += `insert into USR_schedules_technicians(schedId, technicianId) values(${req.body.id}, '${value}');`;
 	})
 
 	let request = new Request(sql, (err, rowCount) => {
