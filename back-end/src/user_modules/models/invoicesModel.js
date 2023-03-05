@@ -31,16 +31,17 @@ async function sessionIsValid(sessionId) {
 
 async function getInvoices(req) {
 	try {
-		if (!await sessionIsValid(req.params.sessionId))
-			return { status: 'Error', message: 'Session is invalid.' };
-
 		const sql = schedulerSql.getInvoices();
 		let request = new Request(sql, (err) => {
 			if (err)
 				console.log(err);
 		});
+		request.addParameter('sessionId', TYPES.VarChar, req.params.sessionId);
 
 		const customers = await utils.executeRequestAsync(request);
+		if (customers[0].hasOwnProperty('errorNo')) {
+			return customers;
+		}
 
 		const objInvoicesArray = [];
 		customers.forEach((item) => {

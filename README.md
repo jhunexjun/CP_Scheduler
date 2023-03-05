@@ -25,11 +25,15 @@ Counterpoint workgroup
 employee by workgroup
 Started to add more features based on the meeting yesterday.
  * To added a virtual login.
- * To add session log-out.
+ * To add session auto log-out.
  * To add a dropdown list of technicians as filter of the scheduler.
  * Filter out scheds only to specific location.
  * Location from other stores cannot add sched from another store.
  * etc.
+
+ http://localhost:3000/admin/appointment/6796B252-7279-47D1-9BE9-986EDD99D6C8
+http://localhost:3000/admin/appointment/40861d3e-bd62-4c96-bc72-6a1def6a7309
+
 
 
 

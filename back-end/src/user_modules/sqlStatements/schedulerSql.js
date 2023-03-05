@@ -59,10 +59,11 @@ function getTechnicians() {
 }
 
 function getInvoices() {
-	return "select HDR.TKT_NO, HDR.DOC_ID, NOTES.NOTE_TXT, HDR.CUST_NO, HDR.BILL_NAM " +
-			"from VI_PS_DOC_HDR HDR left join VI_PS_DOC_NOTE NOTES " +
-				"on HDR.DOC_ID = NOTES.DOC_ID " +
-				"and HDR.STA_ID = NOTES.STA_ID and hdr.STR_ID = NOTES.STR_ID " +
-			"where HDR.DOC_TYP = 'O' " +
-			"order by HDR.TKT_DT desc";
+	return "exec dbo.USER_getWorkOrders @sessionId";
+	// return "select HDR.TKT_NO, HDR.DOC_ID, NOTES.NOTE_TXT, HDR.CUST_NO, HDR.BILL_NAM " +
+	// 		"from VI_PS_DOC_HDR HDR left join VI_PS_DOC_NOTE NOTES " +
+	// 			"on HDR.DOC_ID = NOTES.DOC_ID " +
+	// 			"and HDR.STA_ID = NOTES.STA_ID and hdr.STR_ID = NOTES.STR_ID " +
+	// 		"where HDR.DOC_TYP = 'O' and HDR.STR_ID =  @locationId" +
+	// 		"order by HDR.TKT_DT desc";
 }

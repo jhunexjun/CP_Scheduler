@@ -65,7 +65,7 @@ export default () => {
 			})
 			.then((workOrders) => {
 				if (workOrders.status != 'Error' ) {
-					appendInvoices('fetch workOrders: ', workOrders);
+					appendInvoices(workOrders);
 				} else {
 					console.log(workOrders);
 					navigate('/');
@@ -127,7 +127,6 @@ export default () => {
 
 	function appendInvoices(workOrders) {	// to do: rename appendInvoices to appendWorkOrders to for sanity.
 		// const initWorkOrders = [];
-
 
 		const initWorkOrders2 = workOrders.data.reduce((previousValue, currentValue) => {
 			const { id } = currentValue;
@@ -277,28 +276,23 @@ export default () => {
 					</div>
 				</div>*/}
 				<div className="col-3">
-					{/*<TagBox dataSource={technicians}
-						displayExpr="text"
-						valueExpr="id"
-						searchEnabled={true}
-						hint={'Select 1 or more technicians.'}
-						placeholder="Technician(s)"
-						maxDisplayedTags={3}
-						showMultiTagOnly={false}
-						onValueChanged={(e) => techniciansOnValueChanged(e)}
-					/>*/}
-					<SelectBox dataSource={_technicians}
-						displayExpr="text"
-						searchEnabled={true}
-						searchMode="contains"
-						searchExpr="text"
-						searchTimeout={200}
-						minSearchLength={0}
-						showDataBeforeSearch={false}
-						onValueChanged={(e) => techniciansOnValueChanged(e)}
-						placeholder="Select technicians"
-						defaultValue={_technicians[0]}
-					/>
+					<div className="dx-field">
+						<div className="dx-field-label">Technician</div>
+						<div className="dx-field-value">
+							<SelectBox dataSource={_technicians}
+								displayExpr="text"
+								searchEnabled={true}
+								searchMode="contains"
+								searchExpr="text"
+								searchTimeout={200}
+								minSearchLength={0}
+								showDataBeforeSearch={false}
+								onValueChanged={(e) => techniciansOnValueChanged(e)}
+								placeholder="Select technicians"
+								defaultValue={_technicians[0]}
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 
