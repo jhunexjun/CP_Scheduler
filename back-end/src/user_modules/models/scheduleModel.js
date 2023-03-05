@@ -249,14 +249,17 @@ async function getScheduleById(id) {
 	}
 }
 
-async function deleteSchedule(params) {
+async function deleteSchedule(req) {
 	try {
+		if (!await sessionIsValid(req.params.sessionId))
+			return { status: 'Error', message: 'Session is invalid.' };
+
 		let sql = schedulerSql.deleteSchedule();
 		let request = new Request(sql, (err) => {
 			if (err)
 				console.log(err);
 		});
-		request.addParameter('id', TYPES.Int, parseInt(params.id));
+		request.addParameter('id', TYPES.Int, parseInt(req.body.id));
 
 		await utils.executeRequestAsync(request);
 		return { status: "OK" , message: "A schedule was deleted successfully" };

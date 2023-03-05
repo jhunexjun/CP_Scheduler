@@ -110,5 +110,5 @@ async function deleteSchedule(req) {
 	// 	id: req.body.id,
 	// }
 
-	return await scheduleModel.deleteSchedule(req.body);
+	return await scheduleModel.deleteSchedule(req);
 }

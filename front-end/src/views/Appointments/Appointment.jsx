@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 // import '../../assets/compuTant/themes/custom-styles.scss';
 
@@ -41,7 +41,8 @@ export default () => {
 
 	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
-	let { sessionId } = useParams();
+	const { sessionId } = useParams();
+	const navigate = useNavigate();
 
 
 	const fetchData = useCallback(async () => {
@@ -50,17 +51,25 @@ export default () => {
 				return res.json()
 			})
 			.then((technicians) => {
-				if (!technicians.hasOwnProperty("error"))
+				if (!technicians.hasOwnProperty("error")) {
 					appendTechnicians(technicians);
+				} else {
+					console.log('fetch technicians: ', technicians);
+					navigate('/');
+				}
 			});
 
-		await fetch(`${adminUrl}/invoices`)
+		await fetch(`${adminUrl}/invoices/${sessionId}`)
 			.then((res) => {
 				return res.json()
 			})
 			.then((workOrders) => {
-				if (!workOrders.hasOwnProperty("error"))
-					appendInvoices(workOrders);
+				if (workOrders.status != 'Error' ) {
+					appendInvoices('fetch workOrders: ', workOrders);
+				} else {
+					console.log(workOrders);
+					navigate('/');
+				}
 			});
 
 	    await fetch(`${adminUrl}/schedule/${sessionId}/${selectedTechnicianId}`)
@@ -68,8 +77,12 @@ export default () => {
 				return res.json()
 			})
 			.then((scheds) => {
-				if (!scheds.hasOwnProperty("error"))
+				if (!scheds.hasOwnProperty("error")) {
 					appendScheds(scheds);
+				} else {
+					console.log('fetch schedules: ', scheds);
+					navigate('/');
+				}
 			});
 
 	} ,[]);
@@ -112,7 +125,7 @@ export default () => {
 		setTechnicians(initTechnicians);
 	}
 
-	function appendInvoices(workOrders) {
+	function appendInvoices(workOrders) {	// to do: rename appendInvoices to appendWorkOrders to for sanity.
 		// const initWorkOrders = [];
 
 

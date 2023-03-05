@@ -6,8 +6,11 @@ const invoicesModel = require("../models/invoicesModel");
 
 module.exports = async function(req, res) {
 	try {
-		let invoices = await invoicesModel.getInvoices();
-		res.json({ status: "OK", data: invoices, });
+		let invoices = await invoicesModel.getInvoices(req);
+		if (invoices.status == "Error")
+			res.json(invoices);
+		else
+			res.json({ status: "OK", data: invoices, });
 	} catch(e) {
 		console.log("Error in invoicesRoute: ", e);
 	}
