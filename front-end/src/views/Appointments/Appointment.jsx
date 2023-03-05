@@ -27,6 +27,7 @@ export default () => {
 			age: 0,
 			phone1: "",
 		};
+	let [selectBoxTechnicians, setSelectBoxTechnicians] = useState([selectedTechnician]);	// this serves as a master cp.
 	let [_technicians, setTechnicians] = useState([selectedTechnician]);
 
 	let [workOrders, setWorkOrders] = useState([]);
@@ -123,6 +124,27 @@ export default () => {
 		}
 
 		setTechnicians(initTechnicians);
+		appendTechniciansForSelectBox(technicians)
+	}
+
+	function appendTechniciansForSelectBox(technicians) {
+		const initTechnicians = [];
+		initTechnicians.push(selectBoxTechnicians[0]);
+
+		for(let x = 0; x < technicians.data.length; x++) {
+			let obj = {
+				id: technicians.data[x].id.toString(),
+				text: technicians.data[x].text,
+				color: '#56ca85',
+				avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'coach-man.png',
+				age: null,
+				phone1: isSet(technicians.data[x], "phone1") ?  technicians.data[x].phone1.toString() : "",
+			}
+
+			initTechnicians.push(obj);
+		}
+
+		setSelectBoxTechnicians(initTechnicians);
 	}
 
 	function appendInvoices(workOrders) {	// to do: rename appendInvoices to appendWorkOrders to for sanity.
@@ -191,6 +213,8 @@ export default () => {
 		}
 
 		setScheduleData(initScheduleData);
+		// scheduleDataMasterCopy = JSON.parse(JSON.stringify(initScheduleData));
+		// console.log("scheduleDataMasterCopy: ", scheduleDataMasterCopy);
 	}
 
 	const stopTimer = useCallback(() => {
@@ -263,7 +287,26 @@ export default () => {
 
 	function techniciansOnValueChanged(e) {
 		console.log("onValueChanged: ", e);
-		//setSelectedTechnicianId(e.value[0]);
+		filterTechnicianByTechnicianId(e.value.id);
+	}
+
+	function filterTechnicianByTechnicianId(technicianId) {
+		let techs = [...selectBoxTechnicians];
+
+		console.log("selected tech: ", technicianId)
+
+		if (technicianId == "ALL") {
+			setTechnicians(techs);
+			return;
+		}
+
+		for(let x = 0; x < techs.length; x++) {
+			if (techs[x].id != technicianId) {
+				techs.splice(x, 1);
+				x--
+			}
+		}
+		setTechnicians(techs);
 	}
 
     return (
@@ -279,7 +322,7 @@ export default () => {
 					<div className="dx-field">
 						<div className="dx-field-label">Technician</div>
 						<div className="dx-field-value">
-							<SelectBox dataSource={_technicians}
+							<SelectBox dataSource={selectBoxTechnicians}
 								displayExpr="text"
 								searchEnabled={true}
 								searchMode="contains"
@@ -289,7 +332,7 @@ export default () => {
 								showDataBeforeSearch={false}
 								onValueChanged={(e) => techniciansOnValueChanged(e)}
 								placeholder="Select technicians"
-								defaultValue={_technicians[0]}
+								defaultValue={selectBoxTechnicians[0]}
 							/>
 						</div>
 					</div>
