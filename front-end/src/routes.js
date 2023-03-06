@@ -6,7 +6,7 @@ const routes = [
 		name: "Appointments",
 		icon: "nc-icon nc-calendar-60",
 		component: <Appointment />,
-		layout: "/admin"
+		layout: "/admin",
 	},
 ];
 

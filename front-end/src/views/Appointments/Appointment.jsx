@@ -106,7 +106,7 @@ export default () => {
 
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];
-		initTechnicians.push(_technicians[0]);
+		//initTechnicians.push(_technicians[0]);
 
 		for(let x = 0; x < technicians.data.length; x++) {
 			let obj = {
@@ -293,8 +293,6 @@ export default () => {
 	function filterTechnicianByTechnicianId(technicianId) {
 		let techs = [...selectBoxTechnicians];
 
-		console.log("selected tech: ", technicianId)
-
 		if (technicianId == "ALL") {
 			setTechnicians(techs);
 			return;
@@ -346,6 +344,7 @@ export default () => {
 						workOrders={workOrders}
 						stopTimer={stopTimer}
 						startTimer={startTimer}
+						techniciansMaster={selectBoxTechnicians}
 					/>
 				</div>
     		</div>			

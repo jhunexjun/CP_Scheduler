@@ -8,17 +8,28 @@ import notify from 'devextreme/ui/notify';
 import { uriEncode, isSet } from '../../utils/util';
 
 
-const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) => {
+const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, techniciansMaster}) => {
 	const groups = ['technicianIds'];
 	let [currentDate] = useState(new Date());
 	const [popupVisible, setPopupVisible] = useState(false);
 
-	let techs = [];
+	let techs = [], techs2 = [];
 
 	if (technicians !== undefined && technicians.length > 0) {
 		techs = JSON.parse(JSON.stringify(technicians));
-		if (techs !== undefined && techs.length > 0 && techs[0].id === 'ALL') {
+		if (techs !== undefined && techs.length > 0 && techs[0].id == 'ALL') {
+			console.log(techs[0].id)
 			techs.shift();
+			console.log("new techs: ", techs)
+		}
+	}
+
+	if (techniciansMaster !== undefined && techniciansMaster.length > 0) {
+		techs2 = JSON.parse(JSON.stringify(techniciansMaster));
+		if (techs2 !== undefined && techs2.length > 0 && techs2[0].id == 'ALL') {
+			console.log(techs2[0].id)
+			techs2.shift();
+			console.log("new techs2: ", techs2)
 		}
 	}
 	let { sessionId } = useParams();
@@ -251,7 +262,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer}) =
 				editorType: 'dxTagBox',
 				isRequired: true,
 				editorOptions: {
-					items: technicians,
+					items: techs2,
 					displayExpr: 'id',
 					valueExpr: 'id',
 					hint: 'Select 1 or more technicians.',
