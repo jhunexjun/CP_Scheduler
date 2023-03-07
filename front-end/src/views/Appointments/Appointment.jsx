@@ -150,26 +150,33 @@ export default () => {
 	function appendInvoices(workOrders) {	// to do: rename appendInvoices to appendWorkOrders to for sanity.
 		// const initWorkOrders = [];
 
-		const initWorkOrders2 = workOrders.data.reduce((previousValue, currentValue) => {
-			const { id } = currentValue;
+		const initWorkOrders2 = workOrders.data.reduce((prevValue, curValue) => {
+			const { id } = curValue;
 
 			if (id != null) {
-				let obj = previousValue.find(o => o.id === id);
+				let obj = prevValue.find(o => o.id === id);
 
 				if (obj === undefined) {
-					let x = { 	id: currentValue.id,
-								text: currentValue.text,
-								text2: currentValue.id.concat(' - ', (currentValue.billNam === null) ? '' : currentValue.billNam),
-								custNo: currentValue.custNo,
-								billNam: currentValue.billNam
+					let x = { 	id: curValue.id,
+								text: curValue.text,
+								text2: curValue.id.concat(' ~ ',
+										(curValue.billNam === null) ? '' : curValue.billNam,
+										'(', curValue.billPhone1 ?? '',')',
+										' ~ ',
+										curValue.plateNo ?? ''),
+								custNo: curValue.custNo,
+								billNam: curValue.billNam,
+								noteDate: curValue.noteDate,
+								noteUser: curValue.noteUser,
+								serviceType: curValue.serviceType
 							};
-					previousValue.push(x);
+					prevValue.push(x);
 				} else {
-					obj.text += "\n" + currentValue.text;
+					obj.text += "\n" + curValue.text;
 				}
 			}
 
-			return previousValue;
+			return prevValue;
 		}, []);
 
 		setWorkOrders(initWorkOrders2);
@@ -347,7 +354,7 @@ export default () => {
 						techniciansMaster={selectBoxTechnicians}
 					/>
 				</div>
-    		</div>			
+    		</div>
 		</div>
     );
 }

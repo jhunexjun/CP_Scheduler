@@ -50,6 +50,11 @@ async function getInvoices(req) {
 							docId: item.DOC_ID,
 							custNo: item.CUST_NO,
 							billNam: item.BILL_NAM,
+							billPhone1: item.BILL_PHONE_1,
+							plateNo: item.USR_LIC_PLATE ?? '',
+							noteDate: item.NOTE_DAT,
+							noteUser: item.USR_ID,
+							serviceType: item.USR_SERVICE_TYP,
 						}
 			objInvoicesArray.push(objCust);
 		})

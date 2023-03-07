@@ -18,20 +18,17 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 	if (technicians !== undefined && technicians.length > 0) {
 		techs = JSON.parse(JSON.stringify(technicians));
 		if (techs !== undefined && techs.length > 0 && techs[0].id == 'ALL') {
-			console.log(techs[0].id)
 			techs.shift();
-			console.log("new techs: ", techs)
 		}
 	}
 
 	if (techniciansMaster !== undefined && techniciansMaster.length > 0) {
 		techs2 = JSON.parse(JSON.stringify(techniciansMaster));
 		if (techs2 !== undefined && techs2.length > 0 && techs2[0].id == 'ALL') {
-			console.log(techs2[0].id)
 			techs2.shift();
-			console.log("new techs2: ", techs2)
 		}
 	}
+
 	let { sessionId } = useParams();
 	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule/${sessionId}`;
 
@@ -106,9 +103,10 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 	}
 
 	async function updateScheduleAsync(params) {
+		console.log("params: ", params);
 		const editSched = {
 			id: params.id,
-			subject: params.text,
+			subject: params.subject,
 			utcDateFrom: params.startDate,
 			utcDateTo: params.endDate,
 			description: (params.description === undefined || params.description === null) ? "" : params.description,
@@ -185,6 +183,13 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 		return Query(workOrders).filter(['id', id]).toArray()[0];
 	}
 
+	function dateIsValid(dateString) {
+		if (isNaN(Date.parse(dateString)))
+			return false;
+		else
+			return true;
+	}
+
 	function onAppointmentFormOpening(e) {
 		stopTimer();
 
@@ -193,11 +198,72 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 
 		form.option('items', [
 			{
+				label: { text: 'Work order #', },
+				editorType: 'dxSelectBox',
+				dataField: 'invoiceNo',
+				isRequired: true,
+				colSpan: 2,
+				editorOptions: {
+					width: '100%',
+					items: workOrders,
+					displayExpr: 'text2',
+					valueExpr: 'id',
+					searchEnabled: true,
+					onValueChanged(args) {
+						invoiceInfo = getWorkOrderById(args.value);
+						if (isSet(invoiceInfo, "noteDate") && dateIsValid(invoiceInfo.noteDate)) {
+							form.updateData('noteDate', new Date(invoiceInfo.noteDate).toLocaleDateString('en-US'));
+						} else {
+							form.updateData('noteDate', '');
+						}
+
+						form.updateData('subject', (invoiceInfo && invoiceInfo.serviceType) || '');
+						form.updateData('workOrderDetails', (invoiceInfo && invoiceInfo.text) || '');
+						form.updateData('noteUser', (invoiceInfo && invoiceInfo.noteUser) || '');
+					},
+				},
+			},
+			{
+				label: { text: 'Date' },
+				name: 'noteDate',
+				editorType: 'dxTextBox',
+				editorOptions: {
+					value: isSet(invoiceInfo, "noteDate") && dateIsValid(invoiceInfo.noteDate)
+							? new Date(invoiceInfo.noteDate).toLocaleDateString('en-US')
+							: '' ,
+					readOnly: true,
+				},
+			},
+			{
+				label: { text: 'User' },
+				name: 'noteUser',
+				editorType: 'dxTextBox',
+				editorOptions: {
+					value: invoiceInfo.noteUser,
+					readOnly: true,
+				},
+			},
+			{
+				label: { text: 'Work order details', },
+				name: 'workOrderDetails',
+				editorType: 'dxTextArea',
+				colSpan: 2,
+				editorOptions: {
+					value: invoiceInfo.text,
+					readOnly: true,
+					height: '140px'
+				},
+			},
+			{
 				label: { text: 'Subject' },
-				dataField: 'text',
+				name: 'subject',
+				// dataField: 'serviceType',
 				editorType: 'dxTextBox',
 				colSpan: 2,
 				isRequired: true,
+				editorOptions: {
+					value: invoiceInfo.serviceType
+				}
 			},
 			{
 				dataField: 'description',
@@ -228,35 +294,6 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 				},
 			},
 			{
-				label: { text: 'Work order #', },
-				editorType: 'dxSelectBox',
-				dataField: 'invoiceNo',
-				isRequired: true,
-				colSpan: 2,
-				editorOptions: {
-					width: '100%',
-					items: workOrders,
-					displayExpr: 'text2',
-					valueExpr: 'id',
-					searchEnabled: true,
-					onValueChanged(args) {
-						invoiceInfo = getWorkOrderById(args.value);
-						form.updateData('workOrderDetails', (invoiceInfo && invoiceInfo.text) || '');
-					},
-				},
-			},
-			{
-				label: { text: 'Work order details', },
-				name: 'workOrderDetails',
-				editorType: 'dxTextArea',
-				colSpan: 2,
-				editorOptions: {
-					value: invoiceInfo.text,
-					readOnly: true,
-					height: '140px'
-				},
-			},
-			{
 				dataField: 'technicianIds',
 				label: { text: 'Technicians' },
 				editorType: 'dxTagBox',
@@ -269,7 +306,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 					searchEnabled: true,
 				},
 				colSpan: 2,
-				width: '50%',
+				//width: '50%',
 			},
 		]);
 
