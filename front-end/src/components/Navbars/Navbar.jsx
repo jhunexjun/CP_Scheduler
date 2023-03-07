@@ -16,8 +16,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
 	Collapse,
 	Navbar,
@@ -27,7 +27,7 @@ import {
 
 import routes from "../../routes.js";
 
-// import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 
 function Header(props) {
@@ -36,6 +36,14 @@ function Header(props) {
 	const [color, setColor] = React.useState("transparent");
 	const sidebarToggle = React.useRef();
 	const location = useLocation();
+	const navigate = useNavigate();
+
+	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
+	const session = useParams();
+	let sessionId = "";
+
+	const [userId, setUserId] = useState('');
+	const [branchLocation, setBranchLocation] = useState('');
 	const toggle = () => {
 		if (isOpen) {
 			setColor("transparent");
@@ -45,7 +53,21 @@ function Header(props) {
 		setIsOpen(!isOpen);
 	};
 
-	const navigate = useNavigate();
+	const fetchLocation = useCallback(async () => {
+		const relUrl = session['*'];
+		const pattern = /appointment\/([a-z-A-Z0-9]+)/;
+		const matches = pattern.exec(relUrl);
+		sessionId = matches[1];
+
+		await fetch(`${adminUrl}/location/${sessionId}`)
+			.then((res) => {
+				return res.json()
+			})
+			.then((location) => {
+				setUserId(location.data.userId);
+				setBranchLocation(location.data.locationId);
+			});
+	} ,[]);
 
 	const logout = (e) => {
 		sessionStorage.removeItem("token");
@@ -55,7 +77,7 @@ function Header(props) {
 	const getBrand = () => {
 		let brandName = "Default Brand";
 		routes.map((prop, key) => {
-			if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+			if (window.location.href.includes(prop.layout + prop.path)) {
 				brandName = prop.name;
 			}
 
@@ -64,12 +86,12 @@ function Header(props) {
 
 		return brandName;
 	};
-	
+
 	const openSidebar = () => {
 		document.documentElement.classList.toggle("nav-open");
 		sidebarToggle.current.classList.toggle("toggled");
 	};
-	
+
 	// function that adds color dark/transparent to the navbar on resize (this is for the collapse)
 	const updateColor = () => {
 		if (window.innerWidth < 993 && isOpen) {
@@ -79,11 +101,11 @@ function Header(props) {
 		}
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		window.addEventListener("resize", updateColor.bind(this));
 	});
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (
 			window.innerWidth < 993 &&
 			document.documentElement.className.indexOf("nav-open") !== -1
@@ -93,6 +115,10 @@ function Header(props) {
 		}
 	}, [location]);
 
+	useEffect(() => {
+		fetchLocation();
+	}, []);
+
   return (
 	// add or remove classes depending if we are on full-screen-maps page or not
 	<Navbar
@@ -100,7 +126,7 @@ function Header(props) {
 		expand="lg"
 		className={-1 !== -1 ? "navbar-absolute fixed-top" : "navbar-absolute fixed-top " + (color === "transparent" ? "navbar-transparent " : "")
 		}>
-		
+
 		<div className="navbar-wrapper">
 			<div className="navbar-toggle">
 				<button type="button" ref={sidebarToggle} className="navbar-toggler" onClick={() => openSidebar()}>
@@ -118,15 +144,20 @@ function Header(props) {
 		</NavbarToggler>
 		<Collapse isOpen={isOpen} navbar className="justify-content-end">
 			<div style={{marginRight: '23px'}}>
-			{/*<Dropdown>
-				<Dropdown.Toggle className="nc-icon nc-settings-gear-65" bsPrefix as="i" style={{fontSize:'23px'}}></Dropdown.Toggle>
-				<Dropdown.Menu>
-					<Dropdown.Item href="#">Profile</Dropdown.Item>
-					<Dropdown.Item href="#" onClick={logout}>Log-out</Dropdown.Item>
-				</Dropdown.Menu>
-			</Dropdown>*/}
+				<span className="me-3">
+					{`Location: ${branchLocation}`}
+				</span>
+				<span className="float-end">
+					<Dropdown>
+						<Dropdown.Toggle className="nc-icon nc-settings-gear-65" bsPrefix as="i" style={{fontSize:'23px'}}></Dropdown.Toggle>
+						<Dropdown.Menu>
+							<Dropdown.Item href="#">{userId}</Dropdown.Item>
+							<Dropdown.Item href="#" onClick={logout}>Log-out</Dropdown.Item>
+						</Dropdown.Menu>
+					</Dropdown>
+				</span>
 			</div>
-		</Collapse>		
+		</Collapse>
 	</Navbar>
   );
 }

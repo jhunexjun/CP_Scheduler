@@ -1,16 +1,16 @@
 const dbConnection = require('../TediousConnection/sqlServerConnect');
 
 module.exports = {
-	getColumnTotal, executeRequestAsync, executeOutputParams, isSet,
+	/*getColumnTotal,*/ executeRequestAsync, executeOutputParams, isSet,
 };
 
-function getColumnTotal(arrayRows, columnName) {
-		const sum = arrayRows.reduce((accumulator, object) => {
-			return accumulator + object[columnName];
-		}, 0);
+// function getColumnTotal(arrayRows, columnName) {
+// 		const sum = arrayRows.reduce((accumulator, object) => {
+// 			return accumulator + object[columnName];
+// 		}, 0);
 
-		return sum;
-	};
+// 		return sum;
+// 	};
 
 async function executeRequestAsync(request) {
 		return new Promise(async (resolve, reject) => {
@@ -29,7 +29,7 @@ async function executeRequestAsync(request) {
 
 			request.on('requestCompleted', () => resolve(result));
 
-			const dbCon = await dbConnection.getInstance();
+			let dbCon = await dbConnection.getInstance();
 
 			dbCon.execSql(request);
 		});

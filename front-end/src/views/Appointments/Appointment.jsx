@@ -44,7 +44,7 @@ export default () => {
 
 	const { sessionId } = useParams();
 	const navigate = useNavigate();
-
+	// Note: in the future we have to change the way sessionId is beong concatenated in the url, better to use the ?
 
 	const fetchData = useCallback(async () => {
 		await fetch(`${adminUrl}/technicians/${sessionId}`)
@@ -100,8 +100,8 @@ export default () => {
 	// });
 
 	useEffect(() => {
-		let interval = startTimer();
-		return () => clearInterval(interval);
+		// let interval = startTimer();
+		// return () => clearInterval(interval);
 	}, []);
 
 	function appendTechnicians(technicians) {
