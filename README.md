@@ -31,7 +31,9 @@ Started to add more features based on the meeting yesterday.
  * Location from other stores cannot add sched from another store.
  * etc.
 4. concat work order #, name, phone number, plate#
+6. Subject = service type
 7. Work order detail as read-only. Auto populate.
+8. Button for refresh and auto refresh 
 9. Add the date/time notes in work order details and who wrote it.
 
  http://localhost:3000/admin/appointment/6796B252-7279-47D1-9BE9-986EDD99D6C8
@@ -40,9 +42,8 @@ http://localhost:3000/admin/appointment/40861d3e-bd62-4c96-bc72-6a1def6a7309
 2. store code
 3. 5 minutes or 10 minutes
 5. Put the CompuTant Logo at the bottom and web address and toll free, 
-6. Subject = service type
-8. Button for refresh and auto refresh 
 10. Buttom preview work order in rpt form
+11. Expiry session in minutes setting to put in the database or .env
 
 
 Future add-ons

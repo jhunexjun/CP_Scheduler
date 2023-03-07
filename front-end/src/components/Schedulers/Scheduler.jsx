@@ -84,8 +84,6 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 
 
 	function onAppointmentUpdating(e) {
-		// console.log('Updating: ', e);
-
 		if (e.newData.invoiceNo === undefined || e.newData.invoiceNo === null || e.newData.invoiceNo === "") {
 			showToast('', 'Please  select invoice.', 'warning');
 			e.cancel = true;
@@ -103,7 +101,6 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 	}
 
 	async function updateScheduleAsync(params) {
-		console.log("params: ", params);
 		const editSched = {
 			id: params.id,
 			subject: params.subject,
@@ -118,8 +115,6 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 			editSched.allDay = params.allDay;
 		if (params.recurrenceRule)
 			editSched.recurrenceRule = params.recurrenceRule;	// ex. "FREQ=DAILY",
-
-		// console.log('editSched: ', editSched);
 
 		const uriEncoded = uriEncode(editSched);
 		const optionHeaders = {
@@ -224,7 +219,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 				},
 			},
 			{
-				label: { text: 'Date' },
+				label: { text: 'Note Date' },
 				name: 'noteDate',
 				editorType: 'dxTextBox',
 				editorOptions: {
@@ -311,7 +306,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 		]);
 
 		e.popup.option('onHiding', function(args) {
-			// startTimer();
+			startTimer();
 		});
 	}
 

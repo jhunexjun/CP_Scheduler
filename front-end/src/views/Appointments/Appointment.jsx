@@ -99,10 +99,10 @@ export default () => {
 
 	// });
 
-	// useEffect(() => {
-	// 	let interval = startTimer();
-	// 	return () => clearInterval(interval);
-	// }, []);
+	useEffect(() => {
+		let interval = startTimer();
+		return () => clearInterval(interval);
+	}, []);
 
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];
@@ -161,7 +161,7 @@ export default () => {
 								text: curValue.text,
 								text2: curValue.id.concat(' ~ ',
 										(curValue.billNam === null) ? '' : curValue.billNam,
-										'(', curValue.billPhone1 ?? '',')',
+										' (Tel#', curValue.billPhone1 ?? '',') ',
 										' ~ ',
 										curValue.plateNo ?? ''),
 								custNo: curValue.custNo,
@@ -283,17 +283,13 @@ export default () => {
 	// 	}
 	// }
 
-	function refreshData() {
-
-	}
-
 	function updateNow(e) {
 		e.preventDefault();
-		refreshData();
+		fetchData();
+		setCountdown(refreshInMinutes * 60);
 	}
 
 	function techniciansOnValueChanged(e) {
-		console.log("onValueChanged: ", e);
 		filterTechnicianByTechnicianId(e.value.id);
 	}
 
@@ -317,12 +313,12 @@ export default () => {
     return (
     	<div className="content">
 			<div className="row">
-				{/*<div className="col-2">
+				<div className="col-2">
 					<div className="cpt-update-box">
 						<span className="float-left"><Link to="" className="showDetails" onClick={(e) => updateNow(e)}>Update Now</Link></span>
 						<span className="float-end">{ countdown }</span>
 					</div>
-				</div>*/}
+				</div>
 				<div className="col-3">
 					<div className="dx-field">
 						<div className="dx-field-label">Technician</div>
