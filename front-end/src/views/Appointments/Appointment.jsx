@@ -12,7 +12,6 @@ import { isSet, isSetScalar } from '../../utils/util';
 // import 'whatwg-fetch';
 
 import Scheduler from '../../components/Schedulers/Scheduler';
-// import TagBox from 'devextreme-react/tag-box';
 import SelectBox from 'devextreme-react/select-box';
 
 
@@ -95,14 +94,11 @@ export default () => {
 		fetchData();
 	}, []);
 
-	// useEffect(() => {
-
-	// });
-
 	useEffect(() => {
-		// let interval = startTimer();
-		// return () => clearInterval(interval);
+		let interval = startTimer();
+		return () => clearInterval(interval);
 	}, []);
+
 
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];

@@ -23,67 +23,83 @@ import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
 
 import routes from "../../routes";
-import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
+// import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
+import logo from "../../assets/compuTant/img/total-off-road.jpg";
+import computantLogo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
+
 
 let ps;
 
 function Sidebar(props) {
-    const sidebar = useRef();
-  
-    // verifies if routeName is the one active (in browser input)
-    const activeRoute = (routeName) => {
-        // return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
-        // console.log("props.location.pathname: ", props.location.pathname);  // /admin/purchases
-        return (props.location.pathname.indexOf(routeName) > -1) ? "active" : "";
-    };
+		const sidebar = useRef();
 
-    useEffect(() => {
-        if (navigator.platform.indexOf("Win") > -1) {
-            ps = new PerfectScrollbar(sidebar.current, {
-                suppressScrollX: true,
-                suppressScrollY: false
-            });
-        }
+		// verifies if routeName is the one active (in browser input)
+		const activeRoute = (routeName) => {
+				// return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+				// console.log("props.location.pathname: ", props.location.pathname);  // /admin/purchases
+				return (props.location.pathname.indexOf(routeName) > -1) ? "active" : "";
+		};
 
-        return function cleanup() {
-            if (navigator.platform.indexOf("Win") > -1) {
-                ps.destroy();
-            }
-        };
-    });
+		useEffect(() => {
+			if (navigator.platform.indexOf("Win") > -1) {
+				ps = new PerfectScrollbar(sidebar.current, {
+					suppressScrollX: true,
+					suppressScrollY: false
+				});
+			}
 
-    return (
-        <div className="sidebar"
-            data-color={ props.bgColor }
-            data-active-color={ props.activeColor }>
-            <div className="logo">
-                <a href="https://poshighway.myshopify.com/" className="simple-text logo-mini" target="_blank" rel="noreferrer">
-                    <div className="logo-img">
-                        <img src={logo} alt="POS Highway" />
-                    </div>
-                </a>
-                <a href="https://poshighway.myshopify.com/" className="simple-text logo-normal" target="_blank" rel="noreferrer">CompuTant</a>
-            </div>
-            <div className="sidebar-wrapper" ref={ sidebar }>
-                <Nav>
-                    {routes.map((route, key) => {
-                        return (
-                            <li key={key} className={ activeRoute(route.path) }>
-                                <NavLink to={ route.layout + route.path }
-                                    className={ ({ isActive }) => {
-                                        return isActive ? "nav-link active" : "nav-link"
-                                    } }>
-                                    <i className={route.icon} />
-                                    <p>{route.name}</p>
-                                </NavLink>
-                            </li>
-                            );
-                        })
-                    }
-                </Nav>
-            </div>
-        </div>
-    );
+			return function cleanup() {
+				if (navigator.platform.indexOf("Win") > -1) {
+					ps.destroy();
+				}
+			};
+		});
+
+		return (
+				<div className="sidebar"
+					data-color={ props.bgColor }
+					data-active-color={ props.activeColor }>
+					<div className="logo">
+						<a href="https://www.creative-tim.com" className="simple-text logo-mini">
+							<div className="logo-img">
+								<img src={logo} alt="react-logo" />
+							</div>
+						</a>
+						{/*<a href="https://www.creative-tim.com" className="simple-text logo-normal" >
+							Creative Tim
+						</a>*/}
+					</div>
+				<div className="sidebar-wrapper" ref={ sidebar }>
+					<Nav>
+						{routes.map((route, key) => {
+							return (
+								<li key={key} className={ activeRoute(route.path) }>
+									<NavLink to={ route.layout + route.path }
+											className={ ({ isActive }) => {
+																return isActive ? "nav-link active" : "nav-link"
+														} }>
+										<i className={route.icon} />
+										<p>{route.name}</p>
+									</NavLink>
+								</li>
+								);
+							})
+						}
+					</Nav>
+					<Nav>
+						<li className="compuTant-logo">
+							<NavLink to='/'>
+								<img src={computantLogo} className="mb-2" alt="https://www.poshighway.com/" />
+								<p style={{lineHeight:'1.5'}}>1019 Waimanu Street, #103<br/>
+									Honolulu, HI 96814 USA<br />
+									Sales: 888.881.1988<br />
+									Technical Support: 833.214.2715</p>
+							</NavLink>
+						</li>
+					</Nav>
+				</div>
+			</div>
+		);
 }
 
 export default Sidebar;

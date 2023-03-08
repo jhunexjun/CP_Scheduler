@@ -343,7 +343,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 					type="week"
 					groupOrientation="vertical"
 					cellDuration={30}
-					intervalCount={2}
+					intervalCount={1}
 				/>
 				<View
 					name="Month"

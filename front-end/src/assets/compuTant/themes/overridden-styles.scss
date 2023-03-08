@@ -6,6 +6,10 @@
     }
 }
 
-// .dx-fieldset {
-//     height: 500px;
-// }
+.sidebar .logo a.logo-mini, .off-canvas-sidebar .logo a.logo-mini {
+    width: 200px;
+}
+
+.sidebar .logo:after, .off-canvas-sidebar .logo:after {
+    bottom: -87px;
+}

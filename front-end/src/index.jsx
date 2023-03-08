@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import AdminLayout from './layout/Admin';
+// import AdminLayout from './layout/Admin';
+import MainLayout from './layout/Main';
 import ExpiredSession from './views/ExpiredSession';
 import ErrorPage from './components/error-page';
 import reportWebVitals from './reportWebVitals';
@@ -29,7 +30,7 @@ root.render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<ExpiredSession />} />
-			<Route path="/admin/*" element={<AdminLayout />} errorElement={<ErrorPage />} />
+			<Route path="/admin/*" element={<MainLayout />} errorElement={<ErrorPage />} />
 		</Routes>
 	</BrowserRouter>
 );

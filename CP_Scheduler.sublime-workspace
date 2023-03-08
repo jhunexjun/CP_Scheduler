@@ -1,0 +1,600 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Log",
+				"Log-out"
+			],
+			[
+				"set",
+				"setPassword"
+			],
+			[
+				"retu",
+				"returnVal"
+			],
+			[
+				"pre",
+				"prefix2"
+			],
+			[
+				"pref",
+				"prefix1"
+			],
+			[
+				"mo",
+				"smsMessageModel"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"setm",
+				"setStatusMessage"
+			],
+			[
+				"all",
+				"allowedIP"
+			],
+			[
+				"for",
+				"forEach"
+			],
+			[
+				"rout",
+				"router"
+			],
+			[
+				"re",
+				"req"
+			],
+			[
+				"sms",
+				"smsMessage"
+			],
+			[
+				"onC",
+				"onChange"
+			],
+			[
+				"tech",
+				"technicianIds"
+			],
+			[
+				"technic",
+				"technicianIds"
+			],
+			[
+				"app",
+				"appointmentData"
+			],
+			[
+				"sch",
+				"scheds"
+			],
+			[
+				"techni",
+				"technicianId"
+			],
+			[
+				"initi",
+				"initTechnicians"
+			],
+			[
+				"appe",
+				"appendScheds"
+			],
+			[
+				"inv",
+				"invoiceNo"
+			],
+			[
+				"res",
+				"resourceName"
+			],
+			[
+				"in",
+				"invoiceNo"
+			],
+			[
+				"invoi",
+				"invoiceNo"
+			],
+			[
+				"sc",
+				"scheds"
+			],
+			[
+				"invoic",
+				"invoiceNo"
+			],
+			[
+				"obj",
+				"objCustArray"
+			],
+			[
+				"member",
+				"memberId"
+			],
+			[
+				"sched",
+				"schedId"
+			],
+			[
+				"mem",
+				"memberIds"
+			],
+			[
+				"updateSched",
+				"updateSchedsCustomers"
+			],
+			[
+				"is",
+				"isSet"
+			],
+			[
+				"init",
+				"initResources"
+			],
+			[
+				"insta",
+				"instances"
+			],
+			[
+				"utc",
+				"utcDateTo"
+			],
+			[
+				"ut",
+				"utcDateTo"
+			],
+			[
+				"dat",
+				"dateFrom"
+			],
+			[
+				"get",
+				"getTime"
+			],
+			[
+				"da",
+				"dateTo"
+			],
+			[
+				"sub",
+				"subject"
+			],
+			[
+				"sta",
+				"startDate"
+			],
+			[
+				"st",
+				"startDate"
+			],
+			[
+				"USR",
+				"USR_SCHEDULER"
+			],
+			[
+				"Toas",
+				"ToastBody"
+			],
+			[
+				"opt",
+				"optionLabels"
+			],
+			[
+				"option",
+				"optionsHtml"
+			],
+			[
+				"optio",
+				"optionsHtml"
+			],
+			[
+				"o",
+				"optionLabels"
+			],
+			[
+				"date",
+				"dateFrom"
+			],
+			[
+				"f",
+				"function"
+			],
+			[
+				"Co",
+				"Connection"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "openScheduler.bat",
+			"settings":
+			{
+				"buffer_size": 86,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"trai",
+				"Trim Trailing White Space"
+			],
+			[
+				"whit",
+				"Trim Trailing White Space"
+			],
+			[
+				"Package Control: e",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Projects/CP_Scheduler"
+	],
+	"file_history":
+	[
+		"/C/Users/Jhun/Documents/Computant/Computant.txt",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/routes/smsRoute.js",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/models/smsMessageModel.js",
+		"/C/Projects/FreeSms-webpack/front-end/src/routes.js",
+		"/C/Projects/WebDashboard/front-end/src/index.jsx",
+		"/C/Projects/FreeSms-webpack/front-end/public/styles.css",
+		"/C/Projects/WebDashboard/front-end/src/components/Sidebar/Sidebar.jsx",
+		"/C/Projects/FreeSms-webpack/front-end/src/views/SmsSender/SmsSender.jsx",
+		"/C/Projects/FreeSms-webpack/front-end/src/assets/yurim/css/styles.css",
+		"/C/Projects/WebDashboard/front-end/src/assets/compuTant/css/style.css",
+		"/C/Projects/WebDashboard/front-end/src/routes.js",
+		"/C/Jhun/temp/Rodeo/log_2023-01-30.txt",
+		"/C/Jhun/temp/River Ranch/log_2023-01-30.txt",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/sqlStatements/smsSql.js",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/middlewares/ipAddressMiddleware.js",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/routes.js",
+		"/C/Projects/WebDashboard/back-end/src/models/homeIndexModel.js",
+		"/C/Projects/WebDashboard/back-end/src/user_modules/sqlStatements/sqlStatements.js",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/routes/indexRoute.js",
+		"/C/Projects/FreeSms-webpack/front-end/public/manifest.json",
+		"/C/Projects/FreeSms-webpack/front-end/public/index.html",
+		"/C/Users/Jhun/Downloads/DevExpressDevExtreme-Complete-22.2.3/Demos/WebServerMonitor/styles/styles.css",
+		"/C/Projects/FreeSms-webpack/front-end/src/index.jsx",
+		"/C/Projects/FreeSms-webpack/front-end/src/assets/yuri/css/style.css",
+		"/C/Users/Jhun/Downloads/DevExpressDevExtreme-Complete-22.2.3/Demos/WebServerMonitor/styles/sprite.png",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/TediousConnections/sqlServerConnect.js",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/ipAddressMiddleware.js",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/utils/util.js",
+		"/C/Projects/FreeSms-webpack/back-end/src/server/server-dev.js",
+		"/C/Projects/WebDashboard/back-end/src/user_modules/routes/indexRoute.js",
+		"/C/Projects/WebDashboard/back-end/src/user_modules/routes.js",
+		"/C/Projects/WebDashboard/back-end/src/user_modules/routes/invoicesRoute.js",
+		"/C/Projects/WebDashboard/back-end/package.json",
+		"/C/Projects/FreeSms-webpack/back-end/package.json",
+		"/C/Projects/FreeSms-webpack/back-end/src/models/scheduleModel.js",
+		"/C/Projects/WebDashboard/front-end/src/views/Schedulers/Scheduler.jsx",
+		"/C/Projects/FreeSms-webpack/back-end/src/css/style.css",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/TediousConnection/sqlServerConnect.js",
+		"/C/Projects/FreeSms/public/javascripts/functions.js",
+		"/C/Projects/FreeSms/views/partials/jsScripts.ejs",
+		"/C/Projects/FreeSms-webpack/front-end/src/views/Login/Login.jsx",
+		"/C/Projects/FreeSms-webpack/front-end/src/views/Schedulers/ResourceCell.js",
+		"/C/Projects/FreeSms-webpack/front-end/src/views/Schedulers/DataCell.js",
+		"/C/Projects/FreeSms-webpack/front-end/src/views/Schedulers/Scheduler.jsx",
+		"/C/Projects/FreeSms/package.json",
+		"/C/Projects/FreeSms-webpack/front-end/package.json",
+		"/C/Projects/FreeSms-webpack/front-end/src/assets/compuTant/css/style.css",
+		"/C/Projects/FreeSms-webpack/back-end/src/user_modules/routes/schedulerRoute.js",
+		"/C/Projects/CP_Scheduler/README.md",
+		"/C/Projects/WebDashboard/views/index.ejs",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/sqlStatements/schedulerSql.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/scheduleModel.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Schedulers/Scheduler2.jsx",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/utils/util.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/schedulerRoute.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/utils/util.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Schedulers/data.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/technicianModel.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/assets/compuTant/css/style.css",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/technicianRoute.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/indexRoute.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/Dashboard.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/SalesDetails/SalesDetails2.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/public/index.html",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Schedulers/styles.css",
+		"/C/Projects/FreeSms/README.md",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Schedulers/Scheduler.jsx",
+		"/C/Projects/WebDashboard-webpack/WebDashboard-webpack.sublime-project",
+		"/C/Projects/WebDashboard-webpack/front-end/package.json",
+		"/C/Projects/WebDashboard-webpack/front-end/node_modules/react-scripts/package.json",
+		"/C/Users/Jhun/AppData/Roaming/npm-cache/_logs/2023-01-26T14_07_09_326Z-debug.log",
+		"/C/Projects/FreeSms/views/index.ejs",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/workersModel.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/workersRoute.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/invoicesModel.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/invoicesRoute.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/customersModel.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/customersRoute.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/server/server-prod.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Schedulers/Demo2.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/SalesDetails/SalesDetails.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Schedulers/Demo.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/TopXstoresGraph.jsx",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/schedulerModel.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/TediousConnection/sqlServerConnect.js",
+		"/C/Users/Jhun/Desktop/River Ranch 41SP.sql",
+		"/C/Users/Jhun/Desktop/River Ranch 41SP_sql",
+		"/C/Users/Jhun/Desktop/RiverRanch__USER_SP_Shopify_31AR_SHIP_ADRS_to_USR_CUSTOMER_ADRS.sql",
+		"/C/Users/Jhun/Desktop/RiverRanch__USER_SP_Shopify_21AR_CUST_to_USR_CUSTOMER.sql",
+		"/C/Jhun/temp/Lupicia/log_2023-01-19-1.txt",
+		"/C/Projects/WebDashboard-webpack/front-end/src/components/Toasts/ToastComponent.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/package_prev20230119.json",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/Dashboard2.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Login/Login.jsx",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/homeIndexRoute.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/homeIndexModel.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/ticketDetailsModel.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/sqlStatements/sqlStatements.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/loginRoute.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/auth/auth.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/userModel.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/salesDetailsRoute.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/DashboardActivityTbl.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/SalesDetails/SalesDetailsHrlySalesChart.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/SalesDetails/Top10ItemSalesByQtySoldChart.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/SalesDetails/SalesDetailsDeptTbl.jsx",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/SalesDetailsModel.js",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/ActivityChart.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/SalesActVendAndItem.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/components/SelectOption/SelectOption.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/TopXitemsGraph.jsx",
+		"/C/Jhun/temp/Rodeo/log_2022-12-12.txt",
+		"/C/Projects/WebDashboard-webpack/front-end/src/components/SelectOption.jsx/SelectOption.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/components/SelectOptions.jsx/SelectOptions.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/components/SelectOptionComponent.jsx/SelectOptions.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/views/Dashboard/HourlySalesGraph.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/components/Sidebar/Sidebar.jsx",
+		"/C/Projects/WebDashboard-webpack/front-end/src/routes.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/server/server-dev.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/sqlServerConnect.js",
+		"/C/Projects/WebDashboard-webpack/back-end/package.json",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/sqlServerConnect2.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/models/oauth2Model.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/TediousConnection/TediousConnection.js",
+		"/C/Projects/WebDashboard-webpack/back-end/src/user_modules/routes/index.js",
+		"/C/Users/Jhun/AppData/Local/CompuTant/ShopifySync.exe_Url_ul5mu21i1slpsg2cjwyphdg5egh0kzkb/1.0.103.0/user.config",
+		"/C/Users/Jhun/AppData/Local/CompuTant/ShopifySync.exe_Url_ul5mu21i1slpsg2cjwyphdg5egh0kzkb/1.0.103.0/user - RODEO.config",
+		"/C/Users/Jhun/Documents/Projects/WebDashboard-webpack/back-end/src/user_modules/sqlServerConnect.js"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"scrollbar_highlights": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"use_gitignore": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "openScheduler.bat",
+					"selected": true,
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 86,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Batch File/Batch File.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"stack_multiselect": false,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 40.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "CP_Scheduler.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"scheduleModel.j",
+				"back-end\\src\\models\\scheduleModel.js"
+			],
+			[
+				"utils",
+				"back-end\\src\\user_modules\\utils\\util.js"
+			],
+			[
+				"schedulersql",
+				"back-end\\src\\user_modules\\sqlStatements\\schedulerSql.js"
+			],
+			[
+				"util",
+				"front-end\\src\\utils\\util.js"
+			],
+			[
+				"DashboardActivityTbl",
+				"front-end\\src\\views\\Dashboard\\DashboardActivityTbl.jsx"
+			],
+			[
+				"ActivityChart",
+				"front-end\\src\\views\\Dashboard\\ActivityChart.jsx"
+			],
+			[
+				"Top10ItemSalesByQtySoldChart",
+				"front-end\\src\\views\\SalesDetails\\Top10ItemSalesByQtySoldChart.jsx"
+			],
+			[
+				"SalesDetailsHrlySalesChart",
+				"front-end\\src\\views\\SalesDetails\\SalesDetailsHrlySalesChart.jsx"
+			],
+			[
+				"SalesActVendAndItem",
+				"front-end\\src\\views\\Dashboard\\SalesActVendAndItem.jsx"
+			],
+			[
+				"sqlst",
+				"back-end\\src\\user_modules\\sqlStatements\\sqlStatements.js"
+			],
+			[
+				"sqlServerConnect.js",
+				"back-end\\src\\user_modules\\sqlServerConnect.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 374.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
