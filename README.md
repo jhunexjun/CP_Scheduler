@@ -51,7 +51,8 @@ Future add-ons
 2. Send text
 
 Issues:
-1. Routes in Side menu.
+1. Routes in Side menu. - fixed.
+2. Autolog out must fetch() to update db.
 
 
 

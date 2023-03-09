@@ -16,8 +16,7 @@ import SelectBox from 'devextreme-react/select-box';
 
 
 export default () => {
-
-	const [selectedTechnicianId, setSelectedTechnicianId] = useState('ALL');
+	const [selectedTechnicianId] = useState('ALL');
 	const selectedTechnician = {
 			id: 'ALL',
 			text: 'ALL',
@@ -59,12 +58,12 @@ export default () => {
 				}
 			});
 
-		await fetch(`${adminUrl}/invoices/${sessionId}`)
+		await fetch(`${adminUrl}/workorders/${sessionId}`)
 			.then((res) => {
 				return res.json()
 			})
 			.then((workOrders) => {
-				if (workOrders.status != 'Error' ) {
+				if (workOrders.status !== 'Error' ) {
 					appendInvoices(workOrders);
 				} else {
 					console.log(workOrders);
@@ -149,7 +148,7 @@ export default () => {
 		const initWorkOrders2 = workOrders.data.reduce((prevValue, curValue) => {
 			const { id } = curValue;
 
-			if (id != null) {
+			if (id !== null) {
 				let obj = prevValue.find(o => o.id === id);
 
 				if (obj === undefined) {
@@ -292,13 +291,13 @@ export default () => {
 	function filterTechnicianByTechnicianId(technicianId) {
 		let techs = [...selectBoxTechnicians];
 
-		if (technicianId == "ALL") {
+		if (technicianId === "ALL") {
 			setTechnicians(techs);
 			return;
 		}
 
 		for(let x = 0; x < techs.length; x++) {
-			if (techs[x].id != technicianId) {
+			if (techs[x].id !== technicianId) {
 				techs.splice(x, 1);
 				x--
 			}
@@ -312,7 +311,7 @@ export default () => {
 				<div className="col-2">
 					<div className="cpt-update-box">
 						<span className="float-left"><Link to="" className="showDetails" onClick={(e) => updateNow(e)}>Update Now</Link></span>
-						<span className="float-end">{ countdown }</span>
+						<span className="float-end" title="Time before it updates data">{ countdown }</span>
 					</div>
 				</div>
 				<div className="col-3">

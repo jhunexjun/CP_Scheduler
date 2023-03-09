@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'
 
 import events from '../utils/events';
 
 
 export default function AppLogout({ children }) {
 	let timer;
+
+	const navigate = useNavigate();
 
 	// this resets the timer if it exists.
 	const resetTimer = () => {
@@ -22,17 +25,20 @@ export default function AppLogout({ children }) {
 			});
 			// logs out user
 			//logoutAction();
-			console.log('logged out.', process.env.REACT_APP_INACTIVE_LOGOUT_MS)
+			// console.log('logged out.', process.env.REACT_APP_INACTIVE_LOGOUT_MS)
+			navigate('/');
 		}, process.env.REACT_APP_INACTIVE_LOGOUT_MS); // 600000ms = 10 min. You can change the time.
 	};
 
 	useEffect(() => {
-		Object.values(events).forEach((item) => {
-			window.addEventListener(item, () => {
-				resetTimer();
-				handleLogoutTimer();
+		if (process.env.REACT_APP_LOGOUT_AFTER_INACTIVITY === true) {
+			Object.values(events).forEach((item) => {
+				window.addEventListener(item, () => {
+					resetTimer();
+					handleLogoutTimer();
+				});
 			});
-		});
+		}
 	}, []);
 
 	return children;

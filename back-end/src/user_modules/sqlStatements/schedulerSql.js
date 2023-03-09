@@ -4,7 +4,7 @@ module.exports = {
 	deleteSchedule,
 	getMembersById,
 	getTechnicians,
-	getInvoices,
+	getWorkOrders,
 }
 
 function getSchedule() {
@@ -58,7 +58,7 @@ function getTechnicians() {
 	return "exec dbo.USER_SP_GET_Technicians @sessionId";
 }
 
-function getInvoices() {
+function getWorkOrders() {
 	return "exec dbo.USER_getWorkOrders @sessionId";
 	// return "select HDR.TKT_NO, HDR.DOC_ID, NOTES.NOTE_TXT, HDR.CUST_NO, HDR.BILL_NAM " +
 	// 		"from VI_PS_DOC_HDR HDR left join VI_PS_DOC_NOTE NOTES " +

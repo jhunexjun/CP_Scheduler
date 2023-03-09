@@ -26,7 +26,6 @@ import {
 } from "reactstrap";
 
 import routes from "../../routes.js";
-import { extractSessionId } from '../../utils/util'
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -65,13 +64,16 @@ function Header(props) {
 				return res.json()
 			})
 			.then((location) => {
-				setUserId(location.data.userId);
-				setBranchLocation(location.data.locationId);
+				if (location.status === 'Error') {
+					navigate('/')
+				} else {
+					setUserId(location.data.userId);
+					setBranchLocation(location.data.locationId);
+				}
 			});
 	} ,[]);
 
 	const logout = (e) => {
-		sessionStorage.removeItem("token");
 		navigate("/");
 	}
 
@@ -137,7 +139,7 @@ function Header(props) {
 					<span className="navbar-toggler-bar bar3" />
 				</button>
 			</div>
-			<NavbarBrand href="/">{ getBrand() }</NavbarBrand>
+			<NavbarBrand href="https://computant.com/">{ getBrand() }</NavbarBrand>
 		</div>
 		<NavbarToggler onClick={toggle}>
 			<span className="navbar-toggler-bar navbar-kebab" />

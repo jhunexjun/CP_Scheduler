@@ -97,8 +97,8 @@ function Sidebar(props) {
 						<li className="compuTant-logo">
 							<NavLink to='https://www.poshighway.com/' target="_blank">
 								<img src={computantLogo} className="mb-2" alt="https://www.poshighway.com/" />
-								<p style={{lineHeight:'1.5'}}>1019 Waimanu Street,<br/>
-									#103 Honolulu, HI 96814 USA<br />
+								<p className='cmpt-addrs'>1019 Waimanu Street, #103<br/>
+									Honolulu, HI 96814 USA<br />
 									Sales: 888-881-1988<br />
 									Technical Support: 833-214-2715</p>
 							</NavLink>

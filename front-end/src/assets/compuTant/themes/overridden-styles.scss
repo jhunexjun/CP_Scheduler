@@ -13,3 +13,8 @@
 .sidebar .logo:after, .off-canvas-sidebar .logo:after {
     bottom: -87px;
 }
+
+.sidebar .nav li > a, .off-canvas-sidebar .nav li > a > p.cmpt-addrs {
+    line-height: 1.5;
+    text-transform: none;
+}

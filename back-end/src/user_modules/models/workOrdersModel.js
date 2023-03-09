@@ -6,7 +6,7 @@ const schedulerSql = require('../sqlStatements/schedulerSql');
 
 
 module.exports = {
-	getInvoices,
+	getWorkOrders,
 }
 
 // We can use this function or incorporate this in the stored proc. But this was usually usaed for dynamic sql.
@@ -29,22 +29,22 @@ async function sessionIsValid(sessionId) {
 	}
 }
 
-async function getInvoices(req) {
+async function getWorkOrders(req) {
 	try {
-		const sql = schedulerSql.getInvoices();
+		const sql = schedulerSql.getWorkOrders();
 		let request = new Request(sql, (err) => {
 			if (err)
 				console.log(err);
 		});
 		request.addParameter('sessionId', TYPES.VarChar, req.params.sessionId);
 
-		const customers = await utils.executeRequestAsync(request);
-		if (customers[0].hasOwnProperty('errorNo')) {
-			return customers;
+		const workOrders = await utils.executeRequestAsync(request);
+		if (workOrders[0].hasOwnProperty('errorNo')) {
+			return workOrders;
 		}
 
 		const objInvoicesArray = [];
-		customers.forEach((item) => {
+		workOrders.forEach((item) => {
 			let objCust = { id: item.TKT_NO,
 							text: item.NOTE_TXT,
 							docId: item.DOC_ID,
