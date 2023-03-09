@@ -26,6 +26,7 @@ import {
 } from "reactstrap";
 
 import routes from "../../routes.js";
+import { extractSessionId } from '../../utils/util'
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -77,7 +78,8 @@ function Header(props) {
 	const getBrand = () => {
 		let brandName = "Default Brand";
 		routes.map((prop, key) => {
-			if (window.location.href.includes(prop.layout + prop.path)) {
+			let newPath = prop.path.replace(':sessionId', sessionId)
+			if (window.location.href.includes(prop.layout + newPath)) {
 				brandName = prop.name;
 			}
 

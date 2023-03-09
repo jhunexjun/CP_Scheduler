@@ -33,5 +33,11 @@ function isSetScalar(param) {
 		return true;
 }
 
+function extractSessionId(string) {
+	const pattern = /appointment\/([a-z-A-Z0-9]+)/;
+	const matches = pattern.exec(string);
+	return matches[1];
+}
 
-export { getRandomColor, uriEncode, isSet, isSetScalar }
+
+export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId }

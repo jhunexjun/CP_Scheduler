@@ -20,9 +20,12 @@ app.use(bodyParser());  // body parse has been separated from express default in
 
 // User-defined;
 app.use('/public/img', express.static(path.join(__dirname, '../', '/public')))
-// require('../user_modules/auth/auth')
-const dbConnection = require('../user_modules/TediousConnection/sqlServerConnect')
-dbConnection.getInstance();
+
+const tediousConnection = require('../user_modules/dbConnections/tediousConnect')
+tediousConnection.getInstance();
+
+const msSqlConnection = require('../user_modules/dbConnections/msSqlConnect')
+msSqlConnection.getInstance();
 
 require('../user_modules/routes')(app);
 // End user-defined

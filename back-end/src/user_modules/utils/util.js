@@ -1,4 +1,4 @@
-const dbConnection = require('../TediousConnection/sqlServerConnect');
+const dbConnection = require('../dbConnections/tediousConnect');
 
 module.exports = {
 	/*getColumnTotal,*/ executeRequestAsync, executeOutputParams, isSet,
