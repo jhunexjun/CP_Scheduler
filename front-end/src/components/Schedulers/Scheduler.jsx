@@ -30,7 +30,8 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 	}
 
 	let { sessionId } = useParams();
-	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule/${sessionId}`;
+	// let robot = 'N';
+	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule?sessionId=${sessionId}&robot=N`;
 
 
 	function onAppointmentAdding(e) {
@@ -47,11 +48,12 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 
 	async function onAppointmentAddedAsync(e) {
 		await addScheduleAsync(e.appointmentData);
-		showToast('Added', e.appointmentData.text, 'success');
+		// showToast('Added', e.appointmentData.subject, 'success');
 	}
 
 	async function addScheduleAsync(params) {	// params = e.appointmentData
 		const addSched = {
+			// subject: params.subject,
 			subject: params.text,
 			utcDateFrom: params.startDate,
 			utcDateTo: params.endDate,
@@ -205,16 +207,17 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 					valueExpr: 'id',
 					searchEnabled: true,
 					onValueChanged(args) {
-						invoiceInfo = getWorkOrderById(args.value);
-						if (isSet(invoiceInfo, "noteDate") && dateIsValid(invoiceInfo.noteDate)) {
-							form.updateData('noteDate', new Date(invoiceInfo.noteDate).toLocaleDateString('en-US'));
+						let invoice = getWorkOrderById(args.value);
+
+						if (isSet(invoice, "noteDate") && dateIsValid(invoice.noteDate)) {
+							form.updateData('noteDate', new Date(invoice.noteDate).toLocaleDateString('en-US'));
 						} else {
 							form.updateData('noteDate', '');
 						}
 
-						form.updateData('subject', (invoiceInfo && invoiceInfo.serviceType) || '');
-						form.updateData('workOrderDetails', (invoiceInfo && invoiceInfo.text) || '');
-						form.updateData('noteUser', (invoiceInfo && invoiceInfo.noteUser) || '');
+						form.updateData('subject', (invoice && invoice.serviceType) || '');
+						form.updateData('workOrderDetails', (invoice && invoice.text) || '');
+						form.updateData('noteUser', (invoice && invoice.noteUser) || '');
 					},
 				},
 			},
@@ -249,16 +252,25 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 					height: '140px'
 				},
 			},
+			// {
+			// 	label: { text: 'Subject' },
+			// 	name: 'subject',
+			// 	// dataField: 'serviceType',
+			// 	// dataField: 'subject',
+			// 	editorType: 'dxTextBox',
+			// 	colSpan: 2,
+			// 	isRequired: true,
+			// 	editorOptions: {
+			// 		value: invoiceInfo.subject,
+			// 	}
+			// },
 			{
 				label: { text: 'Subject' },
-				name: 'subject',
-				// dataField: 'serviceType',
+				name: 'subject',	// 'name' is being used by Work Order # onValueChanged() form.updateData('subject', (invoice && invoice.serviceType) || '');
+				dataField: 'text',
 				editorType: 'dxTextBox',
 				colSpan: 2,
 				isRequired: true,
-				editorOptions: {
-					value: invoiceInfo.serviceType
-				}
 			},
 			{
 				dataField: 'description',

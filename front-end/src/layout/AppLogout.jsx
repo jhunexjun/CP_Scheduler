@@ -46,8 +46,8 @@ export default function AppLogout({ children }) {
 	};
 
 	useEffect(() => {
-		// if (!JSON.parse(process.env.REACT_APP_LOGOUT_AFTER_INACTIVITY))
-		// 	return;
+		if (!JSON.parse(process.env.REACT_APP_LOGOUT_AFTER_INACTIVITY))
+			return;
 
 		Object.values(events).forEach((item) => {
 			window.addEventListener(item, async () => {

@@ -8,16 +8,12 @@ module.exports = {
 }
 
 function getSchedule() {
-	// return "select scheds.id, scheds.subject, scheds.utcDateFrom, scheds.utcDateTo, scheds.description, scheds.invoiceNo, schedmem.technicianId" +
-	// 		", allDay, recurrenceRule " +
-	// 		"from USR_schedules scheds left join USR_schedules_technicians schedmem on scheds.id = schedmem.schedId " +
-	// 		"order by scheds.id";
-	return "exec dbo.USER_SP_GET_Schedules @sessionId, @technicianId, @robot";
+	return "exec dbo.USER_schedulesGet @sessionId, @technicianId, @robot";
 }
 
 function addSchedule(allDay, recurrenceRule) {
 	/*
-		exec dbo.USER_SCHD_Add '6796B252-7279-47D1-9BE9-986EDD99D6C8',
+		exec dbo.USER_scheduleAdd '6796B252-7279-47D1-9BE9-986EDD99D6C8',
 								'Test from sp',
 								'2023-03-15 12:00PM',
 								'2023-03-15 13:00PM',
@@ -25,25 +21,7 @@ function addSchedule(allDay, recurrenceRule) {
 								'PEL-W-214020';
 	*/
 
-	return "exec dbo.USER_SCHD_Add @sessionId, @subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo";
-
-	// let sql = 'insert into USR_schedules(subject, utcDateFrom, utcDateTo, description, invoiceNo';
-
-	// if (allDay)
-	// 	sql += ', allDay';
-	// if (recurrenceRule)
-	// 	sql += ', recurrenceRule';
-
-	// sql += ') values(@subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo';
-
-	// if (allDay)
-	// 	sql += ', @allDay';
-	// if (recurrenceRule)
-	// 	sql += ', @recurrenceRule';
-
-	// sql += '); select @@identity as newId';
-
-	// return sql;
+	return "exec dbo.USER_scheduleAdd @sessionId, @subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo, 'N'";
 }
 
 function deleteSchedule() {
@@ -55,15 +33,9 @@ function getMembersById() {
 }
 
 function getTechnicians() {
-	return "exec dbo.USER_SP_GET_Technicians @sessionId, @robot";
+	return "exec dbo.USER_TechniciansGet @sessionId, @robot";
 }
 
 function getWorkOrders() {
-	return "exec dbo.USER_getWorkOrders @sessionId, @robot";
-	// return "select HDR.TKT_NO, HDR.DOC_ID, NOTES.NOTE_TXT, HDR.CUST_NO, HDR.BILL_NAM " +
-	// 		"from VI_PS_DOC_HDR HDR left join VI_PS_DOC_NOTE NOTES " +
-	// 			"on HDR.DOC_ID = NOTES.DOC_ID " +
-	// 			"and HDR.STA_ID = NOTES.STA_ID and hdr.STR_ID = NOTES.STR_ID " +
-	// 		"where HDR.DOC_TYP = 'O' and HDR.STR_ID =  @locationId" +
-	// 		"order by HDR.TKT_DT desc";
+	return "exec dbo.USER_WorkOrdersGet @sessionId, @robot";
 }

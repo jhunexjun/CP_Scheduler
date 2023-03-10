@@ -59,21 +59,14 @@ function validParams(params) {
 }
 
 async function addSchedule(req) {
-	if (req.params.sessionId === undefined || !req.params.sessionId)
-		return { status: 'Error', message: 'sessionId is missing.' };
+	// if (req.params.sessionId === undefined || !req.params.sessionId)
+	// 	return { status: 'Error', message: 'sessionId is missing.' };
 	if (req.body.subject === undefined || !req.body.subject)
 		return { status: 'Error', message: 'subject param is missing.' };
-		// throw "subject param is missing.";
 	if (req.body.utcDateFrom === undefined || !req.body.utcDateFrom)
 		return { status: 'Error', message: 'utcDateFrom is missing.' };
 	if (req.body.utcDateTo === undefined || !req.body.utcDateTo)
 		return { status: 'Error', message: 'utcDateTo is missing.' };
-	// if (!utils.isSet(req.body, "invoiceNo"))
-	// 	return { status: 'Error', message: 'invoiceNo param is missing.' };
-	// if (!utils.isSet(req.body, "technicianIds"))
-	// 	return { status: 'Error', message: 'technicianIds param is missing. ' };
-	// if (req.body.technicianIds.length == 0)
-	// 	return { status: 'Error', message: 'No technicians found.' }
 
 	const valid = validParams(req.body);
 	if (valid !== true)

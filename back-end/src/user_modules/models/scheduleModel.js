@@ -71,7 +71,7 @@ async function addSchedule(req) {
 				console.log(err);
 		});
 
-		request.addParameter('sessionId', TYPES.VarChar, req.params.sessionId);
+		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
 		request.addParameter('subject', TYPES.NVarChar, req.body.subject);
 		request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
 		request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
@@ -235,20 +235,20 @@ async function insertIntoSchedTechnicians(req) {
 	await utils.executeRequestAsync(request);
 }
 
-async function getScheduleById(id) {
-	try {
-		let sql = schedulerSql.getScheduleById();
-		let request = new Request(sql, (err) => {
-			if (err)
-				console.log(err);
-		});
-		request.addParameter('id', TYPES.Int, parseInt(params.id));
+// async function getScheduleById(id) {
+// 	try {
+// 		let sql = schedulerSql.getScheduleById();
+// 		let request = new Request(sql, (err) => {
+// 			if (err)
+// 				console.log(err);
+// 		});
+// 		request.addParameter('id', TYPES.Int, parseInt(params.id));
 
-		return await utils.executeRequestAsync(request);
-	} catch(e) {
-		throw e;
-	}
-}
+// 		return await utils.executeRequestAsync(request);
+// 	} catch(e) {
+// 		throw e;
+// 	}
+// }
 
 async function deleteSchedule(req) {
 	try {
