@@ -44,8 +44,8 @@ export default () => {
 	const navigate = useNavigate();
 	// Note: in the future we have to change the way sessionId is beong concatenated in the url, better to use the ?
 
-	const fetchData = useCallback(async () => {
-		await fetch(`${adminUrl}/technicians/${sessionId}`)
+	const fetchData = useCallback(async (robot) => {
+		await fetch(`${adminUrl}/technicians?sessionId=${sessionId}&robot=${robot}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -58,7 +58,7 @@ export default () => {
 				}
 			});
 
-		await fetch(`${adminUrl}/workorders/${sessionId}`)
+		await fetch(`${adminUrl}/workorders?sessionId=${sessionId}&robot=${robot}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -71,7 +71,7 @@ export default () => {
 				}
 			});
 
-	    await fetch(`${adminUrl}/schedule/${sessionId}/${selectedTechnicianId}`)
+	    await fetch(`${adminUrl}/schedule?sessionId=${sessionId}&technicianId=${selectedTechnicianId}&robot=${robot}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -90,7 +90,7 @@ export default () => {
 		if (!isSetScalar(sessionId))
 			return;
 
-		fetchData();
+		fetchData('N');
 	}, []);
 
 	useEffect(() => {
@@ -227,7 +227,7 @@ export default () => {
 		let interval = setInterval(() => {
 			setCountdown((countdown) => {
 				if (countdown <= 0) {
-					fetchData();
+					fetchData('Y');
 					return refreshInMinutes * 60;
 				} else {
 					return countdown - 1;
@@ -280,7 +280,7 @@ export default () => {
 
 	function updateNow(e) {
 		e.preventDefault();
-		fetchData();
+		fetchData('N');
 		setCountdown(refreshInMinutes * 60);
 	}
 

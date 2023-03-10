@@ -24,7 +24,7 @@ export default function AppLogout({ children }) {
 		const optionHeaders = {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: uriEncode({ sessionId: extractSessionId(session['*']) }),
+			body: uriEncode({ sessionId: extractSessionId(session['*']), robot: 'Y' }),
 		}
 
 		await fetch(`${adminUrl}/logout`, optionHeaders)
@@ -46,8 +46,8 @@ export default function AppLogout({ children }) {
 	};
 
 	useEffect(() => {
-		if (!JSON.parse(process.env.REACT_APP_LOGOUT_AFTER_INACTIVITY))
-			return;
+		// if (!JSON.parse(process.env.REACT_APP_LOGOUT_AFTER_INACTIVITY))
+		// 	return;
 
 		Object.values(events).forEach((item) => {
 			window.addEventListener(item, async () => {

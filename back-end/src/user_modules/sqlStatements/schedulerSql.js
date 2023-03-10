@@ -12,7 +12,7 @@ function getSchedule() {
 	// 		", allDay, recurrenceRule " +
 	// 		"from USR_schedules scheds left join USR_schedules_technicians schedmem on scheds.id = schedmem.schedId " +
 	// 		"order by scheds.id";
-	return "exec dbo.USER_SP_GET_Schedules @sessionId, @technicianId";
+	return "exec dbo.USER_SP_GET_Schedules @sessionId, @technicianId, @robot";
 }
 
 function addSchedule(allDay, recurrenceRule) {
@@ -55,11 +55,11 @@ function getMembersById() {
 }
 
 function getTechnicians() {
-	return "exec dbo.USER_SP_GET_Technicians @sessionId";
+	return "exec dbo.USER_SP_GET_Technicians @sessionId, @robot";
 }
 
 function getWorkOrders() {
-	return "exec dbo.USER_getWorkOrders @sessionId";
+	return "exec dbo.USER_getWorkOrders @sessionId, @robot";
 	// return "select HDR.TKT_NO, HDR.DOC_ID, NOTES.NOTE_TXT, HDR.CUST_NO, HDR.BILL_NAM " +
 	// 		"from VI_PS_DOC_HDR HDR left join VI_PS_DOC_NOTE NOTES " +
 	// 			"on HDR.DOC_ID = NOTES.DOC_ID " +

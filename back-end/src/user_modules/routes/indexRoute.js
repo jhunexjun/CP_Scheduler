@@ -10,11 +10,11 @@ const logoutRoute = require('./logoutRoute')
 
 
 module.exports = function(app) {
-    router.all('/schedule/:sessionId/:technicianId?', schedulerRoute);    // http://localhost:8080/admin/scheduler
-    router.get('/technicians/:sessionId?', technicianRoute);   // http://localhost:8080/admin/technicians/:sessionId?
-    router.get('/workorders/:sessionId?', workOrdersRoute);   // http://localhost:8080/admin/workorders
-    router.get('/location/:sessionId?', locationRoute);   // http://localhost:8080/admin/location
-    router.put('/logout/:sessionId?', logoutRoute);   // http://localhost:8080/admin/logout
+    router.all('/schedule', schedulerRoute);    // http://localhost:8080/admin/scheduler
+    router.get('/technicians', technicianRoute);   // http://localhost:8080/admin/technicians?sessionId=sessionId=6796B252-W-X-Y-Z
+    router.get('/workorders', workOrdersRoute);   // http://localhost:8080/admin/workorders?sessionId=6796B252-W-X-Y-Z
+    router.get('/location', locationRoute);   // http://localhost:8080/admin/location?sessionId=6796B252-7279-47D1-9BE9-986EDD99D6C8
+    router.put('/logout', logoutRoute);   // http://localhost:8080/admin/logout
 
   return router;
 }

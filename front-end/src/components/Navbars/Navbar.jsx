@@ -26,6 +26,7 @@ import {
 } from "reactstrap";
 
 import routes from "../../routes.js";
+import { extractSessionId, uriEncode } from '../../utils/util'
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -59,7 +60,7 @@ function Header(props) {
 		const matches = pattern.exec(relUrl);
 		sessionId = matches[1];
 
-		await fetch(`${adminUrl}/location/${sessionId}`)
+		await fetch(`${adminUrl}/location?sessionId=${sessionId}&robot=N`, )
 			.then((res) => {
 				return res.json()
 			})

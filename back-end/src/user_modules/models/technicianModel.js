@@ -9,7 +9,7 @@ module.exports = {
 	getTechnicians,
 }
 
-async function getTechnicians(params) {
+async function getTechnicians(req) {
 	try {
 		const sql = schedulerSql.getTechnicians();
 		let request = new Request(sql, (err) => {
@@ -17,7 +17,8 @@ async function getTechnicians(params) {
 				console.log(err);
 		});
 
-		request.addParameter('sessionId', TYPES.VarChar, params.sessionId);
+		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
+		request.addParameter('robot', TYPES.VarChar, req.query.robot);
 
 		const technicians = await utils.executeRequestAsync(request);
 

@@ -8,24 +8,24 @@ let resData;
 
 module.exports = async function(req, res) {
 	try {
-		if (!utils.isSet(req.params, 'sessionId')) {
+		if (!utils.isSet(req.query, 'sessionId')) {
 			res.json({ status: "Error" , message: "session id is missing." });
 			return;
 		}
 
 		switch(req.method) {
-			case 'POST':
-				resData = await addSchedule(req);
-				res.json(resData);
-				break;
 			case 'GET':
-				const scheds = await getSchedules(req.params);
+				const scheds = await getSchedules(req);
 				if (scheds[0].hasOwnProperty('errorNo')) {
 					res.json({ status: "Error", message: scheds[0].errMsg, data: [] });
 				} else {
 					resData = { status: "OK", message: "Okay", data: scheds }
 					res.json(resData);
 				}
+				break;
+			case 'POST':
+				resData = await addSchedule(req);
+				res.json(resData);
 				break;
 			case 'PUT':
 				resData = await updateSchedule(req);
@@ -43,8 +43,8 @@ module.exports = async function(req, res) {
 	}
 };
 
-async function getSchedules(params) {
-	return scheduleModel.getSchedule(params);
+async function getSchedules(req) {
+	return scheduleModel.getSchedule(req);
 }
 
 function validParams(params) {

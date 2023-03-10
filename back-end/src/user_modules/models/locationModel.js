@@ -1,9 +1,5 @@
 const msSql = require('mssql')
 const msSqlConnect = require('../dbConnections/msSqlConnect')
-// const Request = require('tedious').Request
-// const TYPES = require('tedious').TYPES;
-// const utils = require('../utils/util');
-
 const locationSql = require('../sqlStatements/locationSql');
 
 
@@ -16,7 +12,8 @@ async function getLocation(req) {
 		const sql = locationSql.getLocation();
 		return await msSqlConnect.getInstance().then(pool => {
 				return pool.request()
-					.input('sessionId', msSql.VarChar, req.params.sessionId)
+					.input('sessionId', msSql.VarChar, req.query.sessionId)
+					.input('robot', msSql.VarChar, req.query.robot ?? 'Y')
 					.query(sql)
 			}).then(result => {
 				return result.recordset[0];

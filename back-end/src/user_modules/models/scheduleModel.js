@@ -12,7 +12,7 @@ module.exports = {
 	deleteSchedule,
 }
 
-async function getSchedule(params) {
+async function getSchedule(req) {
 	try {
 		const sql = schedulerSql.getSchedule();
 		let request = new Request(sql, (err, rowCount) => {
@@ -20,8 +20,9 @@ async function getSchedule(params) {
 				console.log(err);
 		});
 
-		request.addParameter('sessionId', TYPES.VarChar, params.sessionId);
-		request.addParameter('technicianId', TYPES.VarChar, params.technicianId);
+		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
+		request.addParameter('technicianId', TYPES.VarChar, req.query.technicianId);
+		request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');	// if Y we assume it's robot.
 
 		const scheds = await utils.executeRequestAsync(request);
 
@@ -111,29 +112,29 @@ function datesAreValid(params) {
 	/*************************************************************/
 }
 
-async function sessionIsValid(sessionId) {
-	try {
-		let request = new Request('exec dbo.USER_CheckSessionValidity @sessionId', (err, rowCount) => {
-			if (err)
-				console.log(err);
-		});
+// async function sessionIsValid(sessionId) {
+// 	try {
+// 		let request = new Request('exec dbo.USER_CheckSessionValidity @sessionId', (err, rowCount) => {
+// 			if (err)
+// 				console.log(err);
+// 		});
 
-		request.addParameter('sessionId', TYPES.NVarChar, sessionId);
-		let returnval = await utils.executeRequestAsync(request);
+// 		request.addParameter('sessionId', TYPES.NVarChar, sessionId);
+// 		let returnval = await utils.executeRequestAsync(request);
 
-		if (returnval[0].errorNo == 0)
-			return true;
-		else
-			return false
-	} catch(e) {
-		throw e;
-	}
-}
+// 		if (returnval[0].errorNo == 0)
+// 			return true;
+// 		else
+// 			return false
+// 	} catch(e) {
+// 		throw e;
+// 	}
+// }
 
 async function updateSchedule(req) {
 	try {
-		if (!await sessionIsValid(req.params.sessionId))
-			return { status: 'Error', message: 'Session is invalid.' };
+		// if (!await sessionIsValid(req.params.sessionId))
+		// 	return { status: 'Error', message: 'Session is invalid.' };
 
 		if (utils.isSet(req.body, "utcDateFrom") && utils.isSet(req.body, "utcDateTo")) {
 			let retVal = datesAreValid(req.body);
@@ -251,8 +252,8 @@ async function getScheduleById(id) {
 
 async function deleteSchedule(req) {
 	try {
-		if (!await sessionIsValid(req.params.sessionId))
-			return { status: 'Error', message: 'Session is invalid.' };
+		// if (!await sessionIsValid(req.params.sessionId))
+		// 	return { status: 'Error', message: 'Session is invalid.' };
 
 		let sql = schedulerSql.deleteSchedule();
 		let request = new Request(sql, (err) => {
