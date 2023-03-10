@@ -9,7 +9,7 @@ let resData;
 module.exports = async function(req, res) {
 	try {
 		if (!utils.isSet(req.query, 'sessionId')) {
-			res.json({ status: "Error" , message: "session id is missing." });
+			res.json({ status: "Error" , message: "sessionId is missing. Add it as url query parameter." });
 			return;
 		}
 
@@ -59,8 +59,6 @@ function validParams(params) {
 }
 
 async function addSchedule(req) {
-	// if (req.params.sessionId === undefined || !req.params.sessionId)
-	// 	return { status: 'Error', message: 'sessionId is missing.' };
 	if (req.body.subject === undefined || !req.body.subject)
 		return { status: 'Error', message: 'subject param is missing.' };
 	if (req.body.utcDateFrom === undefined || !req.body.utcDateFrom)

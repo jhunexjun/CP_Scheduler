@@ -34,6 +34,27 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule?sessionId=${sessionId}&robot=N`;
 
 
+	function datesAreValid(e, startDt, endDt) {
+		if (startDt.getYear() !== endDt.getYear()) {
+			showToast('', 'Cannot schedule with different years.', 'warning');
+			e.cancel = true;
+			return;
+		}
+
+		if (startDt.getMonth() !== endDt.getMonth()) {
+			showToast('', 'Cannot schedule with different months.', 'warning');
+			e.cancel = true;
+			return;
+		}
+
+		if (startDt.getDay() !== endDt.getDay()) {
+			showToast('', 'Cannot schedule with different days.', 'warning');
+			e.cancel = true;
+			return;
+		}
+	}
+
+
 	function onAppointmentAdding(e) {
 		if (e.appointmentData.invoiceNo === undefined || e.appointmentData.invoiceNo === null || e.appointmentData.invoiceNo === "") {
 			showToast('', 'Please  select invoice.', 'warning');
@@ -44,11 +65,12 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 			showToast('', 'Please select technician.', 'warning');
 			e.cancel = true;
 		}
+
+		datesAreValid(e, new Date(e.appointmentData.startDate), new Date(e.appointmentData.endDate));
 	}
 
 	async function onAppointmentAddedAsync(e) {
 		await addScheduleAsync(e.appointmentData);
-		// showToast('Added', e.appointmentData.subject, 'success');
 	}
 
 	async function addScheduleAsync(params) {	// params = e.appointmentData
@@ -95,6 +117,9 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 			showToast('', 'Please select technician.', 'warning');
 			e.cancel = true;
 		}
+
+		datesAreValid(e, new Date(e.newData.startDate), new Date(e.newData.endDate));
+
 	}
 
 	async function onAppointmentUpdatedAsync(e) {
