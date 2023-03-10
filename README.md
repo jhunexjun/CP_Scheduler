@@ -53,6 +53,9 @@ Future add-ons
 Issues:
 1. Routes in Side menu. - fixed.
 2. Autolog out must fetch() to update db.
+3. Rename invoices to workOrders.
+4. fetch invoices do not responds to expired session.
+
 
 
 

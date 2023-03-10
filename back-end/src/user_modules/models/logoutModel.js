@@ -12,7 +12,7 @@ async function logoutSession(req) {
 		const sql = logoutSql.logoutSession();
 		return await msSqlConnect.getInstance().then(pool => {
 				return pool.request()
-					.input('sessionId', msSql.VarChar, req.params.sessionId)
+					.input('sessionId', msSql.VarChar, req.body.sessionId)
 					.query(sql)
 			}).then(result => {
 				return result.rowsAffected[0];
