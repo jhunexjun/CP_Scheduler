@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 // import AdminLayout from './layout/Admin';
 import MainLayout from './layout/Main';
 import ExpiredSession from './views/ExpiredSession';
+import CreateSession from './views/CreateSession';
 import ErrorPage from './components/error-page';
 import reportWebVitals from './reportWebVitals';
 // import Login from './views/Login/Login';
@@ -21,8 +22,6 @@ import './assets/compuTant/themes/overridden-styles.scss';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// import "react-datetime/css/react-datetime.css";
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -30,6 +29,7 @@ root.render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<ExpiredSession />} />
+			<Route path="/createsession" element={<CreateSession />} />
 			<Route path="/admin/*" element={<MainLayout />} errorElement={<ErrorPage />} />
 		</Routes>
 	</BrowserRouter>

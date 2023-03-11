@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 // import '../../assets/compuTant/themes/custom-styles.scss';

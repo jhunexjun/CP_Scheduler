@@ -1,6 +1,7 @@
 const cors = require('cors');
 
-const indexRoute = require('./routes/indexRoute');
+const adminRoute = require('./routes/adminRoute');
+const createSessionRoute = require('./routes/createSessionRoute');
 
 
 module.exports = function(app) {
@@ -9,6 +10,6 @@ module.exports = function(app) {
 	// };
 
 	app.use(cors());
-	// app.use('/login', loginRoute);
-	app.use('/admin', indexRoute(app));
+	app.use('/createsession', createSessionRoute);
+	app.use('/admin', adminRoute(app));
 }
