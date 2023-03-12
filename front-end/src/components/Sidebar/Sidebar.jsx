@@ -24,7 +24,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 import routes from "../../routes";
 // import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
-import logo from "../../assets/compuTant/img/total-off-road.jpg";
+import logo from "../../assets/compuTant/img/total-offroad-more-logo.png";
 import computantLogo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
 
 import { extractSessionId } from '../../utils/util'
