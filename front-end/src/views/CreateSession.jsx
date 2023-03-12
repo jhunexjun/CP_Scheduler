@@ -17,7 +17,7 @@ export default function CreateSession() {
 				return res.json()
 			})
 			.then((session) => {
-				if (session.status === 'Error')
+				if (session.status !== 'Error')
 					navigate(`../admin/appointment/${session.data.sessionId}`)
 			});
 	}, [])
