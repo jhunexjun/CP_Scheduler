@@ -41,7 +41,7 @@ function Header(props) {
 
 	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 	const session = useParams();
-	let sessionId = "";
+	const [sessionId, setSessionId] = useState('');
 
 	const [userId, setUserId] = useState('');
 	const [branchLocation, setBranchLocation] = useState('');
@@ -58,9 +58,9 @@ function Header(props) {
 		const relUrl = session['*'];
 		const pattern = /appointment\/([a-z-A-Z0-9]+)/;
 		const matches = pattern.exec(relUrl);
-		sessionId = matches[1];
+		setSessionId(matches[1]);
 
-		await fetch(`${adminUrl}/location?sessionId=${sessionId}&robot=N`, )
+		await fetch(`${adminUrl}/location?sessionId=${matches[1]}&robot=N`, )
 			.then((res) => {
 				return res.json()
 			})
@@ -74,8 +74,15 @@ function Header(props) {
 			});
 	} ,[]);
 
-	const logout = (e) => {
-		navigate("/");
+	const logout = async (e) => {
+		const optionHeaders = {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: uriEncode({ sessionId: sessionId }),
+		}
+
+		await fetch(`${adminUrl}/logout`, optionHeaders)
+		navigate('/');
 	}
 
 	const getBrand = () => {
