@@ -56,11 +56,6 @@ Issues:
 3. Rename invoices to workOrders.
 4. fetch invoices do not responds to expired session.
 
-
-
-
-
-
 Done:
 Create batch file and call it from Counterpoint.
 Test the scheduler by creating invoice from
@@ -74,3 +69,16 @@ Make the description and work order details bigger.
 Total tickets not total trx count
 COGS whould be at 3rd
 Sales, Qty, Cost
+
+Notes:
+
+GREENVILLE
+http://localhost:3000/createsession?userid=ADAML
+http://localhost:3000/createsession?userid=BILLY
+http://localhost:3000/createsession?userid=GREGM
+
+HOUSTON
+http://localhost:3000/createsession?userid=GREG
+
+RALEIGH
+http://localhost:3000/createsession?userid=HAYDEN

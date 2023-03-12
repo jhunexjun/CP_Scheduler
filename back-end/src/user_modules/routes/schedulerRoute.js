@@ -16,10 +16,15 @@ module.exports = async function(req, res) {
 		switch(req.method) {
 			case 'GET':
 				const scheds = await getSchedules(req);
-				if (scheds[0].hasOwnProperty('errorNo')) {
-					res.json({ status: "Error", message: scheds[0].errMsg, data: [] });
+
+				if (scheds.length <= 0) {
+					res.json({ status: "OK", data: [] });
 				} else {
-					resData = { status: "OK", message: "Okay", data: scheds }
+					if (scheds[0].hasOwnProperty('errorNo'))
+						resData = { status: "Error", message: scheds[0].errMsg, data: [] };
+					else
+						resData = { status: "OK", message: "Okay", data: scheds }
+
 					res.json(resData);
 				}
 				break;

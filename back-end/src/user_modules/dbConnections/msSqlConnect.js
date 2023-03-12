@@ -22,6 +22,9 @@ var Singleton = (function() {
 		}
 	}
 
+	if (process.env.DB_INSTANCE !== "")
+		sqlConfig.options.instanceName = process.env.DB_INSTANCE;  // 'SQLEXPRESS2016'
+
 	async function createInstance() {
 		try {
 			return await msSql.connect(sqlConfig)

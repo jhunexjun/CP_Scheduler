@@ -26,7 +26,9 @@ async function getSchedule(req) {
 
 		const scheds = await utils.executeRequestAsync(request);
 
-		if (scheds[0].hasOwnProperty('errorNo')) {
+		// console.log('scheds: ', scheds)
+
+		if (scheds.length <= 0 || scheds[0].hasOwnProperty('errorNo')) {
 			return scheds;
 		} else {
 			let schedsGroupedById = scheds.reduce((prevValue, currentValue) => {

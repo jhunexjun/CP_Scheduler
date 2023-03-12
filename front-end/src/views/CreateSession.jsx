@@ -27,6 +27,6 @@ export default function CreateSession() {
 
 
 	return (
-		<h1>Creating a session</h1>
+		<h1>Creating a session...</h1>
 	);
 }
