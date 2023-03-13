@@ -36,7 +36,15 @@ function isSetScalar(param) {
 function extractSessionId(string) {
 	const pattern = /appointment\/([a-z-A-Z0-9]+)/;
 	const matches = pattern.exec(string);
-	return matches[1];
+	if (matches !== null) {
+		return matches[1];
+	} else {
+		const pattern = /sms\/([a-z-A-Z0-9]+)/;
+		const matches = pattern.exec(string);
+		console.log('matches: ', matches)
+		return matches[1];
+	}
+
 }
 
 

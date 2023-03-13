@@ -58,7 +58,15 @@ function Header(props) {
 		const relUrl = session['*'];
 		const pattern = /appointment\/([a-z-A-Z0-9]+)/;
 		const matches = pattern.exec(relUrl);
-		setSessionId(matches[1]);
+
+		if (matches !== null) {
+			setSessionId(matches[1]);
+		} else {
+			const pattern = /sms\/([a-z-A-Z0-9]+)/;
+			const matches = pattern.exec(relUrl);
+			// console.log('matches: ', matches)
+			setSessionId(matches[1]);
+		}
 
 		await fetch(`${adminUrl}/location?sessionId=${matches[1]}&robot=N`, )
 			.then((res) => {

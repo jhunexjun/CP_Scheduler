@@ -41,7 +41,12 @@ function Sidebar(props) {
 		const activeRoute = (routeName) => {
 				// return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
 				// console.log("props.location.pathname: ", props.location.pathname);  // /admin/purchases
-				return (props.location.pathname.includes(routeName) > -1) ? "active" : "";
+				// console.log('pathname: ', props.location.pathname)
+				// console.log('routeName: ', routeName)
+				// console.log(props.location.pathname.includes(routeName))
+
+				// return (props.location.pathname.includes(routeName) > -1) ? "active" : "";
+				return (props.location.pathname.toLowerCase().includes(routeName.toLowerCase()) === true) ? "active" : "";
 		};
 
 		useEffect(() => {
@@ -80,7 +85,7 @@ function Sidebar(props) {
 						{routes.map((route, key) => {
 							let newPath = route.path.replace(':sessionId', sessionId)
 							return (
-								<li key={key} className={ activeRoute(route.path) }>
+								<li key={key} className={ activeRoute(route.name) }>
 									<NavLink to={ route.layout + newPath }
 											className={ ({ isActive }) => {
 																return isActive ? "nav-link active" : "nav-link"
