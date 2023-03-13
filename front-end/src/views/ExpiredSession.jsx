@@ -5,18 +5,12 @@ export default function ExpiredSession() {
 	return (
 		<div className='container'>
 			<div className="row">
-				<div className="d-flex justify-content-center">
-					<table style={{height: '500px'}}>
-						<tbody>
-							<tr>
-								<td className="align-middle text-center">
-									<img src={icon} style={{maxWidth: '30%'}} />
-									<h1>Expired Session</h1>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<div className="col">
+					<div className="d-flex align-items-center justify-content-center" style={{height: '500px'}}>
+						<img src={icon} style={{maxWidth: '30%', marginRight: '12px'}} />
+						<h1 style={{marginBottom: '0'}}>Expired Session</h1>
+					</div>
+				</div>				
 			</div>
 		</div>
 	);
