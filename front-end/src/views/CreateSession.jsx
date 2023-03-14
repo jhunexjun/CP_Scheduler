@@ -12,7 +12,8 @@ export default function CreateSession() {
 		// Note: domain for browser (dev), http://locahost:3000
 		//		 domain for API (dev), http://localhost:8080
 		// http://localhost:8080/createsession?userid=ADAML
-		await fetch(`${process.env.REACT_APP_API_DOMAIN + '/createsession'}?userid=${userid}`)
+		// we'll just fix expiryInMinutes to 10 minutes as initial
+		await fetch(`${process.env.REACT_APP_API_DOMAIN + '/createsession'}?userid=${userid}&expiryinminutes=10`)
 			.then((res) => {
 				return res.json()
 			})

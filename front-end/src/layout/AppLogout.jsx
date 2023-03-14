@@ -16,7 +16,8 @@ export default function AppLogout({ children }) {
 
 	// this resets the timer if it exists.
 	const resetTimer = () => {
-		if (timer) clearTimeout(timer);
+		if (timer)
+			clearTimeout(timer);
 	};
 
 	// logs out user
@@ -31,7 +32,22 @@ export default function AppLogout({ children }) {
 		navigate('/');
 	}
 
-	// this function sets the timer that logs out the user after 10 secs
+	async function extendSession() {
+		const optionHeaders = {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+			body: uriEncode({ 	sessionId: extractSessionId(session['*']),
+								expiryInMinutes: process.env.REACT_APP_INACTIVE_LOGOUT_MINUTES
+							}),
+		}
+
+		const res = await fetch(`${adminUrl}/extendSession`, optionHeaders)
+		if (res.hasOwnProperty('errorNo')) {
+			console.log(res.message)
+		}
+	}
+
+	// this function sets the timer that logs out the user after a certain time.
 	const handleLogoutTimer = async () => {
 		timer = setTimeout(async () => {
 			// clears any pending timer.
@@ -42,7 +58,7 @@ export default function AppLogout({ children }) {
 			});
 
 			await logoutUser();
-		}, parseInt(process.env.REACT_APP_INACTIVE_LOGOUT_MS)); // 600000ms = 10 min. You can change the time.
+		}, parseInt(process.env.REACT_APP_INACTIVE_LOGOUT_MINUTES * 60000));
 	};
 
 	useEffect(() => {
@@ -51,6 +67,8 @@ export default function AppLogout({ children }) {
 
 		Object.values(events).forEach((item) => {
 			window.addEventListener(item, async () => {
+				console.log('Called event listener.')
+				await extendSession()
 				resetTimer();
 				await handleLogoutTimer();
 			});

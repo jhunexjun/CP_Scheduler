@@ -25,7 +25,6 @@ import PerfectScrollbar from "perfect-scrollbar";
 import routes from "../../routes";
 // import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
 import logo from "../../assets/compuTant/img/total-offroad-more-logo.png";
-import computantLogo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
 
 import { extractSessionId } from '../../utils/util'
 
@@ -101,11 +100,11 @@ function Sidebar(props) {
 					<Nav>
 						<li className="compuTant-logo">
 							<NavLink to='https://www.poshighway.com/' target="_blank">
-								<img src={computantLogo} className="mb-2" alt="https://www.poshighway.com/" />
-								<p className='cmpt-addrs'>1019 Waimanu Street, #103<br/>
-									Honolulu, HI 96814 USA<br />
-									Sales: 888-881-1988<br />
-									Technical Support: 833-214-2715</p>
+								<p className='cmpt-addrs'>
+									Powered by POS Highway<br />
+									Website: https://www.poshighway.com<br />
+									Tel no: 888-881-1988<br />
+								</p>
 							</NavLink>
 						</li>
 					</Nav>

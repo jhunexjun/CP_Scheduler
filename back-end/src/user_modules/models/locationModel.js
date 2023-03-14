@@ -13,7 +13,7 @@ async function getLocation(req) {
 		return await msSqlConnect.getInstance().then(pool => {
 				return pool.request()
 					.input('sessionId', msSql.VarChar, req.query.sessionId)
-					.input('robot', msSql.VarChar, req.query.robot ?? 'Y')
+					//.input('robot', msSql.VarChar, req.query.robot ?? 'Y')
 					.query(sql)
 			}).then(result => {
 				return result.recordset[0];

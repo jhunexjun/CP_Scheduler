@@ -22,7 +22,7 @@ async function getSchedule(req) {
 
 		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
 		request.addParameter('technicianId', TYPES.VarChar, req.query.technicianId);
-		request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');	// if Y we assume it's robot.
+		// request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');	// if Y we assume it's robot.
 
 		const scheds = await utils.executeRequestAsync(request);
 

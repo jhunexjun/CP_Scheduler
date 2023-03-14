@@ -1,8 +1,17 @@
+const utils = require('../utils/util')
 const sessionModel = require('../models/sessionModel')
 
 module.exports = async function(req, res) {
 	try {
-		// if (req.query.) // more error-trap here.
+		if (!utils.isSet(req.query, 'userid')) {
+			res.json({ status: "Error" , message: "userid param is missing." });
+			return;
+		}
+
+		if (!utils.isSet(req.query, 'expiryinminutes')) {
+			res.json({ status: "Error" , message: "expiryinminutes param is missing." });
+			return;
+		}
 
 		const sessionId = await sessionModel.createSession(req)
 

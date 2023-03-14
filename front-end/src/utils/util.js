@@ -41,7 +41,7 @@ function extractSessionId(string) {
 	} else {
 		const pattern = /sms\/([a-z-A-Z0-9]+)/;
 		const matches = pattern.exec(string);
-		console.log('matches: ', matches)
+		// console.log('matches: ', matches)
 		return matches[1];
 	}
 

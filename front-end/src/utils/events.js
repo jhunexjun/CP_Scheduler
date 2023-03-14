@@ -1,9 +1,9 @@
 const events = [
-  "load",
-  "mousemove",
-  "mousedown",
+  // "load",
+  // "mousemove",
+  // "mousedown",
   "click",
-  "scroll",
+  //"scroll",
   "keypress",
 ];
 

@@ -31,7 +31,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 
 	let { sessionId } = useParams();
 	// let robot = 'N';
-	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule?sessionId=${sessionId}&robot=N`;
+	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule?sessionId=${sessionId}`;
 
 
 	function datesAreValid(e, startDt, endDt) {
@@ -130,7 +130,8 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 	async function updateScheduleAsync(params) {
 		const editSched = {
 			id: params.id,
-			subject: params.subject,
+			// subject: params.subject,
+			subject: params.text,
 			utcDateFrom: params.startDate,
 			utcDateTo: params.endDate,
 			description: (params.description === undefined || params.description === null) ? "" : params.description,

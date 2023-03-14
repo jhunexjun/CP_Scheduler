@@ -37,7 +37,7 @@ async function getWorkOrders(req) {
 				console.log(err);
 		});
 		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
-		request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');
+		// request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');
 
 		const workOrders = await utils.executeRequestAsync(request);
 		if (workOrders[0].hasOwnProperty('errorNo')) {

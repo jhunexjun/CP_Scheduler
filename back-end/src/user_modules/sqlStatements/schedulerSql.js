@@ -8,7 +8,8 @@ module.exports = {
 }
 
 function getSchedule() {
-	return "exec dbo.USER_schedulesGet @sessionId, @technicianId, @robot";
+	// return "exec dbo.USER_schedulesGet @sessionId, @technicianId, @robot";
+	return "exec dbo.USER_schedulesGet @sessionId, @technicianId";
 }
 
 function addSchedule(allDay, recurrenceRule) {
@@ -21,7 +22,8 @@ function addSchedule(allDay, recurrenceRule) {
 								'PEL-W-214020';
 	*/
 
-	return "exec dbo.USER_scheduleAdd @sessionId, @subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo, 'N'";
+	// return "exec dbo.USER_scheduleAdd @sessionId, @subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo, 'N'";
+	return "exec dbo.USER_scheduleAdd @sessionId, @subject, @utcDateFrom, @utcDateTo, @description, @invoiceNo";
 }
 
 function deleteSchedule() {
@@ -33,9 +35,11 @@ function getMembersById() {
 }
 
 function getTechnicians() {
-	return "exec dbo.USER_TechniciansGet @sessionId, @robot";
+	// return "exec dbo.USER_TechniciansGet @sessionId, @robot";
+	return "exec dbo.USER_TechniciansGet @sessionId";
 }
 
 function getWorkOrders() {
-	return "exec dbo.USER_WorkOrdersGet @sessionId, @robot";
+	// return "exec dbo.USER_WorkOrdersGet @sessionId, @robot";
+	return "exec dbo.USER_WorkOrdersGet @sessionId";
 }

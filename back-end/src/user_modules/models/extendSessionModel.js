@@ -1,19 +1,19 @@
 const msSql = require('mssql')
 const msSqlConnect = require('../dbConnections/msSqlConnect')
-const sessionSql = require('../sqlStatements/sessionSql');
+const extendSessionSql = require('../sqlStatements/extendSessionSql')
 
 
 module.exports = {
-	createSession
+	extendSession,
 }
 
-async function createSession(req) {
+async function extendSession(req) {
 	try {
-		const sql = sessionSql.createSession();
+		const sql = extendSessionSql.extendSessionSql();
 		return await msSqlConnect.getInstance().then(pool => {
 				return pool.request()
-					.input('userId', msSql.VarChar, req.query.userid)
-					.input('expiryInMinutes', msSql.VarChar, req.query.expiryinminutes)	// case sensitive
+					.input('sessionId', msSql.VarChar, req.body.sessionId)
+					.input('expiryInMinutes', msSql.VarChar, req.body.expiryInMinutes)
 					.query(sql)
 			}).then(result => {
 				return result.recordset[0];

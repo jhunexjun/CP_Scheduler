@@ -45,7 +45,7 @@ export default () => {
 	// Note: in the future we have to change the way sessionId is beong concatenated in the url, better to use the ?
 
 	const fetchData = useCallback(async (robot) => {
-		await fetch(`${adminUrl}/technicians?sessionId=${sessionId}&robot=${robot}`)
+		await fetch(`${adminUrl}/technicians?sessionId=${sessionId}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -53,12 +53,12 @@ export default () => {
 				if (!technicians.hasOwnProperty("error")) {
 					appendTechnicians(technicians);
 				} else {
-					console.log('fetch technicians: ', technicians);
+					// console.log('fetch technicians: ', technicians);
 					navigate('/');
 				}
 			});
 
-		await fetch(`${adminUrl}/workorders?sessionId=${sessionId}&robot=${robot}`)
+		await fetch(`${adminUrl}/workorders?sessionId=${sessionId}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -66,12 +66,12 @@ export default () => {
 				if (workOrders.status !== 'Error' ) {
 					appendInvoices(workOrders);
 				} else {
-					console.log(workOrders);
+					// console.log(workOrders);
 					navigate('/');
 				}
 			});
 
-	    await fetch(`${adminUrl}/schedule?sessionId=${sessionId}&technicianId=${selectedTechnicianId}&robot=${robot}`)
+	    await fetch(`${adminUrl}/schedule?sessionId=${sessionId}&technicianId=${selectedTechnicianId}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -79,7 +79,7 @@ export default () => {
 				if (!scheds.hasOwnProperty("error")) {
 					appendScheds(scheds);
 				} else {
-					console.log('fetch schedules: ', scheds);
+					// console.log('fetch schedules: ', scheds);
 					navigate('/');
 				}
 			});
@@ -224,20 +224,20 @@ export default () => {
 	}, [intervalCounter]);
 
 	const startTimer = useCallback(() => {
-		let interval = setInterval(() => {
-			setCountdown((countdown) => {
-				if (countdown <= 0) {
-					fetchData('Y');
-					return refreshInMinutes * 60;
-				} else {
-					return countdown - 1;
-				}
+		// let interval = setInterval(() => {
+		// 	setCountdown((countdown) => {
+		// 		if (countdown <= 0) {
+		// 			fetchData('Y');
+		// 			return refreshInMinutes * 60;
+		// 		} else {
+		// 			return countdown - 1;
+		// 		}
 
-			});
-		}, 1000);
+		// 	});
+		// }, 1000);
 
-		setIntervalCounter(interval);
-		return interval;
+		// setIntervalCounter(interval);
+		// return interval;
 	}, [])
 
 

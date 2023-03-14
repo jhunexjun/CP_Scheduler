@@ -3,5 +3,6 @@ module.exports = {
 }
 
 function getLocation() {
-	return "exec dbo.USER_getLocationBySessionId @sessionId, @robot";
+	// return "exec dbo.USER_getLocationBySessionId @sessionId, @robot";
+	return "exec dbo.USER_getLocationBySessionId @sessionId";
 }

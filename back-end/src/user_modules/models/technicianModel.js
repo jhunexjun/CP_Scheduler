@@ -18,7 +18,7 @@ async function getTechnicians(req) {
 		});
 
 		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
-		request.addParameter('robot', TYPES.VarChar, req.query.robot);
+		// request.addParameter('robot', TYPES.VarChar, req.query.robot);
 
 		const technicians = await utils.executeRequestAsync(request);
 

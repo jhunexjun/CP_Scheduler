@@ -16,6 +16,6 @@ module.exports = async function(req, res) {
 		else
 			res.json({ status: "OK", data: workOrders, });
 	} catch(e) {
-		console.log("Error in invoicesRoute: ", e);
+		console.log("Error in workOrdersRoute: ", e);
 	}
 }
