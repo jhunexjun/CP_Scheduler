@@ -224,20 +224,20 @@ export default () => {
 	}, [intervalCounter]);
 
 	const startTimer = useCallback(() => {
-		// let interval = setInterval(() => {
-		// 	setCountdown((countdown) => {
-		// 		if (countdown <= 0) {
-		// 			fetchData('Y');
-		// 			return refreshInMinutes * 60;
-		// 		} else {
-		// 			return countdown - 1;
-		// 		}
+		let interval = setInterval(() => {
+			setCountdown((countdown) => {
+				if (countdown <= 0) {
+					fetchData('Y');
+					return refreshInMinutes * 60;
+				} else {
+					return countdown - 1;
+				}
 
-		// 	});
-		// }, 1000);
+			});
+		}, 1000);
 
-		// setIntervalCounter(interval);
-		// return interval;
+		setIntervalCounter(interval);
+		return interval;
 	}, [])
 
 
