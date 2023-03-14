@@ -8,7 +8,7 @@ import notify from 'devextreme/ui/notify';
 import { uriEncode, isSet } from '../../utils/util';
 
 
-const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, techniciansMaster}) => {
+const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, techniciansMaster, setScheduleData}) => {
 	const groups = ['technicianIds'];
 	let [currentDate] = useState(new Date());
 	const [popupVisible, setPopupVisible] = useState(false);
@@ -101,6 +101,10 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 			})
 			.then((json) => {
 				//setToastOpen(true);	// to implement html for toast.
+
+				const newScheduleData = [...scheduleData];
+				newScheduleData[newScheduleData.length - 1].id = json.data.id;
+				setScheduleData(newScheduleData);
 				addedToast(params.text);
 				return json;
 			});

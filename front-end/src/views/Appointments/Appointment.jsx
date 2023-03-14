@@ -343,6 +343,7 @@ export default () => {
 						stopTimer={stopTimer}
 						startTimer={startTimer}
 						techniciansMaster={selectBoxTechnicians}
+						setScheduleData={setScheduleData}
 					/>
 				</div>
     		</div>

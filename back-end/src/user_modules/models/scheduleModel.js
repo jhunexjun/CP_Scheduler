@@ -93,7 +93,7 @@ async function addSchedule(req) {
 
 		await insertIntoSchedTechnicians(req);
 
-		return { status: "OK" , message: "New schedule was added successfully" };
+		return { status: "OK" , message: "New schedule was added successfully", data: { id: schedId[0].newId } };
 	} catch(e) {
 		throw e;
 	}

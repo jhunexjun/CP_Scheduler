@@ -4,7 +4,7 @@ const events = [
   // "mousedown",
   "click",
   //"scroll",
-  "keypress",
+  //"keypress",
 ];
 
 export default events;
