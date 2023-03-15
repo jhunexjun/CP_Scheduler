@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 
 import events from '../utils/events';
-import { extractSessionId, uriEncode } from '../utils/util'
+import { extractSessionId, uriEncode } from '../utils/util';
 
 
 export default function AppLogout({ children }) {
@@ -63,9 +63,6 @@ export default function AppLogout({ children }) {
 	};
 
 	useEffect(() => {
-		if (!JSON.parse(process.env.REACT_APP_LOGOUT_AFTER_INACTIVITY))
-			return;
-
 		Object.values(events).forEach((item) => {
 			window.addEventListener(item, async () => {
 				console.log('Called event listener.')

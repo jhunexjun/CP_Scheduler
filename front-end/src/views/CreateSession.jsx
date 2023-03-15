@@ -1,5 +1,5 @@
-import { useEffect, useCallback } from 'react'
-import { useNavigate, redirect } from 'react-router-dom'
+import { useEffect, useCallback } from 'react';
+import { useNavigate, redirect } from 'react-router-dom';
 
 
 export default function CreateSession() {
@@ -12,8 +12,7 @@ export default function CreateSession() {
 		// Note: domain for browser (dev), http://locahost:3000
 		//		 domain for API (dev), http://localhost:8080
 		// http://localhost:8080/createsession?userid=ADAML
-		// we'll just fix expiryInMinutes to 10 minutes as initial
-		await fetch(`${process.env.REACT_APP_API_DOMAIN + '/createsession'}?userid=${userid}&expiryinminutes=10`)
+		await fetch(`${process.env.REACT_APP_API_DOMAIN + '/createsession'}?userid=${userid}&expiryinminutes=${process.env.REACT_APP_INACTIVE_LOGOUT_MINUTES}`)
 			.then((res) => {
 				return res.json()
 			})
