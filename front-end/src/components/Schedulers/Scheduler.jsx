@@ -166,7 +166,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 
 
 	function onAppointmentDeleting(e) {
-		console.log("deleting e: ", e);
+		// console.log("deleting e: ", e);
 		// we can add confirmation here.
 	}
 
@@ -365,7 +365,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 				startDayHour={8}
 				endDayHour={18}
 				crossScrollingEnabled={true}
-				showAllDayPanel={false}
+				showAllDayPanel={true}
 				editing={{allowAdding: true, allowEditing: true}}
 				onAppointmentAdded={onAppointmentAddedAsync}
 				onAppointmentAdding={onAppointmentAdding}
