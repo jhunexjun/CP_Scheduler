@@ -82,3 +82,6 @@ http://localhost:3000/createsession?userid=GREG
 
 RALEIGH
 http://localhost:3000/createsession?userid=HAYDEN
+
+Transparent logo
+https://online.inpixio.com/tools/auto-remove-background/edit/4516a3e7-0927-4ab1-b535-6812a71f847d

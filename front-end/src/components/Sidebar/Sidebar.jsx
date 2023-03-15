@@ -23,8 +23,7 @@ import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
 
 import routes from "../../routes";
-// import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
-import logo from "../../assets/compuTant/img/total-offroad-more-logo.png";
+import logo from "../../assets/compuTant/img/total-offroad-more-transparent.png";
 
 import { extractSessionId } from '../../utils/util'
 
