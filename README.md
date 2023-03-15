@@ -44,6 +44,7 @@ Started to add more features based on the meeting yesterday.
  http://localhost:3000/admin/appointment/6796B252-7279-47D1-9BE9-986EDD99D6C8
 http://localhost:3000/admin/appointment/40861d3e-bd62-4c96-bc72-6a1def6a7309
 10. Buttom preview work order in rpt form
+12. Get the official operating hours.
 
 
 Future add-ons
