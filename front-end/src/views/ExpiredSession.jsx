@@ -8,7 +8,7 @@ export default function ExpiredSession() {
 				<div className="col">
 					<div className="d-flex align-items-center justify-content-center" style={{height: '500px'}}>
 						<img src={icon} style={{maxWidth: '30%', marginRight: '12px'}} />
-						<h1 style={{marginBottom: '0'}}>Expired Session</h1>
+						<h1 style={{marginBottom: '0'}}>Expired session</h1>
 					</div>
 				</div>				
 			</div>

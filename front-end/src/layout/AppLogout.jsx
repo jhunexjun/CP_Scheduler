@@ -25,7 +25,8 @@ export default function AppLogout({ children }) {
 		const optionHeaders = {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: uriEncode({ sessionId: extractSessionId(session['*']), robot: 'Y' }),
+			// body: uriEncode({ sessionId: extractSessionId(session['*']), robot: 'Y' }),
+			body: uriEncode({ sessionId: extractSessionId(session['*']) }),
 		}
 
 		await fetch(`${adminUrl}/logout`, optionHeaders)
