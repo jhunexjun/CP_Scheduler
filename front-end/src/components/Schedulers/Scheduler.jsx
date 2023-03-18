@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import { useState, memo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Scheduler, { Resource, View } from 'devextreme-react/scheduler';
@@ -355,7 +355,7 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 
 	return (
 		<>
-			<Scheduler height={700}
+			<Scheduler height={698}
 				dataSource={scheduleData}
 				// dataCellComponent={DataCell}
 				// resourceCellComponent={ResourceCell}

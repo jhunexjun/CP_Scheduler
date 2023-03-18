@@ -1,22 +1,11 @@
 To do's:
-Had discussions with Francis regarding the Dashboard project and Scheduler. Few things to change like
 
-http://localhost:3000/admin/appointment/6796B252-7279-47D1-9BE9-986EDD99D6C8
-http://localhost:3000/admin/appointment/40861D3E-BD62-4C96-BC72-6A1DEF6A7309
+10. Buttom preview work order in rpt form
+12. Get the official operating hours.
 
+Done:
 
-Graph should starts with Sales amt, qty, etc.
-Dropdown for the top 5 stores.
-Some label changes.
-To copy database of Lefty's and restore it to my SQL Server.
-Replace my current express ed. of SQL server to standard.
-----------------------------
-let clonedArray = JSON.parse(JSON.stringify(nodesArray))
-
-
-
-http://localhost:3000/admin/appointment
-
+Create batch file and call it from Counterpoint.
 add day
 technician
 location
@@ -41,15 +30,11 @@ Started to add more features based on the meeting yesterday.
 9. Add the date/time notes in work order details and who wrote it.
 11. Expiry session in minutes setting to put in the database or .env
 
- http://localhost:3000/admin/appointment/6796B252-7279-47D1-9BE9-986EDD99D6C8
-http://localhost:3000/admin/appointment/40861d3e-bd62-4c96-bc72-6a1def6a7309
-10. Buttom preview work order in rpt form
-12. Get the official operating hours.
 
-
-Future add-ons
+Future add-ons:
 1. Send email
 2. Send text
+
 
 Issues:
 1. Routes in Side menu. - fixed.
@@ -57,32 +42,36 @@ Issues:
 3. Rename invoices to workOrders.
 4. fetch invoices do not responds to expired session.
 
-Done:
-Create batch file and call it from Counterpoint.
-Test the scheduler by creating invoice from
-Add new schedule
-Searchable technician and Work order.
-Remove other menus and remain the scheduler.
-Remove login
-Use the VI_PS_DOC_NOTES
-Make it searchable by a certain critiria.
-Make the description and work order details bigger.
-Total tickets not total trx count
-COGS whould be at 3rd
-Sales, Qty, Cost
 
 Notes:
 
 GREENVILLE
-http://localhost:3000/createsession?userid=ADAML
-http://localhost:3000/createsession?userid=BILLY
-http://localhost:3000/createsession?userid=GREGM
+    http://localhost:3000/createsession?userid=ADAML
+    http://localhost:3000/createsession?userid=BILLY
+    http://localhost:3000/createsession?userid=GREGM
 
 HOUSTON
-http://localhost:3000/createsession?userid=GREG
+    http://localhost:3000/createsession?userid=GREG
 
 RALEIGH
-http://localhost:3000/createsession?userid=HAYDEN
+    http://localhost:3000/createsession?userid=HAYDEN
 
 Transparent logo
-https://online.inpixio.com/tools/auto-remove-background/edit/4516a3e7-0927-4ab1-b535-6812a71f847d
+    https://online.inpixio.com/tools/auto-remove-background/edit/4516a3e7-0927-4ab1-b535-6812a71f847d
+
+
+Added transparent logo
+Removed robot params
+Removed unnecessary code
+Fixed bug wherein you have to refresh the page to delete or update newly added schedule.
+Added /extendsession route.
+
+Added the All Day panel, this has to be added because when scheduler adds item without the time because it assumes the time is whole day.
+Corrected the minutes of inactivity.
+Changed from milliseconds to minutes to input the inactivity of user.
+
+
+Searched for the best pdf generator to display the report outside of Counterpoint.
+Tried and tested them if it fits to this project.
+
+Uninstall npm react-pdf-html soon.

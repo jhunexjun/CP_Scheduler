@@ -14,6 +14,8 @@ import { isSet, isSetScalar } from '../../utils/util';
 import Scheduler from '../../components/Schedulers/Scheduler';
 import SelectBox from 'devextreme-react/select-box';
 
+import USRPdfViewer from '../../components/PdfViewer';
+
 
 export default () => {
 	const [selectedTechnicianId] = useState('ALL');
@@ -335,18 +337,26 @@ export default () => {
 				</div>
 			</div>
 
-    		<div className="row">
-    			<div id="dx-viewport scheduler">
-					<Scheduler scheduleData={scheduleData}
-						technicians={_technicians}
-						workOrders={workOrders}
-						stopTimer={stopTimer}
-						startTimer={startTimer}
-						techniciansMaster={selectBoxTechnicians}
-						setScheduleData={setScheduleData}
-					/>
+			<div className="row">
+				<div className="col">
+					<div id="dx-viewport scheduler">
+						<Scheduler scheduleData={scheduleData}
+							technicians={_technicians}
+							workOrders={workOrders}
+							stopTimer={stopTimer}
+							startTimer={startTimer}
+							techniciansMaster={selectBoxTechnicians}
+							setScheduleData={setScheduleData}
+						/>
+					</div>
 				</div>
-    		</div>
+			</div>
+
+			{/*<div className="row">
+				<div className="col">
+					<USRPdfViewer />
+				</div>
+			</div>*/}
 		</div>
     );
 }

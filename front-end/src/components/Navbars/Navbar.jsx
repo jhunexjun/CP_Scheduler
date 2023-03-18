@@ -56,17 +56,20 @@ function Header(props) {
 
 	const fetchLocation = useCallback(async () => {
 		const relUrl = session['*'];
-		const pattern = /appointment\/([a-z-A-Z0-9]+)/;
+		const pattern = /appointment\/([a-zA-Z0-9-]+)/;
 		const matches = pattern.exec(relUrl);
 
 		if (matches !== null) {
 			setSessionId(matches[1]);
 		} else {
-			const pattern = /sms\/([a-z-A-Z0-9]+)/;
+			const pattern = /sms\/([a-zA-Z0-9-]+)/;
 			const matches = pattern.exec(relUrl);
 			// console.log('matches: ', matches)
 			setSessionId(matches[1]);
 		}
+
+		if (matches === null)
+			return;
 
 		await fetch(`${adminUrl}/location?sessionId=${matches[1]}&robot=N`, )
 			.then((res) => {
