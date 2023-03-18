@@ -9,7 +9,7 @@ import InvWorkOrderMeta from './InvWorkOrderMeta';
 
 const styles = StyleSheet.create({
 	common: {
-		marginRight: 20,
+		marginRight: 5,
 	},
 	logo: {
 		width: 150,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
 	},
 	addresses: {
 		flexDirection: 'row',
-		borderWidth: 0.5
+		// borderWidth: 0.5
 	},
 });
 

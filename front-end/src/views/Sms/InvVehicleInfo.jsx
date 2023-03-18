@@ -2,7 +2,10 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
 	common: {
-		marginRight: 20,
+		marginRight: 10,
+		borderWidth: 0.5,
+		padding: 5,
+		borderRadius: 3,
 	},
 	vehicleInfo: {
 		flexDirection: 'column',

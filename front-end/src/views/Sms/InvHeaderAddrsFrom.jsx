@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
 	common: {
-		borderWidth: 0.5,
+		// borderWidth: 0.5,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
