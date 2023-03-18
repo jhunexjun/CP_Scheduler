@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
 
 
 const invoiceHeadersContainer = () => (
-	<View>
+	<View style={styles.flexDirection}>
 		<InvoiceHeadersContent />
 	</View>
 )

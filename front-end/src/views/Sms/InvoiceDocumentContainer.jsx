@@ -4,13 +4,14 @@ import {
 	StyleSheet,
 } from "@react-pdf/renderer";
 
-import InvoiceHeadersContainer from './InvoiceHeadersContainer';
+import InvoiceHeadersContent from './InvoiceHeadersContent';
 
 
 const styles = StyleSheet.create({
 	page: {
 		flexDirection: 'column',
-		margin: 10
+		margin: 25,
+		fontSize: 7,
 	}
 });
 
@@ -18,7 +19,7 @@ const styles = StyleSheet.create({
 const invoiceDocumentContainer = (
 	<Document>
 		<Page size="A4" style={styles.page}>
-			<InvoiceHeadersContainer />
+			<InvoiceHeadersContent />
 		</Page>
 	</Document>
 );
