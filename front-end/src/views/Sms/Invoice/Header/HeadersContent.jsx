@@ -1,10 +1,10 @@
 import { View, Image, Text, StyleSheet } from '@react-pdf/renderer';
 
-import logo from '../../assets/compuTant/img/total-offroad-more-transparent.png';
-import InvHeaderAddrsFrom from './InvHeaderAddrsFrom';
-import InvBillingAndInvoiceAddrs from './InvBillingAndInvoiceAddrs';
-import InvVehicleInfo from './InvVehicleInfo';
-import InvWorkOrderMeta from './InvWorkOrderMeta';
+import logo from '../../../../assets/compuTant/img/total-offroad-more-transparent.png';
+import HeaderAddrsFrom from './HeaderAddrsFrom';
+import BillingAndInvoiceAddrs from './BillingAndInvoiceAddrs';
+import VehicleInfo from './VehicleInfo';
+import WorkOrderMeta from './WorkOrderMeta';
 
 
 const styles = StyleSheet.create({
@@ -29,15 +29,15 @@ const InvoiceHeadersContent = () => (
 			<View style={{flexDirection: 'column'}}>
 				<View style={{flexDirection: 'row'}}>
 					<Image src={logo} style={styles.logo} />
-					<InvHeaderAddrsFrom />
+					<HeaderAddrsFrom />
 				</View>
 
-				<InvBillingAndInvoiceAddrs />
+				<BillingAndInvoiceAddrs />
 			</View>
 		</View>
 
-		<InvVehicleInfo />
-		<InvWorkOrderMeta />
+		<VehicleInfo />
+		<WorkOrderMeta />
 	</View>
 );
 

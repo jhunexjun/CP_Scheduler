@@ -1,17 +1,33 @@
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
+	common: {
+		borderWidth: 0.5,
+		padding: 5,
+		borderRadius: 3,
+	},
 	workOrderMeta: {
 		flexDirection: 'column',
-	}
+	},
+	workOrderLabel: {
+		flexDirection: 'column',
+		alignItems: 'center',
+		justifyContent: 'center',
+		marginBottom: 3,
+		fontWeight: 'ultrabold',
+		fontSize: 9,
+	},
 });
 
 
 const InvHeaderAddress = () => (
-	<View style={styles.workOrderMeta}>
-		<Text>WORKORDER</Text>
-		<View style={{flexDirection: 'column'}}>
+	<View style={styles.common}>
+		<View style={styles.workOrderLabel}>
+			<Text style={{marginBottom: 3}}>WORKORDER</Text>
 			<Text>RAJ-W326</Text>
+		</View>
+		<View style={{flexDirection: 'column'}}>
+			
 			<View style={styles.workOrderMeta}>
 				<Text style={{marginTop: 10}}>Invoice Date: 02/10/2023</Text>
 				<Text>Due Date: </Text>
@@ -21,7 +37,7 @@ const InvHeaderAddress = () => (
 				<Text>Ship Method: </Text>
 				<Text>Sales rep: CCCI</Text>
 				<Text style={{marginBottom: 10}}>Ref: </Text>
-				<Text>Date/time: 2/10/23 8:24pm</Text>
+				<Text>Date/time: 2/10/2023 8:24pm</Text>
 				<Text>Page: Page 1 of 1</Text>
 			</View>
 		</View>

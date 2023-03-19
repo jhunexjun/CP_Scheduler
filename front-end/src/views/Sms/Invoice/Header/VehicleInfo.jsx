@@ -2,13 +2,14 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
 	common: {
-		marginRight: 10,
+		marginRight: 5,
 		borderWidth: 0.5,
 		padding: 5,
 		borderRadius: 3,
 	},
 	vehicleInfo: {
 		flexDirection: 'column',
+		width: 120,
 	},
 	label: {
 		marginBottom: 5,
