@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
 		borderRadius: 2,
 		width: '97%',
 		marginTop: 3,
+		marginBottom: 3,
 	},
 	tableHeaders: {
 		flexDirection: 'row',

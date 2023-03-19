@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext } from "react";
 import ReactDOM from "react-dom";
 
 import { PDFViewer } from '@react-pdf/renderer';
@@ -78,13 +78,11 @@ const html = `<html>
 </html>
 `;
 
-
-export default () => {
-	const data = {
+const data = {
 			headers: {},
 			table: {
 				rows: [{
-					itemNo: 'JH-52633',	// MIC 90000036818
+					itemNo: 'JH-52633',
 					description: 'Tire',
 					hours: 2.5,
 					salesQty: 4,
@@ -94,9 +92,24 @@ export default () => {
 					description: 'Shock',
 					hours: 3.45,
 					salesQty: 1,
+				},
+				{
+					itemNo: 'YWW-611GWOW',
+					description: 'Headlight',
+					hours: 1,
+					salesQty: 2,
 				}]
 			},
+			notes: [{
+				id: 'note-22571',
+				text: 'Replace all 4 tires.',
+			}],
 	}
+
+const dataContext = createContext(data);
+
+export default () => {
+	
 
 	return (
 		<div className="content">

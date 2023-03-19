@@ -2,9 +2,10 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
 	tableStyle: {
-		// flexDirection: 'row',
-		borderWidth: 0.5,
-		borderRadius: 2,
+		borderTop: 0.5,
+		borderRight: 0.5,
+		borderLeft: 0.5,
+		borderBottom: 0.5,
 		width: '90%',
 		marginTop: 3,
 		padding: 2,
@@ -27,10 +28,10 @@ const TableHeader = () => (
 			<View style={{width: 300}}>
 				<Text>DESCRIPTION</Text>
 			</View>
-			<View style={{width: 50}}>
+			<View style={{width: 50, textAlign: 'right'}}>
 				<Text>Hours</Text>
 			</View>
-			<View style={{width: 40}}>
+			<View style={{width: 50, textAlign: 'right'}}>
 				<Text>Sales Qty</Text>
 			</View>
 		</View>

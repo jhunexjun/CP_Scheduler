@@ -6,6 +6,7 @@ import {
 
 import HeadersContent from './Header/HeadersContent';
 import TableIndex from './TableData/TableIndex';
+import WorkOrderNotes from './WorkOrderNotes/WorkOrderNotes';
 
 
 const styles = StyleSheet.create({
@@ -13,6 +14,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		margin: 25,
 		fontSize: 7,
+		lineHeight: 1.2,
 	}
 });
 
@@ -25,6 +27,7 @@ const invoiceDocumentContainer = (props) => {
 			<Page size='LETTER' style={styles.page}>
 				<HeadersContent />
 				<TableIndex {...props} />
+				<WorkOrderNotes {...props} />
 			</Page>
 		</Document>
 	);
