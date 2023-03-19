@@ -1,24 +1,29 @@
-import { View, Text } from '@react-pdf/renderer';
+import { View, Text, StyleSheet } from '@react-pdf/renderer';
+
+const styles = StyleSheet.create({
+	notesContainer: {
+		borderWidth: 0.5,
+		width: '87.3%',
+		padding: 3,
+	},
+	notesId: {
+		minWidth: 70,
+	},
+});
 
 
 const WorkOrderNotes = (props) => {
 
-	// console.log(props);
-
-	const notes = props.notes.map((item, index) => 
-		<View key={ index + 1 }>
-			<View>
-				<Text>{ item.id }</Text>
-			</View>
-			<View>
-				<Text>{ item.text }</Text>
-			</View>
+	const notes = props.notes.map((item, index) =>
+		<View key={ index + 1 } style={{flexDirection: 'row'}}>
+			<Text style={styles.notesId}>{ item.id }</Text>
+			<Text>{ item.text }</Text>
 		</View>
 	);
 
 	return (<>
-		<View>
-			<Text>Work order notes:</Text>
+		<View style={styles.notesContainer}>
+			<Text style={{marginBottom: '3'}}>Workorder notes:</Text>
 			{ notes }
 		</View>
 	</>);

@@ -1,12 +1,15 @@
 import {
 	Document,
 	Page,
+	Text,
 	StyleSheet,
 } from "@react-pdf/renderer";
 
 import HeadersContent from './Header/HeadersContent';
 import TableIndex from './TableData/TableIndex';
 import WorkOrderNotes from './WorkOrderNotes/WorkOrderNotes';
+import PolicyIndex from './Policy/PolicyIndex';
+import Signature from './Signature/Signature';
 
 
 const styles = StyleSheet.create({
@@ -15,7 +18,7 @@ const styles = StyleSheet.create({
 		margin: 25,
 		fontSize: 7,
 		lineHeight: 1.2,
-	}
+	},
 });
 
 
@@ -28,6 +31,8 @@ const invoiceDocumentContainer = (props) => {
 				<HeadersContent />
 				<TableIndex {...props} />
 				<WorkOrderNotes {...props} />
+				<PolicyIndex />
+				<Signature />
 			</Page>
 		</Document>
 	);

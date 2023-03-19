@@ -5,7 +5,6 @@ import TableRow from './TableRow';
 const styles = StyleSheet.create({
 	tableStyle: {
 		flexDirection: 'column',
-		// borderWidth: 0.5,
 		borderRadius: 2,
 		width: '97%',
 		marginTop: 3,

@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
 		borderBottom: 0.5,
 		width: '90%',
 		marginTop: 3,
-		padding: 2,
+		padding: 3,
 	},
 	tableHeaders: {
 		flexDirection: 'row',
