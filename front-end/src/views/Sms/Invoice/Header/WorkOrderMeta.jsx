@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
 	},
 	workOrderMeta: {
 		flexDirection: 'column',
+		color: '#696969',
 	},
 	workOrderLabel: {
 		flexDirection: 'column',
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'ultrabold',
 		fontSize: 9,
 	},
+
 });
 
 

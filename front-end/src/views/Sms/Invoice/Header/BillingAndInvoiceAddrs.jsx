@@ -15,15 +15,16 @@ const styles = StyleSheet.create({
 	billAddrssLabel: {
 		marginBottom: 5,
 		fontStyle: 'bold'
-	}
+	},
+	text: { color: '#696969', },
 });
 
 
 const InvBillingAndInvoiceAddrs = () => (
 	<View style={styles.common}>
 		<View style={[styles.billingAddrss, {marginRight: 3}]}>
-			<View>
-				<Text style={styles.billAddrssLabel}>Billing address:</Text>
+			<Text style={styles.billAddrssLabel}>Billing address:</Text>
+			<View style={styles.text}>
 				<Text>Acct#: 3000522</Text>
 				<Text>Jesse Hall</Text>
 				<Text>5100 Swisswood Dr</Text>
@@ -33,8 +34,8 @@ const InvBillingAndInvoiceAddrs = () => (
 			</View>
 		</View>
 		<View style={styles.billingAddrss}>
-			<View>
-				<Text style={styles.billAddrssLabel}>Shipping address:</Text>
+			<Text style={styles.billAddrssLabel}>Shipping address:</Text>
+			<View style={styles.text}>
 				<Text>Jesse Hall</Text>
 				<Text>5100 Swisswood Dr</Text>
 				<Text>Raleigh NC 27613</Text>

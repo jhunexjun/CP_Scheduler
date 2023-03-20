@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
 	message: {
 		flexDirection: 'column',
 		marginTop: 10,
-		// color: '#454545',
 		color: '#696969',
 	}
 });
@@ -25,10 +24,10 @@ const Signature = () => {
 					<Text>Date X: _________________________</Text>
 				</View>
 				<View style={styles.message}>
-					<Text>Thank you for shopping at Total Offroad & More </Text>
+					<Text>Thank you for shopping at Total Offroad & More.</Text>
 					<Text>Customers have 3 days from date of service to pick up parts removed!</Text>
-					<Text>Please "LIKE" our Facebook page and leave pictures of your rig</Text>
-					<Text>Leave us a 5 STAR reveiw on Google</Text>
+					<Text>Please "LIKE" our Facebook page and leave pictures of your rig.</Text>
+					<Text>Leave us a 5 STAR reveiw on Google.</Text>
 				</View>
 			</View>
 }
