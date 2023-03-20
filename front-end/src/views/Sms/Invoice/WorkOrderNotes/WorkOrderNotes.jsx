@@ -9,13 +9,17 @@ const styles = StyleSheet.create({
 	notesId: {
 		minWidth: 70,
 	},
+	text: {
+		flexDirection: 'row',
+		color: '#696969',
+	}
 });
 
 
 const WorkOrderNotes = (props) => {
 
 	const notes = props.notes.map((item, index) =>
-		<View key={ index + 1 } style={{flexDirection: 'row'}}>
+		<View key={ index + 1 } style={styles.text}>
 			<Text style={styles.notesId}>{ item.id }</Text>
 			<Text>{ item.text }</Text>
 		</View>

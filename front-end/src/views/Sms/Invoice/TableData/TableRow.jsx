@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
 	tableHeaders: {
 		flexDirection: 'row',
 	},
+	text: { color: '#696969', }
 });
 
 
@@ -23,21 +24,11 @@ const TableRow = (props) => {
 
 		let markup = <View style={styles.tableStyle} key={ index + 1 }>
 					<View style={styles.tableHeaders}>
-						<View style={{width: 30}}>
-							<Text>{ index + 1 }</Text>
-						</View>
-						<View style={{width: 80}}>
-							<Text>{ item.itemNo }</Text>
-						</View>
-						<View style={{width: 300}}>
-							<Text>{ item.description }</Text>
-						</View>
-						<View style={{width: 50, textAlign: 'right'}}>
-							<Text>{ item.hours.toFixed(2) }</Text>
-						</View>
-						<View style={{width: 50, textAlign: 'right'}}>
-							<Text>{ item.salesQty }</Text>
-						</View>
+						<Text style={[{width: 30}, styles.text]}>{ index + 1 }</Text>
+						<Text style={[{width: 80}, styles.text]}>{ item.itemNo }</Text>
+						<Text style={[{width: 300}, styles.text]}>{ item.description }</Text>
+						<Text style={[{width: 50, textAlign: 'right'}, styles.text]}>{ item.hours.toFixed(2) }</Text>
+						<Text style={[{width: 50, textAlign: 'right'}, styles.text]}>{ item.salesQty }</Text>
 					</View>
 				</View>;
 
