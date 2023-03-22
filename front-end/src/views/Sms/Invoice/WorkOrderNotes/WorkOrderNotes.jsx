@@ -1,4 +1,5 @@
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { formatDateMMddYYYY } from '../../../../utils/util';
 
 const styles = StyleSheet.create({
 	notesContainer: {
@@ -17,11 +18,10 @@ const styles = StyleSheet.create({
 
 
 const WorkOrderNotes = (props) => {
-
-	const notes = props.notes.map((item, index) =>
+	const notes = props.data.table.map((item, index) =>
 		<View key={ index + 1 } style={styles.text}>
-			<Text style={styles.notesId}>{ item.id }</Text>
-			<Text>{ item.text }</Text>
+			<Text style={styles.notesId}>{ formatDateMMddYYYY(item.NOTE_DAT) }</Text>
+			<Text>{ item.NOTE_TXT }</Text>
 		</View>
 	);
 

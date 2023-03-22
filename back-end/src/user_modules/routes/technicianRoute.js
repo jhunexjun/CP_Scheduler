@@ -6,10 +6,10 @@ const technicianModel = require("../models/technicianModel");
 
 module.exports = async function(req, res) {
 	try {
-		if (!utils.isSet(req.query, 'sessionId')) {
-			res.json({ status: "Error" , message: "session id is missing." });
-			return;
-		}
+		// if (!utils.isSet(req.query, 'sessionId')) {
+		// 	res.json({ status: "Error" , message: "session id is missing." });
+		// 	return;
+		// }
 
 		const technicians = await technicianModel.getTechnicians(req);
 

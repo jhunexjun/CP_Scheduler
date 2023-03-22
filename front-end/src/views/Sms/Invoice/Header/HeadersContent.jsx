@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 
-const InvoiceHeadersContent = () => (
+const InvoiceHeadersContent = (props) => (
 	<View style={{flexDirection: 'row'}}>
 		<View style={[styles.addresses, styles.common]}>
 			<View style={{flexDirection: 'column'}}>
@@ -32,12 +32,12 @@ const InvoiceHeadersContent = () => (
 					<HeaderAddrsFrom />
 				</View>
 
-				<BillingAndInvoiceAddrs />
+				<BillingAndInvoiceAddrs {...props} />
 			</View>
 		</View>
 
-		<VehicleInfo />
-		<WorkOrderMeta />
+		<VehicleInfo {...props} />
+		<WorkOrderMeta {...props} />
 	</View>
 );
 

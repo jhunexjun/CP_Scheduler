@@ -14,8 +14,6 @@ import { isSet, isSetScalar } from '../../utils/util';
 import Scheduler from '../../components/Schedulers/Scheduler';
 import SelectBox from 'devextreme-react/select-box';
 
-import USRPdfViewer from '../../components/PdfViewer';
-
 
 export default () => {
 	const [selectedTechnicianId] = useState('ALL');
@@ -46,7 +44,7 @@ export default () => {
 	const navigate = useNavigate();
 	// Note: in the future we have to change the way sessionId is beong concatenated in the url, better to use the ?
 
-	const fetchData = useCallback(async (robot) => {
+	const fetchData = useCallback(async () => {
 		await fetch(`${adminUrl}/technicians?sessionId=${sessionId}`)
 			.then((res) => {
 				return res.json()
@@ -55,7 +53,6 @@ export default () => {
 				if (!technicians.hasOwnProperty("error")) {
 					appendTechnicians(technicians);
 				} else {
-					// console.log('fetch technicians: ', technicians);
 					navigate('/');
 				}
 			});
@@ -92,7 +89,7 @@ export default () => {
 		if (!isSetScalar(sessionId))
 			return;
 
-		fetchData('N');
+		fetchData();
 	}, []);
 
 	useEffect(() => {
@@ -229,7 +226,7 @@ export default () => {
 		let interval = setInterval(() => {
 			setCountdown((countdown) => {
 				if (countdown <= 0) {
-					fetchData('Y');
+					fetchData();
 					return refreshInMinutes * 60;
 				} else {
 					return countdown - 1;
@@ -282,7 +279,7 @@ export default () => {
 
 	function updateNow(e) {
 		e.preventDefault();
-		fetchData('N');
+		fetchData();
 		setCountdown(refreshInMinutes * 60);
 	}
 
@@ -351,12 +348,6 @@ export default () => {
 					</div>
 				</div>
 			</div>
-
-			{/*<div className="row">
-				<div className="col">
-					<USRPdfViewer />
-				</div>
-			</div>*/}
 		</div>
     );
 }

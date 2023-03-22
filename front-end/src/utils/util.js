@@ -44,8 +44,56 @@ function extractSessionId(string) {
 		// console.log('matches: ', matches)
 		return matches[1];
 	}
-
 }
 
+function formatDateMMddYYYY(date) {
+	let d = new Date(date),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear();
 
-export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId }
+	if (d == 'Invalid Date')
+		return '';
+
+	if (month.length < 2) 
+		month = '0' + month;
+	if (day.length < 2) 
+		day = '0' + day;
+
+	return [month, day, year].join('-');
+}
+
+function formatDateMMddYYYYhhmm(date) {
+	let d = new Date(date),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear(),
+		hh = d.getHours(),
+		mm = d.getMinutes();
+
+	if (d == 'Invalid Date')
+		return '';
+
+	if (month.length < 2) 
+		month = '0' + month;
+	if (day.length < 2) 
+		day = '0' + day;
+
+	let meridiem = '';
+	if (hh < 12) {
+		meridiem = 'am';
+	} else {
+		hh = hh - 12;
+		meridiem = 'pm';
+	}
+
+	mm = (mm.toString().length == 1) ? '0' + mm : mm;
+
+	const dt = [month, day, year].join('/');
+	const time = [hh, mm].join(':');
+
+	return dt + ' ' + time + meridiem;
+}
+ 
+
+export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId, formatDateMMddYYYY, formatDateMMddYYYYhhmm }

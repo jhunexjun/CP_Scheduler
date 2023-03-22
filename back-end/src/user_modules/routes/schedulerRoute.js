@@ -8,10 +8,10 @@ let resData;
 
 module.exports = async function(req, res) {
 	try {
-		if (!utils.isSet(req.query, 'sessionId')) {
-			res.json({ status: "Error" , message: "sessionId is missing. Add it as url query parameter." });
-			return;
-		}
+		// if (!utils.isSet(req.query, 'sessionId')) {
+		// 	res.json({ status: "Error" , message: "sessionId is missing. Add it as url query parameter." });
+		// 	return;
+		// }
 
 		switch(req.method) {
 			case 'GET':

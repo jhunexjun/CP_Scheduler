@@ -15,20 +15,20 @@ const styles = StyleSheet.create({
 
 
 const TableRow = (props) => {
-	if (props.table.rows === null || props.table.rows.length <= 0)
+	if (props.data.table[0].ITEM_NO === '')	// if it's the default value. We assume it's the default value.
 		return null;
 
-	const rows = props.table.rows.map((item, index) => {
-		if (props.table.rows.length === index + 1)
+	const rows = props.data.table.map((item, index) => {
+		if (props.data.table.length === index + 1)
 			styles.tableStyle.borderBottom = 0.5;
 
 		let markup = <View style={styles.tableStyle} key={ index + 1 }>
 					<View style={styles.tableHeaders}>
 						<Text style={[{width: 30}, styles.text]}>{ index + 1 }</Text>
-						<Text style={[{width: 80}, styles.text]}>{ item.itemNo }</Text>
-						<Text style={[{width: 300}, styles.text]}>{ item.description }</Text>
-						<Text style={[{width: 50, textAlign: 'right'}, styles.text]}>{ item.hours.toFixed(2) }</Text>
-						<Text style={[{width: 50, textAlign: 'right'}, styles.text]}>{ item.salesQty }</Text>
+						<Text style={[{width: 80}, styles.text]}>{ item.ITEM_NO }</Text>
+						<Text style={[{width: 300}, styles.text]}>{ item.DESCR }</Text>
+						<Text style={[{width: 50, textAlign: 'right'}, styles.text]}>{ (item.ITEM_TYP === 'S') ? item.hours.toFixed(2) : '' }</Text>
+						<Text style={[{width: 50, textAlign: 'right'}, styles.text]}>{ item.SalesQty }</Text>
 					</View>
 				</View>;
 

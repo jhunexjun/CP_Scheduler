@@ -2,6 +2,7 @@ const cors = require('cors');
 
 const adminRoute = require('./routes/adminRoute');
 const createSessionRoute = require('./routes/createSessionRoute');
+const checkSessionIdMw = require('./routes/checkSessionIdMiddleware');
 
 
 module.exports = function(app) {
@@ -11,5 +12,5 @@ module.exports = function(app) {
 
 	app.use(cors());
 	app.use('/createsession', createSessionRoute);
-	app.use('/admin', adminRoute(app));
+	app.use('/admin', checkSessionIdMw, adminRoute(app));
 }

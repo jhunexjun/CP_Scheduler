@@ -19,25 +19,25 @@ const styles = StyleSheet.create({
 });
 
 
-const InvVehicleInfo = () => (
+const InvVehicleInfo = (props) => (
 	<View style={[styles.vehicleInfo, styles.common]}>
 		<Text style={styles.label}>Vehicle Information:</Text>
 		<View style={styles.text}>
-			<Text>Year: 2022</Text>
-			<Text>Make: TOYOTA</Text>
-			<Text>Model: Camry</Text>
-			<Text>Service Type: TIRE-CHNGE</Text>
-			<Text>VIN No: V4545</Text>
-			<Text>License: AV8521</Text>
-			<Text>Exterior: Black</Text>
-			<Text>Wheel lock: Glove Comp</Text>
-			<Text>Appt Date: 2/11/2023</Text>
-			<Text>Odometer in: 3500</Text>
-			<Text>Odometer out: 3510</Text>
-			<Text>Date/time in: 2/11/2023</Text>
-			<Text>Date/time out: 2/11/2023</Text>
-			<Text>Retain parts?: NO</Text>
-			<Text>Customer own parts: NO</Text>
+			<Text>Year: {props.data.table[0].USR_YR}</Text>
+			<Text>Make: {props.data.table[0].USR_MAKE}</Text>
+			<Text>Model: {props.data.table[0].USR_MODEL}</Text>
+			<Text>Service Type: {props.data.table[0].USR_SERVICE_TYP}</Text>
+			<Text>VIN No: {props.data.table[0].USR_VIN_NO}</Text>
+			<Text>License: {props.data.table[0].USR_LIC_PLATE}</Text>
+			<Text>Exterior: {props.data.table[0].USR_EXTERRIOR}</Text>
+			<Text>Wheel lock: {props.data.table[0].USR_WHEEL_LOCK}</Text>
+			<Text>Appt Date: {props.data.table[0].USR_APPT_DAT}</Text>
+			<Text>Odometer in: {props.data.table[0].USR_ODOMETER_IN}</Text>
+			<Text>Odometer out: {props.data.table[0].USR_ODOMETER_OUT}</Text>
+			<Text>Date/time in: {props.data.table[0].USR_SERVICE_IN_DAT} {props.data.table[0].USR_SERVICE_IN_TIM}</Text>
+			<Text>Date/time out: {props.data.table[0].USR_SERVICE_OUT_DAT} {props.data.table[0].USR_SERVICE_OUT_TIM}</Text>
+			<Text>Retain parts?: {props.data.table[0].USR_RETAIN_PARTS}</Text>
+			<Text>Customer own parts: {props.data.table[0].USR_CUSTOMER_OWN_PARTS}</Text>
 		</View>
 	</View>
 );

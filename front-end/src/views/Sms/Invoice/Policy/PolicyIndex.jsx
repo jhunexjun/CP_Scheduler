@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 });
 
 
-const PolicyIndex = (props) => (
+const PolicyIndex = () => (
 	<View style={styles.policyStyle}>
 		<View style={{flexDirection: 'row'}}>
 			<Text>Cash Refund Policy: </Text>

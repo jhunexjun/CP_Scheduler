@@ -4,10 +4,10 @@ const logoutModel = require("../models/logoutModel")
 
 module.exports = async function(req, res) {
 	try {
-		if (!utils.isSet(req.body, 'sessionId')) {
-			res.json({ status: "Error" , message: "session id is missing." });
-			return;
-		}
+		// if (!utils.isSet(req.body, 'sessionId')) {
+		// 	res.json({ status: "Error" , message: "session id is missing." });
+		// 	return;
+		// }
 
 		let rowsAffected = await logoutModel.logoutSession(req);
 		if (rowsAffected <= 0)

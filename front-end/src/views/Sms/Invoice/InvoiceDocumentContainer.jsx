@@ -28,7 +28,7 @@ const invoiceDocumentContainer = (props) => {
 	return (
 		<Document>
 			<Page size='LETTER' style={styles.page}>
-				<HeadersContent />
+				<HeadersContent {...props} />
 				<TableIndex {...props} />
 				<WorkOrderNotes {...props} />
 				<PolicyIndex />
