@@ -109,7 +109,7 @@ const defaultData = {
 			data: {
 				table: [
 					{
-						CUST_NO: "",						
+						CUST_NO: "",
 						TKT_NO: "",
 						TKT_DAT: "",
 						DESCR: "",
@@ -119,7 +119,7 @@ const defaultData = {
 						BILL_NAM: "",
 						BILL_PHONE_1: "",
 						BILL_STATE: null,
-						BILL_ZIP_COD: null,						
+						BILL_ZIP_COD: null,
 						SHIP_CITY: null,
 						billAddress: "",
 						SHIP_NAM: "",
@@ -174,6 +174,8 @@ export default () => {
 			.then((invoice) => {
 				if (invoice.status === 'Error')
 					navigate('/');
+				else if (invoice.data.table.length <= 0)
+					setData(defaultData);
 				else
 					setData(invoice);
 			});
@@ -182,8 +184,6 @@ export default () => {
 	async function fetchInvoice() {
 		await fetchInvoiceData(invoiceNo);
 	}
-
-	
 
 	return (
 		<div className="content">

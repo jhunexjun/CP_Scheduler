@@ -27,7 +27,7 @@ const InvHeaderAddress = (props) => (
 	<View style={styles.common}>
 		<View style={styles.workOrderLabel}>
 			<Text style={{marginBottom: 3}}>WORKORDER</Text>
-			<Text>RAJ-W326</Text>
+			<Text>{props.data.table[0].TKT_NO}</Text>
 		</View>
 		<View style={{flexDirection: 'column'}}>			
 			<View style={styles.workOrderMeta}>

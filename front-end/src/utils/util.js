@@ -60,7 +60,7 @@ function formatDateMMddYYYY(date) {
 	if (day.length < 2) 
 		day = '0' + day;
 
-	return [month, day, year].join('-');
+	return [month, day, year].join('/');
 }
 
 function formatDateMMddYYYYhhmm(date) {
@@ -81,10 +81,10 @@ function formatDateMMddYYYYhhmm(date) {
 
 	let meridiem = '';
 	if (hh < 12) {
-		meridiem = 'am';
+		meridiem = ' AM';
 	} else {
 		hh = hh - 12;
-		meridiem = 'pm';
+		meridiem = ' PM';
 	}
 
 	mm = (mm.toString().length == 1) ? '0' + mm : mm;
