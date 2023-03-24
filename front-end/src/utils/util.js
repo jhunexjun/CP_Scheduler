@@ -1,4 +1,4 @@
-const option = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+// const option = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 
 const getRandomColor = () => 'rgba(' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 1) + ')';
 
@@ -40,17 +40,36 @@ function isSetScalar(param) {
 		return true;
 }
 
-function extractSessionId(string) {
-	const pattern = /appointment\/([a-z-A-Z0-9]+)/;
+function extract(string, text) {
+	const pattern = new RegExp(text + "/([a-z-A-Z0-9]+)", "gi");
 	const matches = pattern.exec(string);
-	if (matches !== null) {
+
+	if (matches !== null)
 		return matches[1];
-	} else {
-		const pattern = /sms\/([a-z-A-Z0-9]+)/;
-		const matches = pattern.exec(string);
-		// console.log('matches: ', matches)
-		return matches[1];
-	}
+	else
+		return null;
+}
+
+function extractSessionId(string) {
+	if (string.toLowerCase().includes('appointment'))
+		return extract(string, 'appointment');
+
+	if (string.toLowerCase().includes('sms'))
+		return extract(string, 'sms');
+
+	if (string.toLowerCase().includes('invoice'))
+		return extract(string, 'invoice');
+
+	// const pattern = /appointment\/([a-z-A-Z0-9]+)/;
+	// const matches = pattern.exec(string);
+	// if (matches !== null) {
+	// 	return matches[1];
+	// } else {
+	// 	const pattern = /sms\/([a-z-A-Z0-9]+)/;
+	// 	const matches = pattern.exec(string);
+	// 	// console.log('matches: ', matches)
+	// 	return matches[1];
+	// }
 }
 
 function formatDateMMddYYYY(date) {
@@ -62,9 +81,9 @@ function formatDateMMddYYYY(date) {
 	if (d == 'Invalid Date')
 		return '';
 
-	if (month.length < 2) 
+	if (month.length < 2)
 		month = '0' + month;
-	if (day.length < 2) 
+	if (day.length < 2)
 		day = '0' + day;
 
 	return [month, day, year].join('/');
@@ -81,9 +100,9 @@ function formatDateMMddYYYYhhmm(date) {
 	if (d == 'Invalid Date')
 		return '';
 
-	if (month.length < 2) 
+	if (month.length < 2)
 		month = '0' + month;
-	if (day.length < 2) 
+	if (day.length < 2)
 		day = '0' + day;
 
 	let meridiem = '';
@@ -94,13 +113,13 @@ function formatDateMMddYYYYhhmm(date) {
 		meridiem = ' PM';
 	}
 
-	mm = (mm.toString().length == 1) ? '0' + mm : mm;
+	mm = (mm.toString().length === 1) ? '0' + mm : mm;
 
 	const dt = [month, day, year].join('/');
 	const time = [hh, mm].join(':');
 
 	return dt + ' ' + time + meridiem;
 }
- 
+
 
 export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId, formatDateMMddYYYY, formatDateMMddYYYYhhmm, isNullOrWhiteSpace }

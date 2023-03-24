@@ -37,14 +37,7 @@ function Sidebar(props) {
 
 		// verifies if routeName is the one active (in browser input)
 		const activeRoute = (routeName) => {
-				// return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
-				// console.log("props.location.pathname: ", props.location.pathname);  // /admin/purchases
-				// console.log('pathname: ', props.location.pathname)
-				// console.log('routeName: ', routeName)
-				// console.log(props.location.pathname.includes(routeName))
-
-				// return (props.location.pathname.includes(routeName) > -1) ? "active" : "";
-				return (props.location.pathname.toLowerCase().includes(routeName.toLowerCase()) === true) ? "active" : "";
+			return (props.location.pathname.toLowerCase().includes(routeName.toLowerCase()) === true) ? "active" : "";
 		};
 
 		useEffect(() => {

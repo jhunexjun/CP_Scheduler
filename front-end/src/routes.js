@@ -1,5 +1,6 @@
 import Appointment from './views/Appointments/Appointment';
 import Sms from './views/Sms/Sms';
+import Invoice from './views/Invoices/Invoice';
 
 const routes = [
 	{
@@ -14,6 +15,13 @@ const routes = [
 		name: "SMS",
 		icon: "nc-icon nc-mobile",
 		component: <Sms />,
+		layout: "/admin",
+	},
+	{
+		path: "/invoice/:sessionId",  // i.e. /admin/invoice/<sessionId>
+		name: "Invoice",
+		icon: "nc-icon nc-single-copy-04",
+		component: <Invoice />,
 		layout: "/admin",
 	},
 ];
