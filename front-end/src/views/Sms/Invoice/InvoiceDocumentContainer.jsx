@@ -14,7 +14,7 @@ import Signature from './Signature/Signature';
 const styles = StyleSheet.create({
 	page: {
 		flexDirection: 'column',
-		margin: 25,
+		margin: 30,
 		fontSize: 7,
 		lineHeight: 1.2,
 	},

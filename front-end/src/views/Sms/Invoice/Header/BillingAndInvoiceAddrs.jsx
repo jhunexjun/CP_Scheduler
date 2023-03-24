@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 const styles = StyleSheet.create({
 	common: {
 		flexDirection: 'row',
+		height: 83,
 	},
 	billingAddrss: {
 		flexDirection: 'column',
@@ -10,7 +11,6 @@ const styles = StyleSheet.create({
 		borderWidth: 0.5,
 		padding: 5,
 		borderRadius: 3,
-		// marginRight: 3,
 	},
 	billAddrssLabel: {
 		marginBottom: 5,
@@ -21,9 +21,6 @@ const styles = StyleSheet.create({
 
 
 const InvBillingAndInvoiceAddrs = (props) => {
-
-	// console.log('props: ', props);
-
 	return (
 		<View style={styles.common}>
 			<View style={[styles.billingAddrss, {marginRight: 3}]}>

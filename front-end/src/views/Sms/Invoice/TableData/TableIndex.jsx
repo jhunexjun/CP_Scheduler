@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
 	tableStyle: {
 		flexDirection: 'column',
 		borderRadius: 2,
-		width: '97%',
+		width: '98.5%',
 		marginTop: 3,
 		marginBottom: 3,
 	},

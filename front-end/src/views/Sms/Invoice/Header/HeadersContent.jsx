@@ -1,4 +1,4 @@
-import { View, Image, Text, StyleSheet } from '@react-pdf/renderer';
+import { View, Image, StyleSheet } from '@react-pdf/renderer';
 
 import logo from '../../../../assets/compuTant/img/total-offroad-more-transparent.png';
 import HeaderAddrsFrom from './HeaderAddrsFrom';
@@ -18,26 +18,27 @@ const styles = StyleSheet.create({
 	},
 	addresses: {
 		flexDirection: 'row',
-		// borderWidth: 0.5
 	},
 });
 
 
 const InvoiceHeadersContent = (props) => (
-	<View style={{flexDirection: 'row'}}>
-		<View style={[styles.addresses, styles.common]}>
-			<View style={{flexDirection: 'column'}}>
-				<View style={{flexDirection: 'row'}}>
-					<Image src={logo} style={styles.logo} />
-					<HeaderAddrsFrom />
+	<View style={{flexDirection: 'column'}}>
+		<View style={{flexDirection: 'row'}}>
+			<View style={[styles.addresses, styles.common]}>
+				<View style={{flexDirection: 'column'}}>
+					<View style={{flexDirection: 'row'}}>
+						<Image src={logo} style={styles.logo} />
+						<HeaderAddrsFrom />
+					</View>
+
+					<BillingAndInvoiceAddrs {...props} />
 				</View>
-
-				<BillingAndInvoiceAddrs {...props} />
 			</View>
-		</View>
 
-		<VehicleInfo {...props} />
-		<WorkOrderMeta {...props} />
+			<VehicleInfo {...props} />
+			<WorkOrderMeta {...props} />
+		</View>
 	</View>
 );
 

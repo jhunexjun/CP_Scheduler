@@ -26,6 +26,13 @@ function isSet(object, property) {
 		return false;
 }
 
+function isNullOrWhiteSpace(text) {
+	if (text === undefined || text === null || text === '' || text.trim() === '')
+		return true;
+	else
+		return false;
+}
+
 function isSetScalar(param) {
 	if (param === undefined || param === null || param === "")
 		return false;
@@ -96,4 +103,4 @@ function formatDateMMddYYYYhhmm(date) {
 }
  
 
-export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId, formatDateMMddYYYY, formatDateMMddYYYYhhmm }
+export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId, formatDateMMddYYYY, formatDateMMddYYYYhhmm, isNullOrWhiteSpace }
