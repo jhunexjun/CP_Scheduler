@@ -1,7 +1,6 @@
 import {
 	Document,
 	Page,
-	Text,
 	StyleSheet,
 } from "@react-pdf/renderer";
 

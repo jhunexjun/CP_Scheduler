@@ -15,7 +15,13 @@ module.exports = async function(req, res) {
 			return;
 		}
 
-		res.json({ status: 'OK', data: {table: tableData} });
+		const x = { table: tableData,
+					barcode: {
+						base64: null
+					}
+				}
+
+		res.json({ status: 'OK', data: x });
 	} catch(e) {
 		console.log(e);
 	}

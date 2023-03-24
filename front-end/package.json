@@ -11,6 +11,7 @@
     "bootstrap-scss": "^5.2.3",
     "devextreme": "22.2.4",
     "devextreme-react": "22.2.4",
+    "jsbarcode": "^3.11.5",
     "node-sass": "^7.0.3",
     "perfect-scrollbar": "^1.5.5",
     "react": "^18.2.0",

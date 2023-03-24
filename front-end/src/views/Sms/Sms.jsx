@@ -1,11 +1,10 @@
-import React, { /*createContext,*/ useState, useCallback } from "react";
+import { /*createContext,*/ useState, useCallback, } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
-// import ReactDOM from "react-dom";
 
 import { PDFViewer } from '@react-pdf/renderer';
 import invoiceDocumentContainer from './Invoice/InvoiceDocumentContainer';
 
-import { isSetScalar } from '../../utils/util';
+import JsBarcode from 'jsbarcode';
 
 
 const defaultData = {
@@ -153,7 +152,8 @@ const defaultData = {
 						USR_YR: '',
 					}
 				],
-			}
+				barcode: { base64: null },
+			},
 	}
 
 // const dataContext = createContext(data);
@@ -172,14 +172,22 @@ export default () => {
 				return res.json()
 			})
 			.then((invoice) => {
-				if (invoice.status === 'Error')
+				if (invoice.status === 'Error') {
 					navigate('/');
-				else if (invoice.data.table.length <= 0)
+				} else if (invoice.data.table.length <= 0) {
 					setData(defaultData);
-				else
+				} else {
+					invoice.data.barcode.base64 = getImgBase64String(invoice.data.table[0].TKT_NO);
 					setData(invoice);
+				}
 			});
 	}, []);
+
+	function getImgBase64String(value) {
+		const barcodeNode = document.getElementById('barcode');
+		JsBarcode(barcodeNode, value, {displayValue: false});
+		return barcodeNode.src;
+	}
 
 	async function fetchInvoice() {
 		await fetchInvoiceData(invoiceNo);
@@ -187,6 +195,13 @@ export default () => {
 
 	return (
 		<div className="content">
+			<div className="row">
+				<div className="col">
+					<div style={{display: 'none'}}>
+						<img id="barcode" alt='' />
+					</div>
+				</div>
+			</div>
 			<div className="row">
 				<div className="col">
 					<div className="row g-3 align-items-center">
