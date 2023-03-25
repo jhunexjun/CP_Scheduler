@@ -11,19 +11,19 @@ const routes = [
 		layout: "/admin",
 	},
 	{
-		path: "/sms/:sessionId",  // i.e. /admin/sms/<sessionId>
-		name: "SMS",
-		icon: "nc-icon nc-mobile",
-		component: <Sms />,
-		layout: "/admin",
-	},
-	{
 		path: "/invoice/:sessionId",  // i.e. /admin/invoice/<sessionId>
 		name: "Invoice",
 		icon: "nc-icon nc-single-copy-04",
 		component: <Invoice />,
 		layout: "/admin",
 	},
+	// {
+	// 	path: "/sms/:sessionId",  // i.e. /admin/sms/<sessionId>
+	// 	name: "SMS",
+	// 	icon: "nc-icon nc-mobile",
+	// 	component: <Sms />,
+	// 	layout: "/admin",
+	// },
 ];
 
 export default routes;

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 		fontWeight: 'ultrabold',
 		fontSize: 9,
 	},
-	woLabelContainer: {borderWidth: 0.5, flexDirection: 'row', justifyContent: 'center', marginBottom: 3, backgroundColor: 'black'}
+	woLabelContainer: {borderWidth: 0, flexDirection: 'row', justifyContent: 'center', marginBottom: 3, backgroundColor: 'black'}
 });
 
 
@@ -39,15 +39,17 @@ const InvHeaderAddress = (props) => {
 				<View style={{flexDirection: 'column'}}>
 					<View style={styles.workOrderMeta}>
 						<Text style={{marginTop: 10}}>Invoice Date: {formatDateMMddYYYY(props.data.table[0].TKT_DAT)}</Text>
-						<Text>Due Date: </Text>
-						<Text>Terms: </Text>
+						<Text>Due Date: {props.data.table[0].SHIP_DAT}</Text>
+						<Text>Terms: {props.data.table[0].TERMS_COD}</Text>
 						<Text>Account: {props.data.table[0].CUST_NO}</Text>
-						<Text>PO: </Text>
-						<Text>Ship Method: </Text>
+						<Text>PO: {props.data.table[0].CUST_PO_NO}</Text>
+						<Text>Ship Method: {props.data.table[0].SHIP_VIA_COD}</Text>
 						<Text>Sales rep: {props.data.table[0].SLS_REP}</Text>
 						<Text style={{marginBottom: 10}}>Ref: </Text>
 						<Text>Date/time: {formatDateMMddYYYYhhmm(new Date())}</Text>
-						{/*<Text>Page: Page 1 of 1</Text>*/}
+						<Text render={({ pageNumber, totalPages }) => (
+							`Page ${pageNumber} of ${totalPages}`
+						)} fixed />
 					</View>
 				</View>
 			</View>
