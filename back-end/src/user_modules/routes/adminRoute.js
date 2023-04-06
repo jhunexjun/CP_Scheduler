@@ -10,6 +10,7 @@ const logoutRoute = require('./logoutRoute');
 const extendSessionRoute = require('./extendSessionRoute');
 const invoiceRoute = require('./invoiceRoute');
 const invoicesListRoute = require('./invoicesListRoute');
+const smsRoute = require('./smsRoute');
 
 
 module.exports = function(app) {
@@ -21,6 +22,7 @@ module.exports = function(app) {
     router.put('/extendsession', extendSessionRoute);   // http://localhost:8080/admin/extendSession
     router.get('/invoice', invoiceRoute);
     router.get('/invoiceslist', invoicesListRoute);
+    router.post('/sms', smsRoute);
 
   return router;
 }

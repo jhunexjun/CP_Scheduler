@@ -1,4 +1,4 @@
-const utils = require('../utils/util')
+// const utils = require('../utils/util');
 const logoutModel = require("../models/logoutModel")
 
 

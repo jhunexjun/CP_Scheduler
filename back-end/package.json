@@ -33,7 +33,8 @@
     "passport-local": "^1.0.0",
     "socket.io": "^4.5.2",
     "tedious": "^15.1.3",
-    "tedious-async": "^1.0.9"
+    "tedious-async": "^1.0.9",
+    "twilio": "^4.10.0"
   },
   "engines": {
     "node": ">=4.3.2"

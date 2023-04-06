@@ -1,6 +1,6 @@
-const Request = require('tedious').Request;
-var TYPES = require('tedious').TYPES;
-const utils = require('../utils/util');
+// const Request = require('tedious').Request;
+// var TYPES = require('tedious').TYPES;
+// const utils = require('../utils/util');
 const technicianModel = require("../models/technicianModel");
 
 
