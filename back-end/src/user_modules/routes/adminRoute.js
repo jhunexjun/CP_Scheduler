@@ -9,6 +9,7 @@ const locationRoute = require('./locationRoute');
 const logoutRoute = require('./logoutRoute');
 const extendSessionRoute = require('./extendSessionRoute');
 const invoiceRoute = require('./invoiceRoute');
+const invoicesListRoute = require('./invoicesListRoute');
 
 
 module.exports = function(app) {
@@ -19,6 +20,7 @@ module.exports = function(app) {
     router.put('/logout', logoutRoute);   // http://localhost:8080/admin/logout
     router.put('/extendsession', extendSessionRoute);   // http://localhost:8080/admin/extendSession
     router.get('/invoice', invoiceRoute);
+    router.get('/invoiceslist', invoicesListRoute);
 
   return router;
 }

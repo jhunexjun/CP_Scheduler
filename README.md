@@ -1,6 +1,5 @@
 To do's:
 
-10. Buttom preview work order in rpt form
 12. Get the official operating hours.
 
 Done:
@@ -28,11 +27,12 @@ Started to add more features based on the meeting yesterday.
 7. Work order detail as read-only. Auto populate.
 8. Button for refresh and auto refresh 
 9. Add the date/time notes in work order details and who wrote it.
+10. Buttom preview work order in rpt form
 11. Expiry session in minutes setting to put in the database or .env
 
 
 Future add-ons:
-1. Send email
+1. Send email - Twilio pwd jshetWokAfrQ441a
 2. Send text
 
 

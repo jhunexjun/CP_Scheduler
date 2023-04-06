@@ -17,13 +17,13 @@ const routes = [
 		component: <Invoice />,
 		layout: "/admin",
 	},
-	// {
-	// 	path: "/sms/:sessionId",  // i.e. /admin/sms/<sessionId>
-	// 	name: "SMS",
-	// 	icon: "nc-icon nc-mobile",
-	// 	component: <Sms />,
-	// 	layout: "/admin",
-	// },
+	{
+		path: "/sms/:sessionId",  // i.e. /admin/sms/<sessionId>
+		name: "SMS",
+		icon: "nc-icon nc-mobile",
+		component: <Sms />,
+		layout: "/admin",
+	},
 ];
 
 export default routes;

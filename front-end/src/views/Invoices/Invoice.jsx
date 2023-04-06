@@ -6,105 +6,15 @@ import invoiceDocumentContainer from './Invoice/InvoiceDocumentContainer';
 
 import JsBarcode from 'jsbarcode';
 
+import UilReact from '@iconscout/react-unicons/icons/uil-react';
+import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
+import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
+
+import { Popup, ToolbarItem } from 'devextreme-react/popup';
+import ScrollView from 'devextreme-react/scroll-view';
+
 
 const defaultData = {
-			// headers: {},
-			// table: {
-			// 	rows: [{
-			// 		itemNo: 'JH-52633',
-			// 		description: 'Tire',
-			// 		hours: 2.5,
-			// 		salesQty: 4,
-			// 	},
-			// 	{
-			// 		itemNo: 'MIC 90000036818',
-			// 		description: 'Shock',
-			// 		hours: 3.45,
-			// 		salesQty: 1,
-			// 	},
-			// 	{
-			// 		itemNo: 'YWW-611GWOW',
-			// 		description: 'Headlight',
-			// 		hours: 1,
-			// 		salesQty: 2,
-			// 	},
-			// 	{
-			// 		itemNo: 'MIC 90000036818',
-			// 		description: 'Shock',
-			// 		hours: 3.45,
-			// 		salesQty: 1,
-			// 	},
-			// 	{
-			// 		itemNo: 'YWW-611GWOW',
-			// 		description: 'Headlight',
-			// 		hours: 1,
-			// 		salesQty: 2,
-			// 	},
-			// 	{
-			// 		itemNo: 'MIC 90000036818',
-			// 		description: 'Shock',
-			// 		hours: 3.45,
-			// 		salesQty: 1,
-			// 	},
-			// 	{
-			// 		itemNo: 'YWW-611GWOW',
-			// 		description: 'Headlight',
-			// 		hours: 1,
-			// 		salesQty: 2,
-			// 	},
-			// 	{
-			// 		itemNo: 'MIC 90000036818',
-			// 		description: 'Shock',
-			// 		hours: 3.45,
-			// 		salesQty: 1,
-			// 	},
-			// 	{
-			// 		itemNo: 'YWW-611GWOW',
-			// 		description: 'Headlight',
-			// 		hours: 1,
-			// 		salesQty: 2,
-			// 	},
-			// 	{
-			// 		itemNo: 'MIC 90000036818',
-			// 		description: 'Shock',
-			// 		hours: 3.45,
-			// 		salesQty: 1,
-			// 	},
-			// 	{
-			// 		itemNo: 'YWW-611GWOW',
-			// 		description: 'Headlight',
-			// 		hours: 1,
-			// 		salesQty: 2,
-			// 	},
-			// 	{
-			// 		itemNo: 'MIC 90000036818',
-			// 		description: 'Shock',
-			// 		hours: 3.45,
-			// 		salesQty: 1,
-			// 	},
-			// 	{
-			// 		itemNo: 'YWW-611GWOW',
-			// 		description: 'Headlight',
-			// 		hours: 1,
-			// 		salesQty: 2,
-			// 	},
-			// 	{
-			// 		itemNo: 'KEW-I2',
-			// 		description: 'Dashcam',
-			// 		hours: 1.5,
-			// 		salesQty: 1,
-			// 	},
-			// 	{
-			// 		itemNo: 'LW7-FAS5',
-			// 		description: 'Side mirror',
-			// 		hours: 1.8,
-			// 		salesQty: 2,
-			// 	},]
-			// },
-			// notes: [{
-			// 	id: 'note-22571',
-			// 	text: 'Replace all 4 tires.',
-			// }],
 			data: {
 				table: [
 					{
@@ -169,6 +79,7 @@ export default () => {
 	const [invoiceNo, setInvoiceNo] = useState('');
 	const { sessionId } = useParams();
 	const [data, setData] = useState(defaultData);
+	const [popupVisible, setPopupVisible] = useState(false);
 	const navigate = useNavigate();
 
 	const fetchInvoiceData = useCallback(async (invoiceNo) => {
@@ -198,6 +109,23 @@ export default () => {
 		await fetchInvoiceData(invoiceNo);
 	}
 
+	async function fetchInvoicesList() {
+		//setPopupVisible
+	}
+
+	let closeButtonOptions = {
+		text: 'Close',
+		onClick: hideInfo,
+	}
+
+	function hideInfo() {
+		setPopupVisible(false);
+	}
+
+	async function showInvoiceList() {
+		setPopupVisible(true);
+	}
+
 	return (
 		<div className="content">
 			<div className="row">
@@ -211,13 +139,20 @@ export default () => {
 				<div className="col">
 					<div className="row g-3 align-items-center">
 						<div className="col-auto">
-							<label htmlFor="inputInvoiceNo" className="col-form-label">Invoice no.</label>
+							<label htmlFor="inputInvoiceNo" className="col-form-label">Invoice no</label>
 						</div>
 						<div className="col-auto">
 							<input type="text" id="inputInvoiceNo" className="form-control" onChange={(e) => setInvoiceNo(e.target.value)} />
 						</div>
 						<div className="col-auto">
-							<button type="button" className="btn btn-primary" onClick={ async () => await fetchInvoice() }>Search</button>
+							<span onClick={ async () => await fetchInvoice() } style={{cursor: 'pointer'}} title="Click to search an invoice.">
+								<UilSearchAlt size="20" color="#61DAFB" />
+							</span>
+						</div>
+						<div className="col-auto">
+							<span onClick={ async () => await showInvoiceList() } style={{cursor: 'pointer'}} title="Show the list of invoices." >
+								<UilListUl size="20" color="#61DAFB" />
+							</span>
 						</div>
 					</div>
 				</div>
@@ -225,6 +160,31 @@ export default () => {
 			<div className="row">
 				<div className="col">
 					<PDFViewer width={'100%'} height={700}>{invoiceDocumentContainer(data)}</PDFViewer>
+				</div>
+			</div>
+			<div className="row">
+				<div className="col">
+					 <Popup
+						visible={popupVisible}
+						//onHiding={this.hideInfo}
+						dragEnabled={false}
+						hideOnOutsideClick={true}
+						showCloseButton={false}
+						showTitle={true}
+						title="Information"
+						container=".dx-viewport"
+						width={550}
+						height={350}>
+						<ToolbarItem
+							widget="dxButton"
+							toolbar="bottom"
+							location="after"
+							options={closeButtonOptions}
+						/>
+						<p>
+							sdfsfsd
+						</p>
+					</Popup>
 				</div>
 			</div>
 		</div>
