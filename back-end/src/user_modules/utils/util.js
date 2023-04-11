@@ -1,16 +1,8 @@
 const dbConnection = require('../dbConnections/tediousConnect');
 
 module.exports = {
-	/*getColumnTotal,*/ executeRequestAsync, executeOutputParams, isSet,
+	executeRequestAsync, executeOutputParams, isSet, formatDateMMddYYYYhhmmss,
 };
-
-// function getColumnTotal(arrayRows, columnName) {
-// 		const sum = arrayRows.reduce((accumulator, object) => {
-// 			return accumulator + object[columnName];
-// 		}, 0);
-
-// 		return sum;
-// 	};
 
 async function executeRequestAsync(request) {
 		return new Promise(async (resolve, reject) => {
@@ -64,4 +56,37 @@ function isSet(object, property) {
 		return true;
 	else
 		return false;
+}
+
+function formatDateMMddYYYYhhmmss(date) {
+	let d = new Date(date),
+		month = '' + (d.getMonth() + 1),
+		day = '' + d.getDate(),
+		year = d.getFullYear(),
+		hh = d.getHours(),
+		mm = d.getMinutes();
+		ss = d.getSeconds();
+
+	if (d == 'Invalid Date')
+		return '';
+
+	if (month.length < 2)
+		month = '0' + month;
+	if (day.length < 2)
+		day = '0' + day;
+
+	let meridiem = '';
+	if (hh < 12) {
+		meridiem = ' AM';
+	} else {
+		hh = hh - 12;
+		meridiem = ' PM';
+	}
+
+	mm = (mm.toString().length === 1) ? '0' + mm : mm;
+
+	const dt = [month, day, year].join('/');
+	const time = [hh, mm, ss].join(':');
+
+	return dt + ' ' + time + meridiem;
 }

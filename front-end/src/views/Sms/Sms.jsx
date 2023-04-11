@@ -1,7 +1,19 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import Form, { Item, Label, ButtonItem, PatternRule, RequiredRule } from 'devextreme-react/form';
+import Form, {
+	Item,
+	Label,
+	ButtonItem,
+	PatternRule,
+	RequiredRule,
+	GroupItem,
+	SimpleItem,
+	TabbedItem,
+	TabPanelOptions,
+	Tab
+} from 'devextreme-react/form';
+import { DataGrid, Selection, Paging } from 'devextreme-react/data-grid';
 import notify from 'devextreme/ui/notify';
 import 'devextreme-react/text-area';
 
@@ -11,24 +23,37 @@ import smsData from './data';
 
 import { uriEncode } from '../../utils/util';
 
+const phoneEditorOptions = { mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ }, };
+
 
 export default () => {
 	const [formInstance, setFormInstance] = useState(null);
 	const [smsRemainingChar, setSmsRemainingChar] = useState('160/160');
 	let [recipient, setRecipient] = useState('');
 	let [smsMessage, setSmsMessage] = useState('');
+	let [sentSms, setSentSms] = useState([]);
+	let [outboxSms, setOutboxSms] = useState([]);
+
+	let dataGridAllData
 
 	const navigate = useNavigate();
 	const { sessionId } = useParams();
 
-	const phoneEditorOptions = { mask: '+1 (X00) 000-0000',
-								maskRules: { X: /[02-9]/ },
-								onOptionChanged(event) {
-									if (event.name === 'text') {
-										//console.log('event phone: ', event);
-										//setRecipient(event.value);
-									}
-								}};
+	const fetchSms = useCallback(async () => {
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms?sessionId=${sessionId}`)
+			.then((res) => {
+				return res.json()
+			})
+			.then((res) => {
+				setSentSms(filterSms(res.data, 'Sent'));
+				setOutboxSms(filterSms(res.data, 'Outbox'));
+			});
+	}, []);
+
+	useEffect(() => {
+		fetchSms();
+	}, []);
+
 
 	const txtEditorOptions = { height: 90,
 							maxLength: 160,
@@ -43,7 +68,6 @@ export default () => {
 									}
 
 									setSmsRemainingChar((maxlength - currentLength) + '/160');
-
 								}
 							},
 						};
@@ -69,7 +93,7 @@ export default () => {
 					navigate('/');
 					return;
 				}
-				console.log('res: ', res);
+				// console.log('res: ', res);
 
 				notify({
 					message: 'SMS has been sent!',
@@ -90,11 +114,28 @@ export default () => {
 		await postSms(sms);
 	}
 
+	function filterSms(data, filterBy) {
+		return data.reduce((prevValue, currentValue) => {
+			const { Status } = currentValue;
+			if (Status == filterBy) {
+				prevValue.push({	Id: currentValue.Id,
+							UserId: currentValue.UserId,
+							Recipient: currentValue.Recipient,
+							Sms: currentValue.Sms,
+							Status: currentValue.Status,
+							MessageSid: currentValue.MessageSid,
+							DateTimeSent: currentValue.DateTimeSent,
+						});
+			}
+
+			return prevValue;
+		}, []);
+	}
 
 	return (
 		<div className="content">
 			<div className="row">
-				<div className="col-6 offset-2" style={{position: 'relative'}}>
+				<div className="col-6 offset-1" style={{position: 'relative'}}>
 					<form action="none" onSubmit={async (e) => await handleSubmit(e)}>
 						<Form formData={smsData} onInitialized={onInitialized}>
 							<Item dataField="Phone" name="phone" editorOptions={phoneEditorOptions} helpText="Enter the phone number in USA phone format">
@@ -110,6 +151,33 @@ export default () => {
 						</Form>
 					</form>
 					<div style={{position: 'absolute', bottom: '25px', left: '105px'}}>{smsRemainingChar}</div>
+				</div>
+			</div>
+			<div className="row mt-4">
+				<div className="col-8 offset-1">
+					<hr />
+					<Form
+						//colCount={2}
+						id="forwefedfdsf"
+						formData={null}>
+						<GroupItem caption="SMS messages">
+							<TabbedItem>
+								<TabPanelOptions deferRendering={false} />
+								<Tab title="Sent">
+									<DataGrid dataSource={sentSms}>
+										<Selection mode="single" />
+										<Paging defaultPageSize={5} defaultPageIndex={1} />
+									</DataGrid>
+								</Tab>
+								<Tab title="Outbox">
+									<DataGrid dataSource={outboxSms}>
+										<Selection mode="single" />
+										<Paging defaultPageSize={5} defaultPageIndex={1} />
+									</DataGrid>
+								</Tab>
+							</TabbedItem>
+						</GroupItem>
+					</Form>
 				</div>
 			</div>
 		</div>

@@ -22,7 +22,7 @@ module.exports = function(app) {
     router.put('/extendsession', extendSessionRoute);   // http://localhost:8080/admin/extendSession
     router.get('/invoice', invoiceRoute);
     router.get('/invoiceslist', invoicesListRoute);
-    router.post('/sms', smsRoute);
+    router.all('/sms', smsRoute);
 
   return router;
 }
