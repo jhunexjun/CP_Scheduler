@@ -195,7 +195,7 @@ export default () => {
 						<DataGrid dataSource={invoices} columnAutoWidth={true}>
 							<Column dataField="TKT_NO" caption="Ticket #" />
 							<Column dataField="TKT_DAT" dataType="date" caption="Invoice Date" />
-							<Column dataField="CUST_NO" caption="Customer #" />
+							{/*<Column dataField="CUST_NO" caption="Customer #" />*/}
 							<Column dataField="BILL_NAM" caption="Customer Name" />
 							<Column dataField="NOTE_TXT" caption="Note" />
 							<Selection mode="single" />
