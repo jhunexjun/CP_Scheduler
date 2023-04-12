@@ -12,6 +12,7 @@ import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
 
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
 import ScrollView from 'devextreme-react/scroll-view';
+import { DataGrid, Column, Selection, Paging, FilterRow, SearchPanel } from 'devextreme-react/data-grid';
 
 
 const defaultData = {
@@ -81,6 +82,9 @@ export default () => {
 	const [data, setData] = useState(defaultData);
 	const [popupVisible, setPopupVisible] = useState(false);
 	const navigate = useNavigate();
+	const [invoices, setInvoices] = useState([]);
+
+	// let dataGridData = [{fName: 'Jhun', lName: 'Morcilla', Profession: 'Software Engineer'}];
 
 	const fetchInvoiceData = useCallback(async (invoiceNo) => {
 		await fetch(`${adminUrl}/invoice?sessionId=${sessionId}&invoiceNo=${invoiceNo}`)
@@ -99,6 +103,16 @@ export default () => {
 			});
 	}, []);
 
+	const fetchSms = useCallback(async () => {
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/invoiceslist?sessionId=${sessionId}`)
+			.then((res) => {
+				return res.json()
+			})
+			.then((res) => {
+				setInvoices(res.data);
+			});
+	}, []);
+
 	function getImgBase64String(value) {
 		const barcodeNode = document.getElementById('barcode');
 		JsBarcode(barcodeNode, value, {displayValue: false});
@@ -107,10 +121,6 @@ export default () => {
 
 	async function fetchInvoice() {
 		await fetchInvoiceData(invoiceNo);
-	}
-
-	async function fetchInvoicesList() {
-		//setPopupVisible
 	}
 
 	let closeButtonOptions = {
@@ -124,6 +134,7 @@ export default () => {
 
 	async function showInvoiceList() {
 		setPopupVisible(true);
+		await fetchSms();
 	}
 
 	return (
@@ -173,17 +184,25 @@ export default () => {
 						showTitle={true}
 						title="Information"
 						container=".dx-viewport"
-						width={550}
-						height={350}>
+						width={750}
+						height={550}>
 						<ToolbarItem
 							widget="dxButton"
 							toolbar="bottom"
 							location="after"
 							options={closeButtonOptions}
 						/>
-						<p>
-							sdfsfsd
-						</p>
+						<DataGrid dataSource={invoices} columnAutoWidth={true}>
+							<Column dataField="TKT_NO" caption="Ticket #" />
+							<Column dataField="TKT_DAT" dataType="date" caption="Invoice Date" />
+							<Column dataField="CUST_NO" caption="Customer #" />
+							<Column dataField="BILL_NAM" caption="Customer Name" />
+							<Column dataField="NOTE_TXT" caption="Note" />
+							<Selection mode="single" />
+							<FilterRow visible={true} />
+							<SearchPanel visible={true} />
+							<Paging defaultPageSize={8} defaultPageIndex={1} />
+						</DataGrid>
 					</Popup>
 				</div>
 			</div>
