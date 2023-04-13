@@ -1,77 +1,44 @@
-To do's:
+# Counterpoint Scheduler
 
-12. Get the official operating hours.
+There's no built-in scheduler with Counterpoint so this was built on top of it. This project was built using node.js express.js, MS SQL for back-end. Front-end use React.js.
 
-Done:
+## Installation
 
-Create batch file and call it from Counterpoint.
-add day
-technician
-location
-store
-Counterpoint workgroup
-employee by workgroup
-Started to add more features based on the meeting yesterday.
- * To added a virtual login.
- * To add session auto log-out.
- * To add a dropdown list of technicians as filter of the scheduler.
- * Filter out scheds only to specific location.
- * Location from other stores cannot add sched from another store.
- * etc.
-1. logo
-2. store code and user logged in
-3. 5 minutes or 10 minutes session expity
-4. concat work order #, name, phone number, plate#
-5. Put the CompuTant Logo at the bottom and web address and toll free.
-6. Subject = service type
-7. Work order detail as read-only. Auto populate.
-8. Button for refresh and auto refresh 
-9. Add the date/time notes in work order details and who wrote it.
-10. Buttom preview work order in rpt form
-11. Expiry session in minutes setting to put in the database or .env
+Use npm as installer for node.js. From the back-end folder, run `npm install`. Do the same in front-end folder.
 
 
-Future add-ons:
-1. Send email - Twilio pwd jshetWokAfrQ441a
-2. Send text
 
+## Running dev.
+From back-end folder run
 
-Issues:
-1. Routes in Side menu. - fixed.
-2. Autolog out must fetch() to update db.
-3. Rename invoices to workOrders.
-4. fetch invoices do not responds to expired session.
+```bash
+clear && npm run buildDev && npm start
+```
+From front-end folder run
+```bash
+clear && npm start
+```
 
+## Running production.
+From back-end folder run
 
-Notes:
+```bash
+clear && npm run buildProd && npm start
+```
+From front-end folder run
+```bash
+clear && npm run build && npm start
+```
 
-GREENVILLE
-    http://localhost:3000/createsession?userid=ADAML
-    http://localhost:3000/createsession?userid=BILLY
-    http://localhost:3000/createsession?userid=GREGM
+## Running from browser
+To run, from browser pull up `http://localhost:3000/createsession?userid=BILLY`. BILLY is the Counterpoint user so you can replace it any valid user of Counterpoint.
 
-HOUSTON
-    http://localhost:3000/createsession?userid=GREG
+## Contributing
 
-RALEIGH
-    http://localhost:3000/createsession?userid=HAYDEN
+Jhun Morcilla - software engineer
 
-Transparent logo
-    https://online.inpixio.com/tools/auto-remove-background/edit/4516a3e7-0927-4ab1-b535-6812a71f847d
+Thanks to Vincent Pascua for being very supportive.
 
+## License
 
-Added transparent logo
-Removed robot params
-Removed unnecessary code
-Fixed bug wherein you have to refresh the page to delete or update newly added schedule.
-Added /extendsession route.
-
-Added the All Day panel, this has to be added because when scheduler adds item without the time because it assumes the time is whole day.
-Corrected the minutes of inactivity.
-Changed from milliseconds to minutes to input the inactivity of user.
-
-
-Searched for the best pdf generator to display the report outside of Counterpoint.
-Tried and tested them if it fits to this project.
-
-Uninstall npm react-pdf-html soon.
+[MIT](https://choosealicense.com/licenses/mit/)

@@ -16,6 +16,7 @@ import Form, {
 import { DataGrid, Selection, Paging } from 'devextreme-react/data-grid';
 import notify from 'devextreme/ui/notify';
 import 'devextreme-react/text-area';
+import { Button } from 'devextreme-react/button';
 
 import LabelTemplate from './LabelTemplate';
 import LabelNotesTemplate from './LabelNotesTemplate';
@@ -132,6 +133,10 @@ export default () => {
 		}, []);
 	}
 
+	// function refreshSmsMessages() {
+	// 	fetchSms();
+	// }
+
 	return (
 		<div className="content">
 			<div className="row">
@@ -178,6 +183,15 @@ export default () => {
 							</TabbedItem>
 						</GroupItem>
 					</Form>
+				</div>
+			</div>
+			<div className="row">
+				<div className="col-9">
+					<div class="position-relative">
+						<div class="position-absolute top-0 end-0">
+							<Button text="Refresh" onClick={async () => await fetchSms()} />
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

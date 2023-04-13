@@ -1,7 +1,7 @@
 // for enhancements, use https://www.npmjs.com/package/tedious-async#execsqlasync
 // Move this to RediousConnection folder.
 
-// Do not use this anymore. To be desolved soon. Use the msSqlConnect instead.
+// Do not use this anymore. To be desolved soon. Use the msSqlConnect.js instead.
 // The issue with tedious is cannot bear 2 retrievals at the same time.
 
 const Connection = require('tedious').Connection
