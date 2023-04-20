@@ -11,7 +11,7 @@ module.exports = async function(req, res) {
 
 		let workOrders = await workOrdersModel.getWorkOrders(req);
 
-		if (workOrders[0].hasOwnProperty('errorNo'))
+		if (workOrders.length > 0 && workOrders[0].hasOwnProperty('errorNo'))
 			res.json({ status: 'Error', message: workOrders[0].errMsg })
 		else
 			res.json({ status: "OK", data: workOrders, });
