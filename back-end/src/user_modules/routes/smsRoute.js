@@ -51,8 +51,8 @@ async function addSms(req) {
 	const countryCode = '+1';
 	req.body.recipient = countryCode + req.body.recipient;
 
-	//const messageSid = sendSms(req.body.recipient, req.body.smsMessage);
-	const messageSid = 'dfdsf86ndmeh1l';
+	const messageSid = sendSms(req.body.recipient, req.body.smsMessage);
+	// const messageSid = 'dfdsf86ndmeh1l';
 	await smsModel.insertSms(req, messageSid, 'Sent');
 
 

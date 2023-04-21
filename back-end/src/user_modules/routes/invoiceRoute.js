@@ -6,7 +6,7 @@ module.exports = async function(req, res) {
 		const tableData = await invoiceModel.getInvoice(req);
 
 		if (tableData.length < 1) {
-			res.json({ status: 'OK', message: 'No invoice found.', data: {table: []} });
+			res.json({ status: 'OK', message: 'No invoice found.', data: {table: [], notes: []} });
 			return;
 		}
 
@@ -15,7 +15,11 @@ module.exports = async function(req, res) {
 			return;
 		}
 
-		const x = { table: tableData,
+		const invoiceNotes = await invoiceModel.getInvoiceNotes(req);
+
+		const x = {
+					table: tableData,
+					notes: invoiceNotes,
 					barcode: {
 						base64: null
 					}

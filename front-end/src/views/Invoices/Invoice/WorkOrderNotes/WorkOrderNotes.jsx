@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
 
 
 const WorkOrderNotes = (props) => {
-	const notes = props.data.table.map((item, index) => {
+	// const notes = props.data.table.map((item, index) => {
+	const notes = props.data.notes.map((item, index) => {
 		if (isNullOrWhiteSpace(item.NOTE_TXT))
 			return <View key={ index + 1 }></View>;
 

@@ -44,8 +44,8 @@ const defaultData = {
 						shipAddress: "",
 						hours: 0,
 						SalesQty: 0,
-						NOTE_DAT: "",
-						NOTE_TXT: "",
+						//NOTE_DAT: "",
+						//NOTE_TXT: "",
 						USR_APPT_DAT: null,
 						USR_APPT_TIM: null,
 						USR_CUSTOMER_OWN_PARTS: null,
@@ -68,6 +68,10 @@ const defaultData = {
 						USR_YR: '',
 					}
 				],
+				notes: [{
+					NOTE_DAT: "",
+					NOTE_TXT: "",
+				}],
 				barcode: { base64: null },
 			},
 	}

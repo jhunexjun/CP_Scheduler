@@ -23,8 +23,18 @@ clear && npm start
 From back-end folder run
 
 ```bash
-clear && npm run buildProd && npm start
+npm run buildProd
 ```
+it will create compiled files to dist/ folder.
+Then using pm2 as process management, run if not yet installed.
+```bash
+npm install pm2@latest -g
+```
+If installed already.
+```bash
+pm2 start build/server.js
+```
+
 From front-end folder run
 ```bash
 clear && npm run build && npm start
