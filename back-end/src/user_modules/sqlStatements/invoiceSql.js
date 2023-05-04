@@ -1,5 +1,5 @@
 module.exports = {
-	getInvoice, getInvoiceNotes
+	getInvoice, getInvoiceNotes, getInvoices
 }
 
 function getInvoice() {
@@ -8,4 +8,8 @@ function getInvoice() {
 
 function getInvoiceNotes() {
 	return 'exec dbo.USER_InvoiceNotesGet @sessionId, @invoiceNo';
+}
+
+function getInvoices() {
+	return 'exec dbo.USER_InvoicesListGet @sessionId';
 }

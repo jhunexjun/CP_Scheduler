@@ -4,7 +4,23 @@ There's no built-in scheduler with Counterpoint so this was built on top of it. 
 
 ## Installation
 
+Install the following
+1. node.js at least version v14.17.5.
+2. Any code editor like Visual Studio Code. But me I use Sublime 3.
+3. $ npm install pm2@latest -g
+4. 
+
+## Optional Installtion
+Depends on what you use to run your front-end. You can use IIS. If you use IIS, use the web.config in order to run the react.js.
+Tested on IIS. Refer to the internet on how to install IIS 10 for Windows 10 or 11. Then install the Windows URL Rewriter for IIS.
+
 Use npm as installer for node.js. From the back-end folder, run `npm install`. Do the same in front-end folder.
+
+### Reference
+https://dev.to/sumitkharche/how-to-deploy-react-application-on-iis-server-1ied
+https://serverok.in/how-to-serve-static-site-using-pm2
+https://pm2.keymetrics.io/docs/usage/quick-start/
+
 
 
 
@@ -32,8 +48,25 @@ npm install pm2@latest -g
 ```
 If installed already.
 ```bash
-pm2 start build/server.js
+Jhun@POS-HI-DEMO-0 MINGW64 /c/Scheduler/back-end (main)
+$ pm2 start dist/server.js --name scheduler-back-end-8080 -- --port 8080
 ```
+
+To run in production mode using pm2.
+To utilize pm2 according to good practice, run `$ pm2 start dist/server.js --name Scheduler-BE-8080 -- --port 8080`
+Then run `$ pm2 serve build/ --spa --name Scheduler-FE-3000 --port 3000`
+
+
+To run in production using node-windows instead of pm2.
+1. `npm i node-windows -g`. Close the terminal and run as Administrator.
+2. Run `npm link node-windows`.
+3. Go to the root dir and copy the service.js to the dist/ directory.
+4. From dist dir, run `node service.js`.
+5. It should show the new service `CompuTant Scheduler` to the windows service.
+6. It will create new directory daemon in your current dir.
+7. The common error is it cannot connect to sql server. To fix, copy the .env to the dist dir.
+8. Restart the new windows service. You're good to go. 
+
 
 From front-end folder run
 ```bash
@@ -48,6 +81,13 @@ To run, from browser pull up `http://localhost:3000/createsession?userid=BILLY`.
 Jhun Morcilla - software engineer
 
 Thanks to Vincent Pascua for being very supportive.
+
+### Scripts
+```
+Pull up from browser: http://localhost:3000/createsession?userid=BILLY
+Back-end: http://localhost:8080/createsession?userid=BILLY&expiryinminutes=10
+http://localhost:3000/admin/invoice/40FD37AB-4AE1-4D2E-A7AF-2E51AF2CC8D4
+```
 
 ## License
 

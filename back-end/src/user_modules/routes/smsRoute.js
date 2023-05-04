@@ -48,27 +48,27 @@ async function addSms(req) {
 		return;
 	}
 
-	const countryCode = '+1';
+	const countryCode = '+1';	// we only need american number.
 	req.body.recipient = countryCode + req.body.recipient;
 
-	const messageSid = sendSms(req.body.recipient, req.body.smsMessage);
+	const messageSid = await sendSms(req.body.recipient, req.body.smsMessage);
 	// const messageSid = 'dfdsf86ndmeh1l';
+
 	await smsModel.insertSms(req, messageSid, 'Sent');
-
-
-	// const messageSid = 'random string here.';
 	return { status: 'OK', message: `SMS successfully sent to +1${req.body.recipient}. SID: ${messageSid}` };
 }
 
-function sendSms(recipient, smsMessage) {
+async function sendSms(recipient, smsMessage) {
 	const accountSid = process.env.TWILIO_ACCOUNTSID;
 	const client = require("twilio")(accountSid, authToken);
 	const authToken = process.env.TWILIO_AUTH_TOKEN;
 	return client.messages.create({
 								body: smsMessage,
 								from: `${process.env.TWILIO_MOBILENO}`,
-								to: `+1${recipient}`	// we only need american number.
-								// to: `+63${recipient}`	// we only need american number.
+								// to: `${recipient}`
+								// to: `+63${recipient}`
+								// to: `+639065165124`
+								to: `+639608581818`
 							}).then(message => message.sid);
 }
 

@@ -1,6 +1,7 @@
 #Note: Jhun: that this was from Express and Webpack Boilerplate. I Modified some to align with my project.
 
 To run: `clear && npm run buildDev && npm start`
+https://www.youtube.com/watch?v=1smy9yyme1Y
 
 
 

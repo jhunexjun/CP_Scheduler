@@ -14,15 +14,23 @@ import Form, {
 	Tab
 } from 'devextreme-react/form';
 import { DataGrid, Selection, Paging } from 'devextreme-react/data-grid';
+import TextArea from 'devextreme-react/text-area';
 import notify from 'devextreme/ui/notify';
 import 'devextreme-react/text-area';
 import { Button } from 'devextreme-react/button';
+import List from 'devextreme-react/list';
+import ArrayStore from 'devextreme/data/array_store';
+import TileView from 'devextreme-react/tile-view';
 
 import LabelTemplate from './LabelTemplate';
 import LabelNotesTemplate from './LabelNotesTemplate';
 import smsData from './data';
 
 import { uriEncode } from '../../utils/util';
+import './styles.css';
+
+import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
+import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
 
 const phoneEditorOptions = { mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ }, };
 
@@ -34,6 +42,8 @@ export default () => {
 	let [smsMessage, setSmsMessage] = useState('');
 	let [sentSms, setSentSms] = useState([]);
 	let [outboxSms, setOutboxSms] = useState([]);
+
+	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
 	let dataGridAllData
 
@@ -51,8 +61,27 @@ export default () => {
 			});
 	}, []);
 
+	const fetchCustomers = useCallback(async () => {
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/customers?sessionId=${sessionId}`)
+			.then((res) => {
+				return res.json()
+			})
+			.then((res) => {
+				const data = res.data;
+				const dataStruct = { store: new ArrayStore({
+											data,
+											key: 'CUST_NO',
+										}),
+										searchExpr: ['CUST_NO', 'NAM', 'ADRS_1', 'EMAIL_ADRS_1', 'PHONE_1'],
+									}
+
+				setDataSourceOptions(dataStruct);
+			});
+	}, []);
+
 	useEffect(() => {
 		fetchSms();
+		fetchCustomers();
 	}, []);
 
 
@@ -137,61 +166,56 @@ export default () => {
 	// 	fetchSms();
 	// }
 
+	// function textMsgInputHandler(event) {
+	// 	const maxlength = 160;
+	// 	let currentLength = event.value.length;
+
+	// 	if (currentLength > maxlength) {
+	// 		console.log("You have reached the maximum number of characters.");
+	// 		return;
+	// 	}
+
+	// 	setSmsRemainingChar((maxlength - currentLength) + '/160');
+	// }
+
+	function renderListItem(item) {
+		// console.log('item: ', item);
+		return (
+			<div>
+				<div>{item.CUST_NO}</div>
+				<div className="hotel">
+					<div className="name">{item.NAM}</div>
+					<div className="address">{item.ADRS_1}</div>
+				</div>
+				<div className="price-container">
+					<div className="price"></div>
+						&nbsp;
+					<div className="caption">per<br />night</div>
+				</div>
+			</div>
+		);
+	}
+
 	return (
 		<div className="content">
 			<div className="row">
-				<div className="col-6 offset-1" style={{position: 'relative'}}>
-					<form action="none" onSubmit={async (e) => await handleSubmit(e)}>
-						<Form formData={smsData} onInitialized={onInitialized}>
-							<Item dataField="Phone" name="phone" editorOptions={phoneEditorOptions} helpText="Enter the phone number in USA phone format">
-								<Label render={LabelTemplate('tel')} />
-								<PatternRule message="The phone must have a correct USA phone format" pattern={/^[02-9]\d{9}$/} />
-								<RequiredRule message="Phone number is required" />
-							</Item>
-							<Item dataField="textMsg" name="textMsg" editorType="dxTextArea" editorOptions={txtEditorOptions}>
-								<Label render={LabelNotesTemplate} />
-								<RequiredRule message="Sms message is required" />
-							</Item>
-							<ButtonItem horizontalAlignment="right" buttonOptions={{text: 'Send', type: 'success', useSubmitBehavior: true}}></ButtonItem>
-						</Form>
-					</form>
-					<div style={{position: 'absolute', bottom: '25px', left: '105px'}}>{smsRemainingChar}</div>
-				</div>
-			</div>
-			<div className="row mt-4">
-				<div className="col-8 offset-1">
-					<hr />
-					<Form
-						//colCount={2}
-						id="forwefedfdsf"
-						formData={null}>
-						<GroupItem caption="SMS messages">
-							<TabbedItem>
-								<TabPanelOptions deferRendering={false} />
-								<Tab title="Sent">
-									<DataGrid dataSource={sentSms}>
-										<Selection mode="single" />
-										<Paging defaultPageSize={5} defaultPageIndex={1} />
-									</DataGrid>
-								</Tab>
-								<Tab title="Outbox">
-									<DataGrid dataSource={outboxSms}>
-										<Selection mode="single" />
-										<Paging defaultPageSize={5} defaultPageIndex={1} />
-									</DataGrid>
-								</Tab>
-							</TabbedItem>
-						</GroupItem>
-					</Form>
-				</div>
-			</div>
-			<div className="row">
-				<div className="col-9">
-					<div class="position-relative">
-						<div class="position-absolute top-0 end-0">
-							<Button text="Refresh" onClick={async () => await fetchSms()} />
-						</div>
+				<div className="col-3">
+					<div className="left">
+						<List
+							selectionMode="single"
+							dataSource={dataSourceOptions}
+							grouped={false}
+							searchEnabled={true}
+							// selectedItemKeys={null}
+							// onSelectionChanged={null}
+							itemRender={renderListItem}
+							// groupRender={null}
+							elementAttr={{ class: 'list' }}
+						/>
 					</div>
+				</div>
+				<div className="col-4">
+
 				</div>
 			</div>
 		</div>

@@ -76,8 +76,6 @@ const defaultData = {
 			},
 	}
 
-// const dataContext = createContext(data);
-
 const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
 export default () => {
@@ -87,8 +85,8 @@ export default () => {
 	const [popupVisible, setPopupVisible] = useState(false);
 	const navigate = useNavigate();
 	const [invoices, setInvoices] = useState([]);
-
-	// let dataGridData = [{fName: 'Jhun', lName: 'Morcilla', Profession: 'Software Engineer'}];
+	const [displayInvoice, setDisplayInvoice] = useState(false);
+	const [selectedInvoiceNo, setSelectedInvoiceNo] = useState(null);
 
 	const fetchInvoiceData = useCallback(async (invoiceNo) => {
 		await fetch(`${adminUrl}/invoice?sessionId=${sessionId}&invoiceNo=${invoiceNo}`)
@@ -103,11 +101,12 @@ export default () => {
 				} else {
 					invoice.data.barcode.base64 = getImgBase64String(invoice.data.table[0].TKT_NO);
 					setData(invoice);
+					setDisplayInvoice(true);
 				}
 			});
 	}, []);
 
-	const fetchSms = useCallback(async () => {
+	const fetchInvoiceList = useCallback(async () => {
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/invoiceslist?sessionId=${sessionId}`)
 			.then((res) => {
 				return res.json()
@@ -124,10 +123,16 @@ export default () => {
 	}
 
 	async function fetchInvoice() {
+		setDisplayInvoice(false);
 		await fetchInvoiceData(invoiceNo);
 	}
 
-	let closeButtonOptions = {
+	const selectButtonOptions = {
+		text: 'Select',
+		onClick: hideAndSelect,
+	}
+
+	const closeButtonOptions = {
 		text: 'Close',
 		onClick: hideInfo,
 	}
@@ -136,9 +141,27 @@ export default () => {
 		setPopupVisible(false);
 	}
 
+	function hideAndSelect() {
+		setDisplayInvoice(false);
+		setInvoiceNo(selectedInvoiceNo);
+		setPopupVisible(false);
+	}
+
 	async function showInvoiceList() {
 		setPopupVisible(true);
-		await fetchSms();
+		await fetchInvoiceList();
+	}
+
+	function showTheInvoice() {
+		if (displayInvoice)
+			return (<PDFViewer width={'100%'} height={700}>{invoiceDocumentContainer(data)}</PDFViewer>);
+		else
+			return null;
+	}
+
+	function onSelectionChanged({ selectedRowsData }) {
+		const data = selectedRowsData[0];
+		setSelectedInvoiceNo(data && data.TKT_NO);
 	}
 
 	return (
@@ -157,7 +180,7 @@ export default () => {
 							<label htmlFor="inputInvoiceNo" className="col-form-label">Invoice no</label>
 						</div>
 						<div className="col-auto">
-							<input type="text" id="inputInvoiceNo" className="form-control" onChange={(e) => setInvoiceNo(e.target.value)} />
+							<input type="text" id="inputInvoiceNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
 						</div>
 						<div className="col-auto">
 							<span onClick={ async () => await fetchInvoice() } style={{cursor: 'pointer'}} title="Click to search an invoice.">
@@ -173,9 +196,7 @@ export default () => {
 				</div>
 			</div>
 			<div className="row">
-				<div className="col">
-					<PDFViewer width={'100%'} height={700}>{invoiceDocumentContainer(data)}</PDFViewer>
-				</div>
+				<div className="col">{showTheInvoice()}</div>
 			</div>
 			<div className="row">
 				<div className="col">
@@ -186,26 +207,34 @@ export default () => {
 						hideOnOutsideClick={true}
 						showCloseButton={false}
 						showTitle={true}
-						title="Information"
+						// title="Select"
 						container=".dx-viewport"
-						width={750}
-						height={550}>
+						width={900}
+						height={640}>
+						<ToolbarItem
+							widget="dxButton"
+							toolbar="bottom"
+							location="after"
+							options={selectButtonOptions}
+						/>
 						<ToolbarItem
 							widget="dxButton"
 							toolbar="bottom"
 							location="after"
 							options={closeButtonOptions}
 						/>
-						<DataGrid dataSource={invoices} columnAutoWidth={true}>
-							<Column dataField="TKT_NO" caption="Ticket #" />
-							<Column dataField="TKT_DAT" dataType="date" caption="Invoice Date" />
+						<DataGrid dataSource={invoices} columnAutoWidth={true} onSelectionChanged={onSelectionChanged}>
+							<Column dataField="TKT_NO" caption="Work order #" />
+							<Column dataField="TKT_DAT" dataType="date" caption="Date" />
 							{/*<Column dataField="CUST_NO" caption="Customer #" />*/}
 							<Column dataField="BILL_NAM" caption="Customer Name" />
-							<Column dataField="NOTE_TXT" caption="Note" />
+							{/*<Column dataField="NOTE_TXT" caption="Note" />*/}
+							<Column dataField="BILL_PHONE_1" caption="Phone" />
+							<Column dataField="USR_LIC_PLATE" caption="Plate #" />
 							<Selection mode="single" />
 							<FilterRow visible={true} />
 							<SearchPanel visible={true} />
-							<Paging defaultPageSize={8} defaultPageIndex={1} />
+							<Paging defaultPageSize={10} defaultPageIndex={1} />
 						</DataGrid>
 					</Popup>
 				</div>

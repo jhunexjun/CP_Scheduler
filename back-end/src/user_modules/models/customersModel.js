@@ -1,19 +1,18 @@
 const msSql = require('mssql');
 const msSqlConnect = require('../dbConnections/msSqlConnect');
-const invoicesSql = require('../sqlStatements/invoiceSql');
+const customersSSql = require('../sqlStatements/customersSql');
 
 
 module.exports = {
-	getInvoices,
+	getListOfCustomers,
 }
 
-async function getInvoices(req) {
+async function getListOfCustomers(req) {
 	try {
-		const sql = invoicesSql.getInvoices();
+		const sql = customersSSql.getListOfCustomers();
 		return await msSqlConnect.getInstance().then(pool => {
 				return pool.request()
 					.input('sessionId', msSql.VarChar, req.query.sessionId)
-					// .input('invoiceNo', msSql.VarChar, req.query.invoiceNo)
 					.query(sql)
 			}).then(result => {
 				return result.recordset;

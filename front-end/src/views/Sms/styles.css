@@ -1,0 +1,11 @@
+.left {
+	height: 470px;
+	background: rgba(191, 191, 191, 0.15);
+	padding: 20px;
+}
+
+.left .list .dx-list-group-header {
+  color: #f05b41;
+  font-weight: normal;
+  font-size: 18px;
+}

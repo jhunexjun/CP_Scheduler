@@ -65,8 +65,8 @@ export default function AppLogout({ children }) {
 	useEffect(() => {
 		Object.values(events).forEach((item) => {
 			window.addEventListener(item, async () => {
-				console.log('Called event listener.')
 				await extendSession()
+				console.log('Called event listener and extended session.')
 				resetTimer();
 				await handleLogoutTimer();
 			});
