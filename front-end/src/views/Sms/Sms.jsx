@@ -104,7 +104,7 @@ export default () => {
 				return res.json()
 			})
 			.then((res) => {
-				console.log('res.data: ', res.data);
+				// console.log('res.data: ', res.data);
 				setConvoByCustomer(res.data);
 			});
 	}, []);
@@ -166,11 +166,9 @@ export default () => {
 	}, []);
 
 	async function handleSubmit(e) {
-		e.preventDefault();
-		const phoneEditor = formInstance.getEditor('phone');
-		const textMsgEditor = formInstance.getEditor('textMsg');
+		// put some error trapping like if PHONE_1 is invalid.
 
-		const sms = { recipient: phoneEditor.option('value'), smsMessage: textMsgEditor.option('value') }
+		const sms = { recipient: currentCustomer.PHONE_1, smsMessage: smsMessage }
 		await postSms(sms);
 	}
 
@@ -196,17 +194,18 @@ export default () => {
 	// 	fetchSms();
 	// }
 
-	// function textMsgInputHandler(event) {
-	// 	const maxlength = 160;
-	// 	let currentLength = event.value.length;
+	function textMsgInputHandler(event) {
+		setSmsMessage(event.target.value);
+		const maxlength = 160;
+		const currentLength = event.target.value.length;
 
-	// 	if (currentLength > maxlength) {
-	// 		console.log("You have reached the maximum number of characters.");
-	// 		return;
-	// 	}
+		if (currentLength > maxlength) {
+			console.log("You have reached the maximum number of characters.");
+			return;
+		}
 
-	// 	setSmsRemainingChar((maxlength - currentLength) + '/160');
-	// }
+		setSmsRemainingChar((maxlength - currentLength) + '/160');
+	}
 
 	function renderListItem(item) {
 		// console.log('item: ', item);
@@ -233,8 +232,6 @@ export default () => {
 
 	async function handleListSelectionChange(e) {
 		const current = e.addedItems[0];
-		console.log('current: ', current);
-
 		setCurrentCustomer(current);
 		setSelectedItemKeys([current.CUST_NO]);
 		await fetchSmsByCustomers(current.CUST_NO);
@@ -258,55 +255,10 @@ export default () => {
 						/>
 					</div>
 				</div>
-				<div className="col-9">
+				<div className="col-8">
 					<MDBCol md="6" lg="7" xl="8">
 						<div style={{height: '550px', overflowY: 'auto'}}>
 							<MDBTypography listUnStyled>
-								{/*<li className="d-flex justify-content-between mb-4">
-									<img
-										src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-										alt="avatar"
-										className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-										width="60"
-									/>
-									<MDBCard>
-										<MDBCardHeader className="d-flex justify-content-between p-3">
-											<p className="fw-bold mb-0">Brad Pitt</p>
-											<p className="text-muted small mb-0">
-												<MDBIcon far icon="clock" /> 12 mins ago
-											</p>
-										</MDBCardHeader>
-										<MDBCardBody>
-											<p className="mb-0">
-												Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-												do eiusmod tempor incididunt ut labore et dolore magna
-												aliqua.
-											</p>
-										</MDBCardBody>
-									</MDBCard>
-								</li>
-								<li class="d-flex justify-content-between mb-4">
-									<MDBCard className="w-100">
-										<MDBCardHeader className="d-flex justify-content-between p-3">
-											<p class="fw-bold mb-0">Lara Croft</p>
-											<p class="text-muted small mb-0">
-												<MDBIcon far icon="clock" /> 13 mins ago
-											</p>
-										</MDBCardHeader>
-										<MDBCardBody>
-											<p className="mb-0">
-												Sed ut perspiciatis unde omnis iste natus error sit
-												voluptatem accusantium doloremque laudantium.
-											</p>
-										</MDBCardBody>
-									</MDBCard>
-									<img
-										src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
-										alt="avatar"
-										className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
-										width="60"
-									/>
-								</li>*/}
 								{conversationTemplate(convoByCustomer)}
 								<li className="d-flex justify-content-between mb-4">
 									<img
@@ -333,8 +285,14 @@ export default () => {
 								</li>
 							</MDBTypography>
 						</div>
-						<MDBTextArea label="Message" rows={4} style={{background: 'white'}} />
-						<MDBBtn color="info" rounded className="float-end">
+						<MDBTextArea
+							label="Message"
+							rows={4}
+							style={{background: 'white'}}
+							onChange={(e) => { textMsgInputHandler(e) }}
+							maxLength={160}
+						/>
+						<MDBBtn color="info" rounded className="float-end" onClick={async (e) => await handleSubmit(e)}>
 							Send
 						</MDBBtn>
 					</MDBCol>

@@ -5,6 +5,8 @@ import {
   MDBCardHeader,
 } from "mdb-react-ui-kit";
 
+import { getDuration } from './util';
+
 const inboxTpl = (item, index) => (
 	<li className="d-flex justify-content-between mb-4" key={index}>
 		<img
@@ -15,17 +17,13 @@ const inboxTpl = (item, index) => (
 		/>
 		<MDBCard>
 			<MDBCardHeader className="d-flex justify-content-between p-3">
-				<p className="fw-bold mb-0">Brad Pitt</p>
+				<p className="fw-bold mb-0">{item.name}</p>
 				<p className="text-muted small mb-0">
-					<MDBIcon far icon="clock" /> 12 mins ago
+					<MDBIcon far icon="clock" /> {getDuration(item)}
 				</p>
 			</MDBCardHeader>
 			<MDBCardBody>
-				<p className="mb-0">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-					do eiusmod tempor incididunt ut labore et dolore magna
-					aliqua.
-				</p>
+				<p className="mb-0">{item.Sms}</p>
 			</MDBCardBody>
 		</MDBCard>
 	</li>

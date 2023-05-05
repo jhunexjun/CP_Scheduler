@@ -2,8 +2,6 @@ import isInboxTemplate from './isInboxTemplate';
 import sentItemsTemplate from './sentItemsTemplate';
 
 const conv = (conversation) => {
-	console.log('conversation: ', conversation);
-
 	let messages = conversation.map((item, index) => {
 		if (item.fromTable === 'inbox')
 			return isInboxTemplate(item, index);
