@@ -1,23 +1,23 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import Form, {
-	Item,
-	Label,
-	ButtonItem,
-	PatternRule,
-	RequiredRule,
-	GroupItem,
-	SimpleItem,
-	TabbedItem,
-	TabPanelOptions,
-	Tab
-} from 'devextreme-react/form';
-import { DataGrid, Selection, Paging } from 'devextreme-react/data-grid';
-import TextArea from 'devextreme-react/text-area';
+// import Form, {
+// 	Item,
+// 	Label,
+// 	ButtonItem,
+// 	PatternRule,
+// 	RequiredRule,
+// 	GroupItem,
+// 	SimpleItem,
+// 	TabbedItem,
+// 	TabPanelOptions,
+// 	Tab
+// } from 'devextreme-react/form';
+// import { DataGrid, Selection, Paging } from 'devextreme-react/data-grid';
+// import TextArea from 'devextreme-react/text-area';
 import notify from 'devextreme/ui/notify';
 import 'devextreme-react/text-area';
-import { Button } from 'devextreme-react/button';
+// import { Button } from 'devextreme-react/button';
 import List from 'devextreme-react/list';
 import ArrayStore from 'devextreme/data/array_store';
 import TileView from 'devextreme-react/tile-view';
@@ -28,11 +28,26 @@ import smsData from './data';
 
 import { uriEncode } from '../../utils/util';
 import './styles.css';
+import conversationTemplate from './conversationTemplate';
 
-import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
-import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
+import {
+  MDBContainer,
+  MDBRow,
+  MDBCol,
+  MDBCard,
+  MDBCardBody,
+  MDBIcon,
+  MDBBtn,
+  MDBTypography,
+  MDBTextArea,
+  MDBCardHeader,
+} from "mdb-react-ui-kit";
 
-const phoneEditorOptions = { mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ }, };
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
+
+// const phoneEditorOptions = { mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ }, };
 
 
 export default () => {
@@ -42,10 +57,13 @@ export default () => {
 	let [smsMessage, setSmsMessage] = useState('');
 	let [sentSms, setSentSms] = useState([]);
 	let [outboxSms, setOutboxSms] = useState([]);
+	const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
+	const [convoByCustomer, setConvoByCustomer] = useState([]);
+	const [currentCustomer, setCurrentCustomer] = useState();
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
-	let dataGridAllData
+	// let dataGridAllData
 
 	const navigate = useNavigate();
 	const { sessionId } = useParams();
@@ -69,13 +87,25 @@ export default () => {
 			.then((res) => {
 				const data = res.data;
 				const dataStruct = { store: new ArrayStore({
-											data,
+											data,	// data should be named 'data'
 											key: 'CUST_NO',
 										}),
 										searchExpr: ['CUST_NO', 'NAM', 'ADRS_1', 'EMAIL_ADRS_1', 'PHONE_1'],
 									}
 
 				setDataSourceOptions(dataStruct);
+			});
+	}, []);
+
+	const fetchSmsByCustomers = useCallback(async (customerNo = '') => {
+		// await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms/customer?sessionId=${sessionId}&custNo=${`9000180`}`)
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms/customer?sessionId=${sessionId}&custNo=${customerNo}`)
+			.then((res) => {
+				return res.json()
+			})
+			.then((res) => {
+				console.log('res.data: ', res.data);
+				setConvoByCustomer(res.data);
 			});
 	}, []);
 
@@ -183,17 +213,31 @@ export default () => {
 		return (
 			<div>
 				<div>{item.CUST_NO}</div>
-				<div className="hotel">
+				<div className="customer">
 					<div className="name">{item.NAM}</div>
 					<div className="address">{item.ADRS_1}</div>
 				</div>
-				<div className="price-container">
+				{/*<div className="price-container">
 					<div className="price"></div>
 						&nbsp;
 					<div className="caption">per<br />night</div>
-				</div>
+				</div>*/}
 			</div>
 		);
+	}
+
+	// function renderConversation() {
+	// 	// return conversationTemplate();
+	// 	return "";
+	// }
+
+	async function handleListSelectionChange(e) {
+		const current = e.addedItems[0];
+		console.log('current: ', current);
+
+		setCurrentCustomer(current);
+		setSelectedItemKeys([current.CUST_NO]);
+		await fetchSmsByCustomers(current.CUST_NO);
 	}
 
 	return (
@@ -206,16 +250,94 @@ export default () => {
 							dataSource={dataSourceOptions}
 							grouped={false}
 							searchEnabled={true}
-							// selectedItemKeys={null}
-							// onSelectionChanged={null}
+							selectedItemKeys={selectedItemKeys}
+							onSelectionChanged={async (e) => await handleListSelectionChange(e)}
 							itemRender={renderListItem}
 							// groupRender={null}
 							elementAttr={{ class: 'list' }}
 						/>
 					</div>
 				</div>
-				<div className="col-4">
-
+				<div className="col-9">
+					<MDBCol md="6" lg="7" xl="8">
+						<div style={{height: '550px', overflowY: 'auto'}}>
+							<MDBTypography listUnStyled>
+								{/*<li className="d-flex justify-content-between mb-4">
+									<img
+										src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+										alt="avatar"
+										className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+										width="60"
+									/>
+									<MDBCard>
+										<MDBCardHeader className="d-flex justify-content-between p-3">
+											<p className="fw-bold mb-0">Brad Pitt</p>
+											<p className="text-muted small mb-0">
+												<MDBIcon far icon="clock" /> 12 mins ago
+											</p>
+										</MDBCardHeader>
+										<MDBCardBody>
+											<p className="mb-0">
+												Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+												do eiusmod tempor incididunt ut labore et dolore magna
+												aliqua.
+											</p>
+										</MDBCardBody>
+									</MDBCard>
+								</li>
+								<li class="d-flex justify-content-between mb-4">
+									<MDBCard className="w-100">
+										<MDBCardHeader className="d-flex justify-content-between p-3">
+											<p class="fw-bold mb-0">Lara Croft</p>
+											<p class="text-muted small mb-0">
+												<MDBIcon far icon="clock" /> 13 mins ago
+											</p>
+										</MDBCardHeader>
+										<MDBCardBody>
+											<p className="mb-0">
+												Sed ut perspiciatis unde omnis iste natus error sit
+												voluptatem accusantium doloremque laudantium.
+											</p>
+										</MDBCardBody>
+									</MDBCard>
+									<img
+										src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-5.webp"
+										alt="avatar"
+										className="rounded-circle d-flex align-self-start ms-3 shadow-1-strong"
+										width="60"
+									/>
+								</li>*/}
+								{conversationTemplate(convoByCustomer)}
+								<li className="d-flex justify-content-between mb-4">
+									<img
+										src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+										alt="avatar"
+										className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+										width="60"
+									/>
+									<MDBCard>
+										<MDBCardHeader className="d-flex justify-content-between p-3">
+											<p className="fw-bold mb-0">Brad Pitt</p>
+											<p className="text-muted small mb-0">
+												<MDBIcon far icon="clock" /> 10 mins ago
+											</p>
+										</MDBCardHeader>
+										<MDBCardBody>
+											<p className="mb-0">
+												Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+												do eiusmod tempor incididunt ut labore et dolore magna
+												aliqua.
+											</p>
+										</MDBCardBody>
+									</MDBCard>
+								</li>
+							</MDBTypography>
+						</div>
+						<MDBTextArea label="Message" rows={4} style={{background: 'white'}} />
+						<MDBBtn color="info" rounded className="float-end">
+							Send
+						</MDBBtn>
+					</MDBCol>
 				</div>
 			</div>
 		</div>

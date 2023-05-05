@@ -4,7 +4,7 @@ const smsSql = require('../sqlStatements/smsSql');
 const util = require('../utils/util');
 
 module.exports = {
-	insertSms, getSms
+	insertSms, getSms, getAllSmsByCustomer
 }
 
 async function insertSms(req, messageSid, smsStatus) {
@@ -45,3 +45,22 @@ async function getSms(req) {
 		throw e;
 	}
 }
+
+async function getAllSmsByCustomer(req) {
+	try {
+		const sql = smsSql.getAllSmsByCustomer();
+		return await msSqlConnect.getInstance().then(pool => {
+				return pool.request()
+					.input('sessionId', msSql.NVarChar, req.query.sessionId)
+					.input('custNo', msSql.NVarChar, req.query.custNo)
+					.query(sql)
+			}).then(result => {
+				return result.recordset;
+			}).catch(err => {
+				console.log(err);
+			});
+	} catch(e) {
+		throw e;
+	}
+}
+

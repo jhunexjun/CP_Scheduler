@@ -22,8 +22,6 @@ const styles = StyleSheet.create({
 
 
 const invoiceDocumentContainer = (props) => {
-
-
 	return (
 		<Document>
 			<Page size='LETTER' style={styles.page}>

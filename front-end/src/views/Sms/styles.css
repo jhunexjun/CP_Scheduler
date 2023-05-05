@@ -1,5 +1,9 @@
+/*.sms-font {
+	font-family: Roboto, Helvetica, Arial, sans-serif;
+}
+*/
 .left {
-	height: 470px;
+	height: 650px;
 	background: rgba(191, 191, 191, 0.15);
 	padding: 20px;
 }
@@ -8,4 +12,9 @@
   color: #f05b41;
   font-weight: normal;
   font-size: 18px;
+}
+
+.customer .name {
+	color: #3b71ca;
+	font-weight: 700;
 }

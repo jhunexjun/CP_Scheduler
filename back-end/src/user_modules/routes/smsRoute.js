@@ -1,5 +1,5 @@
 const utils = require('../utils/util');
-const request = require('request');
+// const request = require('request');
 const dotenv = require('dotenv');
 const smsModel = require('../models/smsModel');
 

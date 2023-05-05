@@ -12,6 +12,7 @@ const invoiceRoute = require('./invoiceRoute');
 const invoicesListRoute = require('./invoicesListRoute');
 const customersRoute = require('./customersRoute');
 const smsRoute = require('./smsRoute');
+const smsByCustomerRoute = require('./smsByCustomerRoute');
 
 
 module.exports = function(app) {
@@ -25,6 +26,7 @@ module.exports = function(app) {
     router.get('/invoiceslist', invoicesListRoute);
     router.get('/customers', customersRoute);
     router.all('/sms', smsRoute);
+    router.get('/sms/customer', smsByCustomerRoute);
 
   return router;
 }

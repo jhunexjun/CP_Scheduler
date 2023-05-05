@@ -1,5 +1,5 @@
 module.exports = {
-	insertSms, getSms
+	insertSms, getSms, getAllSmsByCustomer
 }
 
 function insertSms() {
@@ -13,4 +13,8 @@ function insertSms() {
 
 function getSms() {
 	return 'exec dbo.USER_SmsGet @sessionId';
+}
+
+function getAllSmsByCustomer() {
+	return 'exec dbo.USER_SmsGetByCustomer @sessionId, @custNo';
 }
