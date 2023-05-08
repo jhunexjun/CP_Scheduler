@@ -25,7 +25,7 @@
 // Core CSS
 @import "paper-dashboard/buttons";
 @import "paper-dashboard/inputs";
-@import "paper-dashboard/typography";
+// @import "paper-dashboard/typography";    // JLM 5/6/2023: Removed. Issue: h4 was being used by bootstrap, paper-dashboard, and devexpress.
 @import "paper-dashboard/misc";
 @import "paper-dashboard/checkboxes-radio";
 

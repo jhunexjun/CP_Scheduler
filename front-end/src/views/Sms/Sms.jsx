@@ -15,7 +15,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 // } from 'devextreme-react/form';
 // import { DataGrid, Selection, Paging } from 'devextreme-react/data-grid';
 // import TextArea from 'devextreme-react/text-area';
-import notify from 'devextreme/ui/notify';
 import 'devextreme-react/text-area';
 // import { Button } from 'devextreme-react/button';
 import List from 'devextreme-react/list';
@@ -26,7 +25,7 @@ import LabelTemplate from './LabelTemplate';
 import LabelNotesTemplate from './LabelNotesTemplate';
 import smsData from './data';
 
-import { uriEncode } from '../../utils/util';
+import { uriEncode, isSet, notification } from '../../utils/util';
 import './styles.css';
 import conversationTemplate from './conversationTemplate';
 
@@ -46,6 +45,8 @@ import {
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+import validator from 'validator';
+
 
 // const phoneEditorOptions = { mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ }, };
 
@@ -59,7 +60,7 @@ export default () => {
 	let [outboxSms, setOutboxSms] = useState([]);
 	const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
-	const [currentCustomer, setCurrentCustomer] = useState();
+	const [currentCustomer, setCurrentCustomer] = useState(undefined);
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
@@ -69,7 +70,7 @@ export default () => {
 	const { sessionId } = useParams();
 
 	const fetchSms = useCallback(async () => {
-		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms?sessionId=${sessionId}`)
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2?sessionId=${sessionId}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -98,7 +99,7 @@ export default () => {
 	}, []);
 
 	const fetchSmsByCustomers = useCallback(async (customerNo = '') => {
-		// await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms/customer?sessionId=${sessionId}&custNo=${`9000180`}`)
+		// await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2/customer?sessionId=${sessionId}&custNo=${`9000180`}`)
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms/customer?sessionId=${sessionId}&custNo=${customerNo}`)
 			.then((res) => {
 				return res.json()
@@ -144,7 +145,7 @@ export default () => {
 			body: uriEncoded,
 		};
 
-		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms?sessionId=${sessionId}`, optionHeaders)
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2?sessionId=${sessionId}`, optionHeaders)
 			.then((res) => {
 				return res.json()
 			})
@@ -155,20 +156,25 @@ export default () => {
 				}
 				// console.log('res: ', res);
 
-				notify({
-					message: 'SMS has been sent!',
-					position: {
-						my: 'center middle',
-						at: 'center middle',
-					},
-				}, 'success', 3000);
+				notification('SMS has been sent!', 'success');
 			});
 	}, []);
 
 	async function handleSubmit(e) {
-		// put some error trapping like if PHONE_1 is invalid.
+		if (!isSet(currentCustomer, 'PHONE_1')) {
+			notification('Please select a client.', 'error');
+			return;
+		}
 
-		const sms = { recipient: currentCustomer.PHONE_1, smsMessage: smsMessage }
+		// if (!validator.isMobilePhone(currentCustomer.PHONE_1, 'en-US')) {
+		// 	notification('Mobile number is not a US phone number.', 'error');
+		// 	return;
+		// }
+
+		// Vincent cellphone number: 808-341-9365
+
+		const sms = { recipient: currentCustomer.PHONE_1, smsMessage: smsMessage };
+		// console.log('sms: ', sms);
 		await postSms(sms);
 	}
 
@@ -212,8 +218,9 @@ export default () => {
 		return (
 			<div>
 				<div>{item.CUST_NO}</div>
-				<div className="customer">
+				<div className="customer-list">
 					<div className="name">{item.NAM}</div>
+					<div className="phone">{item.PHONE_1}</div>
 					<div className="address">{item.ADRS_1}</div>
 				</div>
 				{/*<div className="price-container">
@@ -256,46 +263,78 @@ export default () => {
 					</div>
 				</div>
 				<div className="col-8">
-					<MDBCol md="6" lg="7" xl="8">
-						<div style={{height: '550px', overflowY: 'auto'}}>
-							<MDBTypography listUnStyled>
-								{conversationTemplate(convoByCustomer)}
-								<li className="d-flex justify-content-between mb-4">
-									<img
-										src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-										alt="avatar"
-										className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-										width="60"
-									/>
-									<MDBCard>
-										<MDBCardHeader className="d-flex justify-content-between p-3">
-											<p className="fw-bold mb-0">Brad Pitt</p>
-											<p className="text-muted small mb-0">
-												<MDBIcon far icon="clock" /> 10 mins ago
-											</p>
-										</MDBCardHeader>
-										<MDBCardBody>
-											<p className="mb-0">
-												Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-												do eiusmod tempor incididunt ut labore et dolore magna
-												aliqua.
-											</p>
-										</MDBCardBody>
-									</MDBCard>
-								</li>
-							</MDBTypography>
-						</div>
-						<MDBTextArea
-							label="Message"
-							rows={4}
-							style={{background: 'white'}}
-							onChange={(e) => { textMsgInputHandler(e) }}
-							maxLength={160}
-						/>
-						<MDBBtn color="info" rounded className="float-end" onClick={async (e) => await handleSubmit(e)}>
-							Send
-						</MDBBtn>
-					</MDBCol>
+					<div className="row">
+						<MDBCol md="6" lg="7" xl="8">
+							{currentCustomer?.CUST_NO}
+						</MDBCol>
+					</div>
+					<div className="row">
+						<MDBCol md="6" lg="7" xl="8">
+							<div className="header">
+								<div className="name-container">
+									<div className="name">{currentCustomer?.NAM}</div>
+								</div>
+								<div className="mobile-phone-container pt-2">
+									<div className="name">
+										<i className={`dx-icon dx-icon-tel`}></i>
+										<span className="ms-2">{currentCustomer?.PHONE_1}</span>
+									</div>
+								</div>
+							</div>
+						</MDBCol>
+					</div>
+					<div className="row">
+						<MDBCol md="6" lg="7" xl="8">
+							{currentCustomer?.ADRS_1}
+						</MDBCol>
+					</div>
+					<div className="row">
+						<MDBCol md="6" lg="7" xl="8">
+							<hr />
+						</MDBCol>
+					</div>
+					<div className="row">
+						<MDBCol md="6" lg="7" xl="8">
+							<div style={{height: '550px', overflowY: 'auto'}}>
+								<MDBTypography listUnStyled>
+									{conversationTemplate(convoByCustomer)}
+									<li className="d-flex justify-content-between mb-4">
+										<img
+											src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
+											alt="avatar"
+											className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
+											width="60"
+										/>
+										<MDBCard>
+											<MDBCardHeader className="d-flex justify-content-between p-3">
+												<p className="fw-bold mb-0">Brad Pitt</p>
+												<p className="text-muted small mb-0">
+													<MDBIcon far icon="clock" /> 10 mins ago
+												</p>
+											</MDBCardHeader>
+											<MDBCardBody>
+												<p className="mb-0">
+													Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+													do eiusmod tempor incididunt ut labore et dolore magna
+													aliqua.
+												</p>
+											</MDBCardBody>
+										</MDBCard>
+									</li>
+								</MDBTypography>
+							</div>
+							<MDBTextArea
+								label="Message"
+								rows={4}
+								style={{background: 'white'}}
+								onChange={(e) => { textMsgInputHandler(e) }}
+								maxLength={160}
+							/>
+							<MDBBtn color="info" rounded className="float-end" onClick={async (e) => await handleSubmit(e)}>
+								Send
+							</MDBBtn>
+						</MDBCol>
+					</div>
 				</div>
 			</div>
 		</div>

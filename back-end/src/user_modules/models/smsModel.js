@@ -49,7 +49,7 @@ async function getSms(req) {
 async function getAllSmsByCustomer(req) {
 	try {
 		const sql = smsSql.getAllSmsByCustomer();
-		return await msSqlConnect.getInstance().then(pool => {
+		let smsByCustomerNo = await msSqlConnect.getInstance().then(pool => {
 				return pool.request()
 					.input('sessionId', msSql.NVarChar, req.query.sessionId)
 					.input('custNo', msSql.NVarChar, req.query.custNo)
@@ -59,6 +59,10 @@ async function getAllSmsByCustomer(req) {
 			}).catch(err => {
 				console.log(err);
 			});
+
+
+
+		return smsByCustomerNo;
 	} catch(e) {
 		throw e;
 	}

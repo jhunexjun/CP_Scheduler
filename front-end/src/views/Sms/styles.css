@@ -14,7 +14,20 @@
   font-size: 18px;
 }
 
-.customer .name {
+.customer-list .name {
 	color: #3b71ca;
 	font-weight: 700;
+}
+
+.header .name-container {
+	float: left;
+}
+
+.header .name-container .name {
+	font-size: 24px;
+	font-weight: bold;
+}
+
+.header .mobile-phone-container {
+	float: right;
 }

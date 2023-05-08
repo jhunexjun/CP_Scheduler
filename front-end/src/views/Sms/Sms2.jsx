@@ -45,7 +45,7 @@ export default () => {
 	const { sessionId } = useParams();
 
 	const fetchSms = useCallback(async () => {
-		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms?sessionId=${sessionId}`)
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2?sessionId=${sessionId}`)
 			.then((res) => {
 				return res.json()
 			})
@@ -89,7 +89,7 @@ export default () => {
 			body: uriEncoded,
 		};
 
-		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms?sessionId=${sessionId}`, optionHeaders)
+		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2?sessionId=${sessionId}`, optionHeaders)
 			.then((res) => {
 				return res.json()
 			})

@@ -1,3 +1,5 @@
+import notify from 'devextreme/ui/notify';
+
 // const option = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
 
 const getRandomColor = () => 'rgba(' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 1) + ',' + Math.floor((Math.random() * 255) + 1) + ')';
@@ -121,5 +123,15 @@ function formatDateMMddYYYYhhmm(date) {
 	return dt + ' ' + time + meridiem;
 }
 
+function notification(message, type) {
+		notify({
+			message: message,
+			position: {
+				my: 'center middle',
+				at: 'center middle',
+			},
+		}, type, 3000);
+	}
 
-export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId, formatDateMMddYYYY, formatDateMMddYYYYhhmm, isNullOrWhiteSpace }
+
+export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId, formatDateMMddYYYY, formatDateMMddYYYYhhmm, isNullOrWhiteSpace, notification }
