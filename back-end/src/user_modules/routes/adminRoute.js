@@ -11,7 +11,7 @@ const extendSessionRoute = require('./extendSessionRoute');
 const invoiceRoute = require('./invoiceRoute');
 const invoicesListRoute = require('./invoicesListRoute');
 const customersRoute = require('./customersRoute');
-const smsRoute = require('./smsRoute');
+// const smsRoute = require('./smsRoute');
 const sms2Route = require('./sms2Route');
 const smsByCustomerRoute = require('./smsByCustomerRoute');
 
@@ -26,7 +26,7 @@ module.exports = function(app) {
     router.get('/invoice', invoiceRoute);
     router.get('/invoiceslist', invoicesListRoute);
     router.get('/customers', customersRoute);
-    router.all('/sms', smsRoute);
+    // router.post('/sms', smsRoute);
     router.all('/sms2', sms2Route);
     router.get('/sms/customer', smsByCustomerRoute);
 

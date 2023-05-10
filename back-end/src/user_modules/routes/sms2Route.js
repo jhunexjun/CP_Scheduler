@@ -60,7 +60,7 @@ async function addSms(req) {
 }
 
 async function sendSms(recipient, smsMessage) {
-	const accountSid = process.env.TWILIO_ACCOUNTSID;
+	const accountSid = process.env.TWILIO_ACCOUNT_SID;
 	const authToken = process.env.TWILIO_AUTH_TOKEN;
 	const client = require("twilio")(accountSid, authToken);
 	return client.messages.create({

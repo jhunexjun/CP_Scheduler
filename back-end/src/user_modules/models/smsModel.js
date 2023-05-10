@@ -4,7 +4,7 @@ const smsSql = require('../sqlStatements/smsSql');
 const util = require('../utils/util');
 
 module.exports = {
-	insertSms, getSms, getAllSmsByCustomer
+	insertSms, getSms, getAllSmsByCustomer, insertTwilioInbox
 }
 
 async function insertSms(req, messageSid, smsStatus) {
@@ -63,6 +63,54 @@ async function getAllSmsByCustomer(req) {
 
 
 		return smsByCustomerNo;
+	} catch(e) {
+		throw e;
+	}
+}
+
+async function insertTwilioInbox(req) {
+	try {
+		const sql = smsSql.insertTwilioInbox();
+		return await msSqlConnect.getInstance().then(pool => {
+				return pool.request()
+					// .input('sessionId', msSql.NVarChar, req.query.sessionId)
+					// .input('recipient', msSql.VarChar, req.body.recipient)
+					// .input('sms', msSql.NVarChar, req.body.sms)
+					// .input('dateTimeSent', msSql.DateTime, req.body.dateTimeSent)
+					// .input('status', msSql.nvarchar, req.body.status)
+					// .input('alertId', msSql.int, 0)
+					// .input('sender', msSql.NVarChar, req.body.sender)
+					// .input('message', msSql.VarChar, req.body.message)
+					// .input('messageSid', msSql.NVarChar, req.body.messageSid)
+					// .input('dateTimeReceived', msSql.DateTime, req.body.dateTimeReceived)
+					// .input('dateCreated', msSql.DateTime, req.body.dateCreated)
+					// .input('customerName', msSql.NVarChar, req.body.customerName)
+					// from Twilio
+					.input('toCountry', msSql.NVarChar, req.body.ToCountry)
+					.input('toState', msSql.NVarChar, req.body.ToState)
+					.input('smsMessageSid', msSql.NVarChar, req.body.SmsMessageSid)
+					.input('numMedia', msSql.NVarChar, req.body.NumMedia)
+					.input('toCity', msSql.NVarChar, req.body.ToCity)
+					.input('fromZip', msSql.NVarChar, req.body.FromZip)
+					.input('smsSid', msSql.NVarChar, req.body.SmsSid)
+					.input('fromState', msSql.NVarChar, req.body.FromState)
+					.input('smsStatus', msSql.NVarChar, req.body.SmsStatus)
+					.input('fromCity', msSql.NVarChar, req.body.FromCity)
+					.input('body', msSql.NVarChar, req.body.Body)
+					.input('fromCountry', msSql.NVarChar, req.body.FromCountry)
+					.input('to', msSql.NVarChar, req.body.To)
+					.input('toZip', msSql.NVarChar, req.body.ToZip)
+					.input('numSegments', msSql.NVarChar, req.body.NumSegments)
+					.input('accountSid', msSql.NVarChar, req.body.AccountSid)
+					.input('from', msSql.NVarChar, req.body.From)
+					.input('apiVersion', msSql.NVarChar, req.body.ApiVersion)
+					// end from Twilio
+					.query(sql)
+			}).then(result => {
+				return result.recordset;
+			}).catch(err => {
+				console.log(err);
+			});
 	} catch(e) {
 		throw e;
 	}

@@ -3,6 +3,7 @@ const cors = require('cors');
 const adminRoute = require('./routes/adminRoute');
 const createSessionRoute = require('./routes/createSessionRoute');
 const checkSessionIdMw = require('./routes/checkSessionIdMiddleware');
+const smsRoute = require('./routes/smsRoute');
 
 
 module.exports = function(app) {
@@ -13,4 +14,5 @@ module.exports = function(app) {
 	app.use(cors());
 	app.use('/createsession', createSessionRoute);
 	app.use('/admin', checkSessionIdMw, adminRoute(app));
+	app.post('/sms', smsRoute);
 }
