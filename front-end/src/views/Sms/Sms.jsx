@@ -155,8 +155,9 @@ export default () => {
 					return;
 				}
 				// console.log('res: ', res);
-
 				notification('SMS has been sent!', 'success');
+				setSmsMessage('');
+
 			});
 	}, []);
 
@@ -276,8 +277,8 @@ export default () => {
 								</div>
 								<div className="mobile-phone-container pt-2">
 									<div className="name">
-										<i className={`dx-icon dx-icon-tel`}></i>
-										<span className="ms-2">{currentCustomer?.PHONE_1}</span>
+										{currentCustomer ? (<i className={`dx-icon dx-icon-tel`}></i> ) : ``}
+										<span className="ms-1">{currentCustomer?.PHONE_1}</span>
 									</div>
 								</div>
 							</div>
@@ -285,7 +286,8 @@ export default () => {
 					</div>
 					<div className="row">
 						<MDBCol md="6" lg="7" xl="8">
-							{currentCustomer?.ADRS_1}
+							{currentCustomer ? (<i className={`nc-icon nc-istanbul`}></i>) : ``}
+							<span className="ms-1">{currentCustomer?.ADRS_1}</span>
 						</MDBCol>
 					</div>
 					<div className="row">
@@ -295,7 +297,7 @@ export default () => {
 					</div>
 					<div className="row">
 						<MDBCol md="6" lg="7" xl="8">
-							<div style={{height: '550px', overflowY: 'auto'}}>
+							<div style={{height: '500px', overflowY: 'auto'}}>
 								<MDBTypography listUnStyled>
 									{conversationTemplate(convoByCustomer)}
 									<li className="d-flex justify-content-between mb-4">
@@ -329,6 +331,7 @@ export default () => {
 								style={{background: 'white'}}
 								onChange={(e) => { textMsgInputHandler(e) }}
 								maxLength={160}
+								value={smsMessage}
 							/>
 							<MDBBtn color="info" rounded className="float-end" onClick={async (e) => await handleSubmit(e)}>
 								Send
