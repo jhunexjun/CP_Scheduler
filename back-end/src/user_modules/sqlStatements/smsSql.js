@@ -4,6 +4,7 @@ module.exports = {
 
 function insertSms() {
 	return 'exec dbo.USER_SmsAdd @sessionId, ' +
+								'@custNo, ' +
 								'@recipient, ' +
 								'@sms,' +
 								'@messageSid,' +
@@ -19,6 +20,7 @@ function getAllSmsByCustomer() {
 	return 'exec dbo.USER_SmsGetByCustomer @sessionId, @custNo';
 }
 
+// After inserting, it runs USER_ProcessTwilioSms
 function insertTwilioInbox() {
 	return '' +
 		'EXECUTE [dbo].[USER_TwilioSmsAdd] ' +

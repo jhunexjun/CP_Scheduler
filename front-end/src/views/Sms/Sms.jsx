@@ -174,7 +174,7 @@ export default () => {
 
 		// Vincent cellphone number: 808-341-9365
 
-		const sms = { recipient: currentCustomer.PHONE_1, smsMessage: smsMessage };
+		const sms = { customerNo: currentCustomer.CUST_NO, recipient: currentCustomer.PHONE_1, smsMessage: smsMessage };
 		// console.log('sms: ', sms);
 		await postSms(sms);
 	}
