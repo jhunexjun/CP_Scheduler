@@ -13,7 +13,7 @@ async function insertSms(req, messageSid, smsStatus) {
 		return await msSqlConnect.getInstance().then(pool => {
 				return pool.request()
 					.input('sessionId', msSql.NVarChar, req.query.sessionId)
-					.input('custNo', msSql.T_CUST_NO, req.body.customerNo)
+					.input('custNo', msSql.NVarChar, req.body.customerNo)
 					.input('recipient', msSql.VarChar, req.body.recipient)
 					.input('sms', msSql.NVarChar, req.body.smsMessage)
 					.input('messageSid', msSql.NVarChar, messageSid)

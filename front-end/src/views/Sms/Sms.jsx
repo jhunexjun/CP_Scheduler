@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 // import Form, {
@@ -64,6 +64,8 @@ export default () => {
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
+	const messagesEndRef = useRef(null);
+
 	// let dataGridAllData
 
 	const navigate = useNavigate();
@@ -105,8 +107,8 @@ export default () => {
 				return res.json()
 			})
 			.then((res) => {
-				// console.log('res.data: ', res.data);
 				setConvoByCustomer(res.data);
+				//scrollToBottom();
 			});
 	}, []);
 
@@ -149,15 +151,15 @@ export default () => {
 			.then((res) => {
 				return res.json()
 			})
-			.then((res) => {
+			.then(async (res) => {
 				if (res.status === 'Error') {
 					navigate('/');
 					return;
 				}
-				// console.log('res: ', res);
 				notification('SMS has been sent!', 'success');
 				setSmsMessage('');
-
+				await fetchSmsByCustomers(sms.customerNo);
+				scrollToBottom();	// not working yet.
 			});
 	}, []);
 
@@ -167,15 +169,14 @@ export default () => {
 			return;
 		}
 
-		// if (!validator.isMobilePhone(currentCustomer.PHONE_1, 'en-US')) {
-		// 	notification('Mobile number is not a US phone number.', 'error');
-		// 	return;
-		// }
+		if (!validator.isMobilePhone(currentCustomer.PHONE_1, 'en-US')) {
+			notification('Mobile number is not a US phone number.', 'error');
+			return;
+		}
 
 		// Vincent cellphone number: 808-341-9365
 
 		const sms = { customerNo: currentCustomer.CUST_NO, recipient: currentCustomer.PHONE_1, smsMessage: smsMessage };
-		// console.log('sms: ', sms);
 		await postSms(sms);
 	}
 
@@ -243,6 +244,10 @@ export default () => {
 		setCurrentCustomer(current);
 		setSelectedItemKeys([current.CUST_NO]);
 		await fetchSmsByCustomers(current.CUST_NO);
+	}
+
+	const scrollToBottom = () => {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
 	}
 
 	return (
@@ -323,6 +328,7 @@ export default () => {
 											</MDBCardBody>
 										</MDBCard>
 									</li>
+									<div ref={messagesEndRef} />
 								</MDBTypography>
 							</div>
 							<MDBTextArea

@@ -8,7 +8,7 @@ import {
 import { getDuration } from './util';
 
 const sentItemsTpl = (item, index) => {
-	return <li className="d-flex justify-content-between mb-4" key={index}>
+	return <li className="d-flex justify-content-between mb-1" key={index}>
 						<MDBCard className="w-100">
 							<MDBCardHeader className="d-flex justify-content-between p-3">
 								<p className="fw-bold mb-0">{item.name}</p>

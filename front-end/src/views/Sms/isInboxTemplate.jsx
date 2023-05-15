@@ -8,7 +8,7 @@ import {
 import { getDuration } from './util';
 
 const inboxTpl = (item, index) => (
-	<li className="d-flex justify-content-between mb-4" key={index}>
+	<li className="d-flex justify-content-betweenXXX mb-1" key={index}>
 		<img
 			src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
 			alt="avatar"
