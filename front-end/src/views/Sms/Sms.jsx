@@ -66,8 +66,6 @@ export default () => {
 
 	const messagesEndRef = useRef(null);
 
-	// let dataGridAllData
-
 	const navigate = useNavigate();
 	const { sessionId } = useParams();
 
@@ -101,6 +99,8 @@ export default () => {
 	}, []);
 
 	const fetchSmsByCustomers = useCallback(async (customerNo = '') => {
+		if (customerNo === '') return;
+
 		// await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2/customer?sessionId=${sessionId}&custNo=${`9000180`}`)
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms/customer?sessionId=${sessionId}&custNo=${customerNo}`)
 			.then((res) => {
@@ -115,8 +115,20 @@ export default () => {
 	useEffect(() => {
 		fetchSms();
 		fetchCustomers();
+	}, [currentCustomer]);
+
+	useEffect(() => {
+		let interval = startTimer();
+		return () => clearInterval(interval);
 	}, []);
 
+	const startTimer = useCallback(() => {
+		return setInterval(() => {
+			console.log('currentCustomer: ', currentCustomer);
+
+			// fetchSmsByCustomers(currentCustomer.CUST_NO);
+		}, 1000);
+	}, [currentCustomer])
 
 	const txtEditorOptions = { height: 90,
 							maxLength: 160,
@@ -164,12 +176,16 @@ export default () => {
 	}, []);
 
 	async function handleSubmit(e) {
+		// console.log('currentCustomer: ', currentCustomer);
+
+		// return;
+
 		if (!isSet(currentCustomer, 'PHONE_1')) {
 			notification('Please select a client.', 'error');
 			return;
 		}
 
-		if (!validator.isMobilePhone(currentCustomer.PHONE_1, 'en-US')) {
+		if (!validator.isMobilePhone(currentCustomer.PHONE_1, ['en-US', 'en-PH'])) {
 			notification('Mobile number is not a US phone number.', 'error');
 			return;
 		}
@@ -240,7 +256,7 @@ export default () => {
 	// }
 
 	async function handleListSelectionChange(e) {
-		const current = e.addedItems[0];
+		const current = JSON.parse(JSON.stringify(e.addedItems[0]));
 		setCurrentCustomer(current);
 		setSelectedItemKeys([current.CUST_NO]);
 		await fetchSmsByCustomers(current.CUST_NO);
@@ -270,12 +286,12 @@ export default () => {
 				</div>
 				<div className="col-8">
 					<div className="row">
-						<MDBCol md="6" lg="7" xl="8">
+						<MDBCol md="5" lg="6" xl="7">
 							{currentCustomer?.CUST_NO}
 						</MDBCol>
 					</div>
 					<div className="row">
-						<MDBCol md="6" lg="7" xl="8">
+						<MDBCol md="5" lg="6" xl="7">
 							<div className="header">
 								<div className="name-container">
 									<div className="name">{currentCustomer?.NAM}</div>
@@ -290,22 +306,22 @@ export default () => {
 						</MDBCol>
 					</div>
 					<div className="row">
-						<MDBCol md="6" lg="7" xl="8">
+						<MDBCol md="5" lg="6" xl="7">
 							{currentCustomer ? (<i className={`nc-icon nc-istanbul`}></i>) : ``}
 							<span className="ms-1">{currentCustomer?.ADRS_1}</span>
 						</MDBCol>
 					</div>
 					<div className="row">
-						<MDBCol md="6" lg="7" xl="8">
+						<MDBCol md="5" lg="6" xl="7">
 							<hr />
 						</MDBCol>
 					</div>
 					<div className="row">
-						<MDBCol md="6" lg="7" xl="8">
+						<MDBCol md="5" lg="6" xl="7">
 							<div style={{height: '500px', overflowY: 'auto'}}>
 								<MDBTypography listUnStyled>
 									{conversationTemplate(convoByCustomer)}
-									<li className="d-flex justify-content-between mb-4">
+									{/*<li className="d-flex justify-content-between mb-4">
 										<img
 											src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
 											alt="avatar"
@@ -327,9 +343,9 @@ export default () => {
 												</p>
 											</MDBCardBody>
 										</MDBCard>
-									</li>
-									<div ref={messagesEndRef} />
+									</li>*/}
 								</MDBTypography>
+								<div ref={messagesEndRef} />
 							</div>
 							<MDBTextArea
 								label="Message"
@@ -338,6 +354,7 @@ export default () => {
 								onChange={(e) => { textMsgInputHandler(e) }}
 								maxLength={160}
 								value={smsMessage}
+								className="mt-3"
 							/>
 							<MDBBtn color="info" rounded className="float-end" onClick={async (e) => await handleSubmit(e)}>
 								Send

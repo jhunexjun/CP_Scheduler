@@ -6,10 +6,10 @@ function getDuration(item) {
 	const minutes = duration.asMinutes();
 	const seconds = duration.asSeconds();
 
-	if (seconds <= 0)
+	if (seconds <= 1)
 		return 'Just now';
 
-	if (minutes < 1)
+	if (seconds >= 0 && minutes < 1)
 		return `${parseInt(seconds)} sec ago`;
 
 	const hours = duration.asHours();
@@ -26,7 +26,7 @@ function getDuration(item) {
 		return 'Yesterday, ' + moment(item.utcDdateAndTime).format('h:mm A');
 
 	// return moment(item.utcDdateAndTime).format('ddd, h:m A');
-	return moment(item.utcDdateAndTime).format('MMM D, YYYY h:m A');
+	return moment(item.utcDdateAndTime).format('MMM D, YYYY h:mm A');
 }
 
 export { getDuration };

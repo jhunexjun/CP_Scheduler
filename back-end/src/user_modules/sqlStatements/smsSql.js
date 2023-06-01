@@ -20,7 +20,7 @@ function getAllSmsByCustomer() {
 	return 'exec dbo.USER_SmsGetByCustomer @sessionId, @custNo';
 }
 
-// After inserting, it runs USER_ProcessTwilioSms
+// After inserting, it runs USER_ProcessTwilioSms - called inside the USER_TwilioSmsAdd.
 function insertTwilioInbox() {
 	return '' +
 		'EXECUTE [dbo].[USER_TwilioSmsAdd] ' +

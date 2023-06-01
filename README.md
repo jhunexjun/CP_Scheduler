@@ -57,7 +57,7 @@ To utilize pm2 according to good practice, run `$ pm2 start dist/server.js --nam
 Then run `$ pm2 serve build/ --spa --name Scheduler-FE-3000 --port 3000`
 
 
-To run in production using node-windows instead of pm2.
+To run in production using node-windows instead of pm2. node-windows is better by the way.
 1. `npm i node-windows -g`. Close the terminal and run as Administrator.
 2. Run `npm link node-windows`.
 3. Go to the root dir and copy the service.js to the dist/ directory.
@@ -75,6 +75,14 @@ clear && npm run build && npm start
 
 ## Running from browser
 To run, from browser pull up `http://localhost:3000/createsession?userid=BILLY`. BILLY is the Counterpoint user so you can replace it any valid user of Counterpoint.
+
+## To Test back-end is running
+http://localhost:8080/createsession?userid=BILLY&expiryinminutes=10 will result to like
+	{"status":"OK","data":{"sessionId":"EFD18534-E36A-4AE1-9797-ED8E86D01175"}}
+
+## Running ngrok
+ngrok-v3-stable-windows-amd64
+`$ ngrok.exe http 80`
 
 ## Contributing
 
