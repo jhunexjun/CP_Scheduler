@@ -61,6 +61,7 @@ export default () => {
 	const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
+	const [intervalId, setIntervalId] = useState(undefined);
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
@@ -101,7 +102,6 @@ export default () => {
 	const fetchSmsByCustomers = useCallback(async (customerNo = '') => {
 		if (customerNo === '') return;
 
-		// await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2/customer?sessionId=${sessionId}&custNo=${`9000180`}`)
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms/customer?sessionId=${sessionId}&custNo=${customerNo}`)
 			.then((res) => {
 				return res.json()
@@ -117,18 +117,28 @@ export default () => {
 		fetchCustomers();
 	}, [currentCustomer]);
 
-	useEffect(() => {
-		let interval = startTimer();
-		return () => clearInterval(interval);
-	}, []);
+	// useEffect(() => {
+	// 	// console.log('useEffect(): ', currentCustomer);
 
-	const startTimer = useCallback(() => {
+	// 	let interval = startTimer();
+	// 	return () => clearInterval(interval);
+	// }, []);
+
+	// const startTimer = useCallback((current) => {
+	// 	return setInterval(() => {
+	// 		console.log('currentCustomer: ', current);
+
+	// 		// fetchSmsByCustomers(currentCustomer.CUST_NO);
+	// 	}, 3000);
+	// }, [currentCustomer])
+
+	const startTimer = (currentCustomer) => {
 		return setInterval(() => {
-			console.log('currentCustomer: ', currentCustomer);
+				// console.log('currentCustomer: ', currentCustomer);
 
-			// fetchSmsByCustomers(currentCustomer.CUST_NO);
-		}, 1000);
-	}, [currentCustomer])
+				fetchSmsByCustomers(currentCustomer.CUST_NO);
+			}, 3000);
+	}
 
 	const txtEditorOptions = { height: 90,
 							maxLength: 160,
@@ -257,9 +267,15 @@ export default () => {
 
 	async function handleListSelectionChange(e) {
 		const current = JSON.parse(JSON.stringify(e.addedItems[0]));
+		// console.log('handleListSelectionChange(): ', current);
+
 		setCurrentCustomer(current);
 		setSelectedItemKeys([current.CUST_NO]);
 		await fetchSmsByCustomers(current.CUST_NO);
+
+		clearInterval(intervalId);
+		let returnIntervalId = startTimer(current);
+		setIntervalId(returnIntervalId);
 	}
 
 	const scrollToBottom = () => {
