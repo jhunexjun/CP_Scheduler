@@ -1,22 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
-// import Form, {
-// 	Item,
-// 	Label,
-// 	ButtonItem,
-// 	PatternRule,
-// 	RequiredRule,
-// 	GroupItem,
-// 	SimpleItem,
-// 	TabbedItem,
-// 	TabPanelOptions,
-// 	Tab
-// } from 'devextreme-react/form';
-// import { DataGrid, Selection, Paging } from 'devextreme-react/data-grid';
-// import TextArea from 'devextreme-react/text-area';
 import 'devextreme-react/text-area';
-// import { Button } from 'devextreme-react/button';
 import List from 'devextreme-react/list';
 import ArrayStore from 'devextreme/data/array_store';
 import TileView from 'devextreme-react/tile-view';
@@ -46,9 +31,6 @@ import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import validator from 'validator';
-
-
-// const phoneEditorOptions = { mask: '+1 (X00) 000-0000', maskRules: { X: /[02-9]/ }, };
 
 
 export default () => {
@@ -117,25 +99,8 @@ export default () => {
 		fetchCustomers();
 	}, [currentCustomer]);
 
-	// useEffect(() => {
-	// 	// console.log('useEffect(): ', currentCustomer);
-
-	// 	let interval = startTimer();
-	// 	return () => clearInterval(interval);
-	// }, []);
-
-	// const startTimer = useCallback((current) => {
-	// 	return setInterval(() => {
-	// 		console.log('currentCustomer: ', current);
-
-	// 		// fetchSmsByCustomers(currentCustomer.CUST_NO);
-	// 	}, 3000);
-	// }, [currentCustomer])
-
 	const startTimer = (currentCustomer) => {
 		return setInterval(() => {
-				// console.log('currentCustomer: ', currentCustomer);
-
 				fetchSmsByCustomers(currentCustomer.CUST_NO);
 			}, 3000);
 	}
@@ -186,10 +151,6 @@ export default () => {
 	}, []);
 
 	async function handleSubmit(e) {
-		// console.log('currentCustomer: ', currentCustomer);
-
-		// return;
-
 		if (!isSet(currentCustomer, 'PHONE_1')) {
 			notification('Please select a client.', 'error');
 			return;
@@ -224,10 +185,6 @@ export default () => {
 		}, []);
 	}
 
-	// function refreshSmsMessages() {
-	// 	fetchSms();
-	// }
-
 	function textMsgInputHandler(event) {
 		setSmsMessage(event.target.value);
 		const maxlength = 160;
@@ -260,19 +217,14 @@ export default () => {
 		);
 	}
 
-	// function renderConversation() {
-	// 	// return conversationTemplate();
-	// 	return "";
-	// }
-
 	async function handleListSelectionChange(e) {
 		const current = JSON.parse(JSON.stringify(e.addedItems[0]));
-		// console.log('handleListSelectionChange(): ', current);
 
 		setCurrentCustomer(current);
 		setSelectedItemKeys([current.CUST_NO]);
 		await fetchSmsByCustomers(current.CUST_NO);
 
+		// facilitate the timer for selected customer.
 		clearInterval(intervalId);
 		let returnIntervalId = startTimer(current);
 		setIntervalId(returnIntervalId);
