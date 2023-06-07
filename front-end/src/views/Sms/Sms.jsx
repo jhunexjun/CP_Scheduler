@@ -286,7 +286,7 @@ export default () => {
 					</div>
 					<div className="row">
 						<MDBCol md="5" lg="6" xl="7">
-							<div style={{height: '500px', overflowY: 'auto'}}>
+							<div style={{height: '464px', overflowY: 'auto'}}>
 								<MDBTypography listUnStyled>
 									{conversationTemplate(convoByCustomer)}
 									{/*<li className="d-flex justify-content-between mb-4">

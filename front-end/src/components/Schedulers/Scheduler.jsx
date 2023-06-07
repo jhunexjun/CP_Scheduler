@@ -8,7 +8,16 @@ import notify from 'devextreme/ui/notify';
 import { uriEncode, isSet } from '../../utils/util';
 
 
-const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, techniciansMaster, setScheduleData}) => {
+const Sched = ({
+				scheduleData,
+				technicians,
+				workOrders,
+				stopTimer,
+				startTimer,
+				techniciansMaster,
+				setScheduleData,
+				setSelectedView,
+			}) => {
 	const groups = ['technicianIds'];
 	let [currentDate] = useState(new Date());
 	const [popupVisible, setPopupVisible] = useState(false);
@@ -352,10 +361,17 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 		});
 	}
 
+	const handlePropertyChange = (e) => {
+		// console.log('e: ', e);
+		if (e.name === 'currentView') {
+			setSelectedView(e.value);
+		}
+	}
+
 
 	return (
 		<>
-			<Scheduler height={698}
+			<Scheduler height={695}
 				dataSource={scheduleData}
 				// dataCellComponent={DataCell}
 				// resourceCellComponent={ResourceCell}
@@ -373,7 +389,8 @@ const Sched = ({scheduleData, technicians, workOrders, stopTimer, startTimer, te
 				onAppointmentUpdated={onAppointmentUpdatedAsync}
 				onAppointmentDeleting={onAppointmentDeleting}
 				onAppointmentDeleted={onAppointmentDeletedAsync}
-				onAppointmentFormOpening={onAppointmentFormOpening}>
+				onAppointmentFormOpening={onAppointmentFormOpening}
+				onOptionChanged={handlePropertyChange}>
 				<View
 					name="Day"
 					type="day"

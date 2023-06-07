@@ -13,7 +13,9 @@ import { isSet, isSetScalar } from '../../utils/util';
 
 import Scheduler from '../../components/Schedulers/Scheduler';
 import SelectBox from 'devextreme-react/select-box';
+import { Button } from 'devextreme-react/button';
 
+import PrintSchedule from './PrintSchedule';
 
 export default () => {
 	const [selectedTechnicianId] = useState('ALL');
@@ -33,6 +35,8 @@ export default () => {
 	const refreshInMinutes = 1;	// the frequency of refresh
 	const [countdown, setCountdown] = useState(refreshInMinutes * 60);
 	let [intervalCounter, setIntervalCounter] = useState();
+	const [showPrintPopup, setShowPrintPopup] = useState(false);
+	const [selectedView, setSelectedView] = useState('Day');	// Day or Week or Month.
 
 	// const [gridBoxValue, setGridBoxValue] = useState([]);
 	// const [isGridBoxOpened, setIsGridBoxOpened] = useState(false);
@@ -42,7 +46,7 @@ export default () => {
 
 	const { sessionId } = useParams();
 	const navigate = useNavigate();
-	// Note: in the future we have to change the way sessionId is beong concatenated in the url, better to use the ?
+	// Note: in the future we have to change the way sessionId is being concatenated in the url, better to use the ?
 
 	const fetchData = useCallback(async () => {
 		await fetch(`${adminUrl}/technicians?sessionId=${sessionId}`)
@@ -278,7 +282,7 @@ export default () => {
 	// }
 
 	function updateNow(e) {
-		e.preventDefault();
+		e.event.preventDefault();
 		fetchData();
 		setCountdown(refreshInMinutes * 60);
 	}
@@ -304,37 +308,53 @@ export default () => {
 		setTechnicians(techs);
 	}
 
+	// function showPrintPopup(value) {
+	// 	setshowPrintPopup(value);
+	// }
+
     return (
     	<div className="content">
 			<div className="row">
 				<div className="col-2">
-					<div className="cpt-update-box">
+					{/*<div className="cpt-update-box">
 						<span className="float-left"><Link to="" className="showDetails" onClick={(e) => updateNow(e)}>Update Now</Link></span>
 						<span className="float-end" title="Time before it updates data">{ countdown }</span>
-					</div>
+					</div>*/}
+					<Button type="success"
+							text={`Update in ${countdown}`}
+							onClick={(e) => updateNow(e)} />
 				</div>
 				<div className="col-3">
-					<div className="dx-field">
-						<div className="dx-field-label">Technician</div>
-						<div className="dx-field-value">
-							<SelectBox dataSource={selectBoxTechnicians}
-								displayExpr="text"
-								searchEnabled={true}
-								searchMode="contains"
-								searchExpr="text"
-								searchTimeout={200}
-								minSearchLength={0}
-								showDataBeforeSearch={false}
-								onValueChanged={(e) => techniciansOnValueChanged(e)}
-								placeholder="Select technicians"
-								defaultValue={selectBoxTechnicians[0]}
-							/>
+					<div className="ms-0XXXX">
+						<div className="dx-field">
+							<div className="dx-field-label">Technician</div>
+							<div className="dx-field-value">
+								<SelectBox dataSource={selectBoxTechnicians}
+									displayExpr="text"
+									searchEnabled={true}
+									searchMode="contains"
+									searchExpr="text"
+									searchTimeout={200}
+									minSearchLength={0}
+									showDataBeforeSearch={false}
+									onValueChanged={(e) => techniciansOnValueChanged(e)}
+									placeholder="Select technicians"
+									defaultValue={selectBoxTechnicians[0]}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>
+				<div className="col-3">
+					<div className="ms-5">
+						<Button icon="print"
+							type="success"
+							text="Print"
+							onClick={() => setShowPrintPopup(true)} />
+					</div>
+				</div>
 			</div>
-
-			<div className="row">
+			<div className="row mt-2">
 				<div className="col">
 					<div id="dx-viewport scheduler">
 						<Scheduler scheduleData={scheduleData}
@@ -344,8 +364,17 @@ export default () => {
 							startTimer={startTimer}
 							techniciansMaster={selectBoxTechnicians}
 							setScheduleData={setScheduleData}
+							setSelectedView={setSelectedView}
 						/>
 					</div>
+				</div>
+			</div>
+			<div className="row">
+				<div className="col">
+					<PrintSchedule popupVisible={showPrintPopup}
+						setShowPrintPopup={setShowPrintPopup}
+						selectedView={selectedView}
+						scheduleData={scheduleData} />
 				</div>
 			</div>
 		</div>
