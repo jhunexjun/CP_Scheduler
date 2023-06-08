@@ -17,9 +17,9 @@ const Sched = ({
 				techniciansMaster,
 				setScheduleData,
 				setSelectedView,
+				setCurrentSchedulerDate,
 			}) => {
 	const groups = ['technicianIds'];
-	let [currentDate] = useState(new Date());
 	const [popupVisible, setPopupVisible] = useState(false);
 
 	let techs = [], techs2 = [];
@@ -366,6 +366,11 @@ const Sched = ({
 		if (e.name === 'currentView') {
 			setSelectedView(e.value);
 		}
+
+		if (e.name === 'currentDate') {
+			console.log('currentDate: ', e);
+			setCurrentSchedulerDate(e.value);
+		}
 	}
 
 
@@ -377,7 +382,7 @@ const Sched = ({
 				// resourceCellComponent={ResourceCell}
 				groups={groups}
 				defaultCurrentView="day"
-				defaultCurrentDate={currentDate}
+				defaultCurrentDate={new Date()}
 				startDayHour={8}
 				endDayHour={18}
 				crossScrollingEnabled={true}

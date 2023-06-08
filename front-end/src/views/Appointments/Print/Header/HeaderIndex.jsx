@@ -10,7 +10,9 @@ const SchedulePrintIndex = () => (
 	<View style={{flexDirection: 'row'}}>
 		<Text style={styles.headerLeftPortion}>DAILY PLAN</Text>
 		<View style={styles.headerRightContainer}>
-			<Text style={styles.headerDate}>DATE</Text>
+			<Text style={styles.headerDate}>Date Today: </Text>
+			<Text style={styles.headerDate}>Location: </Text>
+			<Text style={styles.headerDate}>Printed By: </Text>
 		</View>
 	</View>
 );

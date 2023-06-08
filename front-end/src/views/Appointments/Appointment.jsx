@@ -37,6 +37,7 @@ export default () => {
 	let [intervalCounter, setIntervalCounter] = useState();
 	const [showPrintPopup, setShowPrintPopup] = useState(false);
 	const [selectedView, setSelectedView] = useState('Day');	// Day or Week or Month.
+	let [currentSchedulerDate, setCurrentSchedulerDate] = useState(new Date());
 
 	// const [gridBoxValue, setGridBoxValue] = useState([]);
 	// const [isGridBoxOpened, setIsGridBoxOpened] = useState(false);
@@ -365,6 +366,7 @@ export default () => {
 							techniciansMaster={selectBoxTechnicians}
 							setScheduleData={setScheduleData}
 							setSelectedView={setSelectedView}
+							setCurrentSchedulerDate={setCurrentSchedulerDate}
 						/>
 					</div>
 				</div>
@@ -374,7 +376,8 @@ export default () => {
 					<PrintSchedule popupVisible={showPrintPopup}
 						setShowPrintPopup={setShowPrintPopup}
 						selectedView={selectedView}
-						scheduleData={scheduleData} />
+						scheduleData={scheduleData}
+						currentSchedulerDate={currentSchedulerDate} />
 				</div>
 			</div>
 		</div>

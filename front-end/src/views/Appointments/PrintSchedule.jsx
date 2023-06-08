@@ -6,8 +6,8 @@ import { PDFViewer } from '@react-pdf/renderer';
 
 import scheduleDocumentContainer from './Print/scheduleDocumentContainer';
 
-const PrintSchedule = (params) => {
-	let { popupVisible, setShowPrintPopup, selectedView, scheduleData } = params;
+const PrintSchedule = (props) => {
+	let { popupVisible, setShowPrintPopup, selectedView } = props;
 
 	const closeButtonOptions = {
 		text: 'Close',
@@ -31,7 +31,7 @@ const PrintSchedule = (params) => {
 				location="after"
 				options={closeButtonOptions}
 			/>
-			<PDFViewer width={'100%'} height={'100%'}>{scheduleDocumentContainer(params)}</PDFViewer>
+			<PDFViewer width={'100%'} height={'100%'}>{scheduleDocumentContainer(props)}</PDFViewer>
 		</Popup>
 	);
 }

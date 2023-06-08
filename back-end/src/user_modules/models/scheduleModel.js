@@ -161,7 +161,7 @@ async function updateSchedule(req) {
 		if (utils.isSet(req.body, 'recurrenceRule'))
 			sql += ", recurrenceRule = @recurrenceRule";
 
-		sql += " where id = @id";
+		sql += " where id = @id /*and sessionId = @sessionId*/";
 
 		let request = new Request(sql, (err, rowCount) => {
 			if (err)
@@ -182,6 +182,7 @@ async function updateSchedule(req) {
 
 		request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
 		request.addParameter('id', TYPES.Int, parseInt(req.body.id));
+		//request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
 		await utils.executeRequestAsync(request);	// We just assume running sql was successful bc it's not capturing the rows affected.
 
 		await updateSchedsCustomers(req);
