@@ -16,29 +16,33 @@ const styles = StyleSheet.create({
 });
 
 const SchedulesRow = (props) => {
-	const { selectedView, scheduleData } = props;
+	const { selectedView, scheduleData, currentSchedulerDate } = props;
 
 	let reduced = scheduleData.reduce((prevValue, curValue) => {
 		const { startDate } = curValue;
 
 		if (selectedView == 'Day') {
-			if (moment(startDate).isSame(moment(), 'day')) {
+			if (moment(startDate).isSame(moment(currentSchedulerDate), 'day'))
 				prevValue.push(curValue);
-			}
 		} else if (selectedView == 'Week') {
+			const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
+			const schedulerStartDate = moment(currentSchedulerDate).subtract(dayNumOfWeek, 'days');
+			const schedulerEndDate = moment(currentSchedulerDate).add(6 - dayNumOfWeek, 'days');
 
-
-			return null;
+			if (schedulerStartDate <= moment(startDate) && schedulerEndDate >= moment(startDate))
+				prevValue.push(curValue);
 		} else {
-			return null;
+			const startOfMonth = moment().startOf('month');
+			const endOfMonth = moment().endOf('month');
+
+			if (startOfMonth <= moment(startDate) && endOfMonth >= moment(startDate))
+				prevValue.push(curValue);
 		}
 
 		return prevValue;
 	}, []);
 
 	const formatDateTime = (val) => moment(val).format('MM/DD/YYYY h:mm A')
-
-	// console.log('reduced: ', reduced);
 
 	if (reduced === null)
 		return (<></>);
