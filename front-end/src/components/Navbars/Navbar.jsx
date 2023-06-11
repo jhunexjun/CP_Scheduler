@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
 	Collapse,
@@ -30,6 +30,8 @@ import { extractSessionId, uriEncode } from '../../utils/util'
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
+import { SystemUserContext } from '../../Context/SystemUserContext';
+
 
 function Header(props) {
 	const [isOpen, setIsOpen] = React.useState(false);
@@ -38,12 +40,13 @@ function Header(props) {
 	const sidebarToggle = React.useRef();
 	const location = useLocation();
 	const navigate = useNavigate();
+	const sysUserContext = useContext(SystemUserContext);
 
 	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 	const session = useParams();
 	const [sessionId, setSessionId] = useState('');
 
-	const [userId, setUserId] = useState('');
+	// const [userId, setUserId] = useState('');
 	const [branchLocation, setBranchLocation] = useState('');
 	const toggle = () => {
 		if (isOpen) {
@@ -53,23 +56,6 @@ function Header(props) {
 		}
 		setIsOpen(!isOpen);
 	};
-
-	const fetchLocation = useCallback(async () => {
-		let sess = extractSessionId(session['*']);
-		setSessionId(sess);
-		await fetch(`${adminUrl}/location?sessionId=${sess}&robot=N`, )
-			.then((res) => {
-				return res.json()
-			})
-			.then((location) => {
-				if (location.status === 'Error') {
-					navigate('/')
-				} else {
-					setUserId(location.data.userId);
-					setBranchLocation(location.data.locationId);
-				}
-			});
-	} ,[]);
 
 	const logout = async (e) => {
 		const optionHeaders = {
@@ -124,10 +110,6 @@ function Header(props) {
 		}
 	}, [location]);
 
-	useEffect(() => {
-		fetchLocation();
-	}, []);
-
   return (
 	// add or remove classes depending if we are on full-screen-maps page or not
 	<Navbar
@@ -154,13 +136,13 @@ function Header(props) {
 		<Collapse isOpen={isOpen} navbar className="justify-content-end">
 			<div style={{marginRight: '23px'}}>
 				<span className="me-3">
-					{`Location: ${branchLocation}`}
+					{`Location: ${/*branchLocation*/ sysUserContext.location }`}
 				</span>
 				<span className="float-end">
 					<Dropdown>
 						<Dropdown.Toggle className="nc-icon nc-settings-gear-65" bsPrefix as="i" style={{fontSize:'23px'}}></Dropdown.Toggle>
 						<Dropdown.Menu>
-							<Dropdown.Item href="#">{userId}</Dropdown.Item>
+							<Dropdown.Item href="#">{ sysUserContext.user.id }</Dropdown.Item>
 							<Dropdown.Item href="#" onClick={logout}>Log-out</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>

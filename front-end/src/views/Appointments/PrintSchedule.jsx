@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { memo } from 'react';
 
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
 
@@ -7,7 +7,7 @@ import { PDFViewer } from '@react-pdf/renderer';
 import scheduleDocumentContainer from './Print/scheduleDocumentContainer';
 
 const PrintSchedule = (props) => {
-	let { popupVisible, setShowPrintPopup, selectedView } = props;
+	let { popupVisible, setShowPrintPopup } = props;
 
 	const closeButtonOptions = {
 		text: 'Close',
@@ -23,8 +23,8 @@ const PrintSchedule = (props) => {
 			showTitle={true}
 			// title="Select"
 			container=".dx-viewport"
-			width={900}
-			height={640}>
+			width={1200}
+			height={800}>
 			<ToolbarItem
 				widget="dxButton"
 				toolbar="bottom"

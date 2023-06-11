@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
+import moment from 'moment';
+
 const styles = StyleSheet.create({
 	common: {
 		marginRight: 5,
@@ -22,22 +24,58 @@ const styles = StyleSheet.create({
 const InvVehicleInfo = (props) => (
 	<View style={[styles.vehicleInfo, styles.common]}>
 		<Text style={styles.label}>Vehicle Information:</Text>
-		<View style={styles.text}>
-			<Text>Year: {props.data.table[0].USR_YR}</Text>
-			<Text>Make: {props.data.table[0].USR_MAKE}</Text>
-			<Text>Model: {props.data.table[0].USR_MODEL}</Text>
-			<Text>Service Type: {props.data.table[0].USR_SERVICE_TYP}</Text>
-			<Text>VIN No: {props.data.table[0].USR_VIN_NO}</Text>
-			<Text>License: {props.data.table[0].USR_LIC_PLATE}</Text>
-			<Text>Exterior: {props.data.table[0].USR_EXTERRIOR}</Text>
-			<Text>Wheel lock: {props.data.table[0].USR_WHEEL_LOCK}</Text>
-			<Text>Appt Date: {props.data.table[0].USR_APPT_DAT}</Text>
-			<Text>Odometer in: {props.data.table[0].USR_ODOMETER_IN}</Text>
-			<Text>Odometer out: {props.data.table[0].USR_ODOMETER_OUT}</Text>
-			<Text>Date/time in: {props.data.table[0].USR_SERVICE_IN_DAT} {props.data.table[0].USR_SERVICE_IN_TIM}</Text>
-			<Text>Date/time out: {props.data.table[0].USR_SERVICE_OUT_DAT} {props.data.table[0].USR_SERVICE_OUT_TIM}</Text>
-			<Text>Retain parts?: {props.data.table[0].USR_RETAIN_PARTS}</Text>
-			<Text>Customer own parts: {props.data.table[0].USR_CUSTOMER_OWN_PARTS}</Text>
+		<View>
+			<Text>Year:
+				<Text style={styles.text}> {props.data.table[0].USR_YR}</Text>
+			</Text>
+			<Text>Make:
+				<Text style={styles.text}> {props.data.table[0].USR_MAKE}</Text>
+			</Text>
+			<Text>Model:
+				<Text style={styles.text}> {props.data.table[0].USR_MODEL}</Text>
+			</Text>
+			<Text>Service Type:
+				<Text style={styles.text}> {props.data.table[0].USR_SERVICE_TYP}</Text>
+			</Text>
+			<Text>VIN No:
+				<Text style={styles.text}> {props.data.table[0].USR_VIN_NO}</Text>
+			</Text>
+			<Text>License:
+				<Text style={styles.text}> {props.data.table[0].USR_LIC_PLATE}</Text>
+			</Text>
+			<Text>Exterior:
+				<Text style={styles.text}> {props.data.table[0].USR_EXTERRIOR}</Text>
+			</Text>
+			<Text>Wheel lock:
+				<Text style={styles.text}> {props.data.table[0].USR_WHEEL_LOCK}</Text>
+			</Text>
+			<Text>Appt Date:
+				<Text style={styles.text}> {moment(props.data.table[0].USR_APPT_DAT).format('MM/DD/YYYY')}</Text>
+			</Text>
+			<Text>Odometer in:
+				<Text style={styles.text}> {props.data.table[0].USR_ODOMETER_IN}</Text>
+			</Text>
+			<Text>Odometer out:
+				<Text style={styles.text}> {props.data.table[0].USR_ODOMETER_OUT}</Text>
+			</Text>
+			<Text>Date/time in:
+				<Text style={styles.text}>
+					{moment(props.data.table[0].USR_SERVICE_IN_DAT).format('MM/DD/YYYY')} {` `}
+					{moment(props.data.table[0].USR_SERVICE_IN_TIM).isValid() ? moment(props.data.table[0].USR_SERVICE_IN_TIM).format('h:mm A') : ''}
+				</Text>
+			</Text>
+			<Text>Date/time out:
+				<Text style={styles.text}>
+					{moment(props.data.table[0].USR_SERVICE_OUT_DAT).format('MM/DD/YYYY')} {` `}
+					{moment(props.data.table[0].USR_SERVICE_OUT_TIM).isValid() ? moment(props.data.table[0].USR_SERVICE_OUT_TIM).format('h:mm A') : ''}
+				</Text>
+			</Text>
+			<Text>Retain parts?:
+				<Text style={styles.text}> {props.data.table[0].USR_RETAIN_PARTS}</Text>
+			</Text>
+			<Text>Customer own parts:
+				<Text style={styles.text}> {props.data.table[0].USR_CUSTOMER_OWN_PARTS}</Text>
+			</Text>
 		</View>
 	</View>
 );

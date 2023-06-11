@@ -25,7 +25,6 @@ async function getSchedule(req) {
 		// request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');	// if Y we assume it's robot.
 
 		const scheds = await utils.executeRequestAsync(request);
-
 		// console.log('scheds: ', scheds)
 
 		if (scheds.length <= 0 || scheds[0].hasOwnProperty('errorNo')) {
@@ -45,6 +44,7 @@ async function getSchedule(req) {
 								invoiceNo: currentValue.invoiceNo,	// invoice no. is mandatory.
 								allDay: currentValue.allDay,
 								recurrenceRule: currentValue.recurrenceRule,
+								createdBy: currentValue.createdBy,
 							};
 					prevValue.push(x);
 				} else {

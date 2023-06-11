@@ -1,3 +1,5 @@
+/* Note: JLM: Being used by Appointment and Invoice. So be careful in modifying. */
+
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({

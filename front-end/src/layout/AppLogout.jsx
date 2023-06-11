@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 
 import events from '../utils/events';
@@ -10,7 +10,6 @@ export default function AppLogout({ children }) {
 
 	const navigate = useNavigate();
 	const session = useParams();
-	const [sessionId, setSessionId] = useState('');
 
 	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
@@ -66,7 +65,7 @@ export default function AppLogout({ children }) {
 		Object.values(events).forEach((item) => {
 			window.addEventListener(item, async () => {
 				await extendSession()
-				console.log('Called event listener and extended session.')
+				console.log('Called event listener and extended your session.')
 				resetTimer();
 				await handleLogoutTimer();
 			});

@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { memo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Scheduler, { Resource, View } from 'devextreme-react/scheduler';
@@ -20,20 +20,20 @@ const Sched = ({
 				setCurrentSchedulerDate,
 			}) => {
 	const groups = ['technicianIds'];
-	const [popupVisible, setPopupVisible] = useState(false);
+	// const [popupVisible, setPopupVisible] = useState(false);
 
 	let techs = [], techs2 = [];
 
 	if (technicians !== undefined && technicians.length > 0) {
 		techs = JSON.parse(JSON.stringify(technicians));
-		if (techs !== undefined && techs.length > 0 && techs[0].id == 'ALL') {
+		if (techs !== undefined && techs.length > 0 && techs[0].id === 'ALL') {
 			techs.shift();
 		}
 	}
 
 	if (techniciansMaster !== undefined && techniciansMaster.length > 0) {
 		techs2 = JSON.parse(JSON.stringify(techniciansMaster));
-		if (techs2 !== undefined && techs2.length > 0 && techs2[0].id == 'ALL') {
+		if (techs2 !== undefined && techs2.length > 0 && techs2[0].id === 'ALL') {
 			techs2.shift();
 		}
 	}
@@ -136,7 +136,7 @@ const Sched = ({
 	}
 
 	async function onAppointmentUpdatedAsync(e) {
-		let retVal = await updateScheduleAsync(e.appointmentData);
+		await updateScheduleAsync(e.appointmentData);
 		showToast('Edited', e.appointmentData.text, 'success');
 	}
 
@@ -372,7 +372,6 @@ const Sched = ({
 			setCurrentSchedulerDate(e.value);
 		}
 	}
-
 
 	return (
 		<>

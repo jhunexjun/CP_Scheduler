@@ -2,17 +2,16 @@ import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
 import moment from 'moment';
 
-import { formatDateMMddYYYYhhmm } from '../../../../utils/util';
-
 const styles = StyleSheet.create({
 	flexDirection: 'row',
 	dataStyles: {
-		padding: 2,
+		// padding: 2,
 		// border: 0.5,
 		// width: 90,
 		// backgroundColor: 'yellow'
 		padding: 5,
 	},
+	text: { color: '#696969', }
 });
 
 const SchedulesRow = (props) => {
@@ -21,28 +20,30 @@ const SchedulesRow = (props) => {
 	let reduced = scheduleData.reduce((prevValue, curValue) => {
 		const { startDate } = curValue;
 
-		if (selectedView == 'Day') {
+		let sDate, eDate;
+
+		if (selectedView === 'Day') {
 			if (moment(startDate).isSame(moment(currentSchedulerDate), 'day'))
 				prevValue.push(curValue);
-		} else if (selectedView == 'Week') {
+		} else if (selectedView === 'Week') {
 			const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
-			const schedulerStartDate = moment(currentSchedulerDate).subtract(dayNumOfWeek, 'days');
-			const schedulerEndDate = moment(currentSchedulerDate).add(6 - dayNumOfWeek, 'days');
+			sDate = moment(currentSchedulerDate).subtract(dayNumOfWeek, 'days');
+			eDate = moment(currentSchedulerDate).add((6 - dayNumOfWeek) + dayNumOfWeek, 'days');
 
-			if (schedulerStartDate <= moment(startDate) && schedulerEndDate >= moment(startDate))
+			if (sDate <= moment(startDate) && eDate >= moment(startDate))
 				prevValue.push(curValue);
 		} else {
-			const startOfMonth = moment().startOf('month');
-			const endOfMonth = moment().endOf('month');
+			sDate = moment().startOf('month');
+			eDate = moment().endOf('month');
 
-			if (startOfMonth <= moment(startDate) && endOfMonth >= moment(startDate))
+			if (sDate <= moment(startDate) && eDate >= moment(startDate))
 				prevValue.push(curValue);
 		}
 
 		return prevValue;
 	}, []);
 
-	const formatDateTime = (val) => moment(val).format('MM/DD/YYYY h:mm A')
+	const formatDateTime = (val) => moment(val).format('MM/DD/YYYY h:mm A');
 
 	if (reduced === null)
 		return (<></>);
@@ -52,10 +53,12 @@ const SchedulesRow = (props) => {
 			styles.dataStyles.borderBottom = 0.5;
 
 		let markup = <View style={styles} key={ index + 1 }>
-						<Text style={[{width: 110}, styles.dataStyles]}>{ formatDateTime(item.startDate) }</Text>
-						<Text style={[{width: 110}, styles.dataStyles]}>{ formatDateTime(item.endDate) }</Text>
-						<Text style={[{width: 200}, styles.dataStyles]}>{ item.text }</Text>
-						<Text style={[{width: 250}, styles.dataStyles]}>{ item.technicianIds.toString() }</Text>
+						<Text style={[{width: 20}, styles.dataStyles, styles.text]}>{ index + 1 }</Text>
+						<Text style={[{width: 110}, styles.dataStyles, styles.text]}>{ formatDateTime(item.startDate) }</Text>
+						<Text style={[{width: 110}, styles.dataStyles, styles.text]}>{ formatDateTime(item.endDate) }</Text>
+						<Text style={[{width: 200}, styles.dataStyles, styles.text]}>{ item.text }</Text>
+						<Text style={[{width: 230}, styles.dataStyles, styles.text]}>{ item.technicianIds.toString() }</Text>
+						<Text style={[{width: 72}, styles.dataStyles, styles.text]}>{ item.createdBy }</Text>
 					</View>
 		return markup;
 	});

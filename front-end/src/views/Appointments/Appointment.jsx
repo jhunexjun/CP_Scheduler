@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 // import '../../assets/compuTant/themes/custom-styles.scss';
 
@@ -17,7 +17,7 @@ import { Button } from 'devextreme-react/button';
 
 import PrintSchedule from './PrintSchedule';
 
-export default () => {
+const Appointment = () => {
 	const [selectedTechnicianId] = useState('ALL');
 	const selectedTechnician = {
 			id: 'ALL',
@@ -214,6 +214,7 @@ export default () => {
 							invoiceNo: scheds.data[x].invoiceNo === null ? '' : scheds.data[x].invoiceNo,
 							allDay: scheds.data[x].allDay === 'Y' ? true : false,
 							recurrenceRule: scheds.data[x].recurrenceRule,
+							createdBy: scheds.data[x].createdBy,
 						}
 			initScheduleData.push(tmp);
 		}
@@ -383,3 +384,5 @@ export default () => {
 		</div>
     );
 }
+
+export default Appointment;

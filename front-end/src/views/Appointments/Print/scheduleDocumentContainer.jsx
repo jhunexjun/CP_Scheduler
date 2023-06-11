@@ -2,8 +2,6 @@ import {
 	Document,
 	Page,
 	StyleSheet,
-	View,
-	Text
 } from "@react-pdf/renderer";
 
 import HeaderIndex from './Header/HeaderIndex';
@@ -23,7 +21,7 @@ const scheduleDocumentContainer = (props) => {
 	return (
 		<Document>
 			<Page size='LETTER' style={styles.page}>
-				<HeaderIndex />
+				<HeaderIndex {...props} />
 				<Schedules {...props} />
 			</Page>
 		</Document>
