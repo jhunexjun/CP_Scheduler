@@ -43,6 +43,10 @@ npm run buildProd
 ```
 it will create compiled files to dist/ folder.
 Then using pm2 as process management, run if not yet installed.
+Note: we do not use pm2 anymore. node-windows is better bc it creates windows service.
+	Also, the back-end/node_modules folder is needed to run the windows service. Otherwise, it'll stops immediately.
+	Just put the node_modules along side with /dist folder.
+	Front-end don't needs the node_modules.
 ```bash
 npm install pm2@latest -g
 ```
