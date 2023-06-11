@@ -16,8 +16,8 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React, { useEffect, useState, useContext } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
 	Collapse,
 	Navbar,
@@ -26,7 +26,7 @@ import {
 } from "reactstrap";
 
 import routes from "../../routes.js";
-import { extractSessionId, uriEncode } from '../../utils/util'
+import { uriEncode } from '../../utils/util'
 
 import Dropdown from 'react-bootstrap/Dropdown';
 
@@ -34,20 +34,15 @@ import { SystemUserContext } from '../../Context/SystemUserContext';
 
 
 function Header(props) {
-	const [isOpen, setIsOpen] = React.useState(false);
-	// const [dropdownOpen, setDropdownOpen] = React.useState(false);
-	const [color, setColor] = React.useState("transparent");
-	const sidebarToggle = React.useRef();
+	const [isOpen, setIsOpen] = useState(false);
+	// const [dropdownOpen, setDropdownOpen] = useState(false);
+	const [color, setColor] = useState("transparent");
+	const sidebarToggle = useRef();
 	const location = useLocation();
 	const navigate = useNavigate();
 	const sysUserContext = useContext(SystemUserContext);
 
 	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
-	const session = useParams();
-	const [sessionId, setSessionId] = useState('');
-
-	// const [userId, setUserId] = useState('');
-	const [branchLocation, setBranchLocation] = useState('');
 	const toggle = () => {
 		if (isOpen) {
 			setColor("transparent");
@@ -57,11 +52,13 @@ function Header(props) {
 		setIsOpen(!isOpen);
 	};
 
-	const logout = async (e) => {
+	const logout = async () => {
+		sysUserContext.loggingOut = true;	// prevents the event click listener for excuting in AppLogout.jsx.
+
 		const optionHeaders = {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: uriEncode({ sessionId: sessionId }),
+			body: uriEncode({ sessionId: sysUserContext.sessionId }),
 		}
 
 		await fetch(`${adminUrl}/logout`, optionHeaders)
@@ -71,7 +68,7 @@ function Header(props) {
 	const getBrand = () => {
 		let brandName = "Default Brand";
 		routes.map((prop, key) => {
-			let newPath = prop.path.replace(':sessionId', sessionId)
+			let newPath = prop.path.replace(':sessionId', sysUserContext.sessionId)
 			if (window.location.href.includes(prop.layout + newPath)) {
 				brandName = prop.name;
 			}
@@ -126,7 +123,7 @@ function Header(props) {
 					<span className="navbar-toggler-bar bar3" />
 				</button>
 			</div>
-			<NavbarBrand href="https://computant.com/">{ getBrand() }</NavbarBrand>
+			<NavbarBrand href="https://www.poshighway.com/">{ getBrand() }</NavbarBrand>
 		</div>
 		<NavbarToggler onClick={toggle}>
 			<span className="navbar-toggler-bar navbar-kebab" />
@@ -136,7 +133,7 @@ function Header(props) {
 		<Collapse isOpen={isOpen} navbar className="justify-content-end">
 			<div style={{marginRight: '23px'}}>
 				<span className="me-3">
-					{`Location: ${/*branchLocation*/ sysUserContext.location }`}
+					{`Location: ${sysUserContext.location }`}
 				</span>
 				<span className="float-end">
 					<Dropdown>

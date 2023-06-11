@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'
 
 import events from '../utils/events';
 import { extractSessionId, uriEncode } from '../utils/util';
+
+import { SystemUserContext } from '../Context/SystemUserContext';
 
 
 export default function AppLogout({ children }) {
@@ -10,6 +12,8 @@ export default function AppLogout({ children }) {
 
 	const navigate = useNavigate();
 	const session = useParams();
+
+	const sysUserContext = useContext(SystemUserContext);
 
 	const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
@@ -32,7 +36,7 @@ export default function AppLogout({ children }) {
 		navigate('/');
 	}
 
-	async function extendSession() {
+	async function extendSessionAsync() {
 		const optionHeaders = {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -64,7 +68,10 @@ export default function AppLogout({ children }) {
 	useEffect(() => {
 		Object.values(events).forEach((item) => {
 			window.addEventListener(item, async () => {
-				await extendSession()
+				if (sysUserContext.loggingOut)
+					return;
+
+				await extendSessionAsync()
 				console.log('Called event listener and extended your session.')
 				resetTimer();
 				await handleLogoutTimer();

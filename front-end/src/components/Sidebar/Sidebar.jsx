@@ -62,7 +62,7 @@ function Sidebar(props) {
 				data-color={ props.bgColor }
 				data-active-color={ props.activeColor }>
 				<div className="logo">
-					<Link to="https://computant.com/" className="simple-text logo-mini" target="_blank">
+					<Link to="https://www.poshighway.com/" className="simple-text logo-mini" target="_blank">
 						<div className="logo-img">
 							<img src={logo} alt="react-logo" />
 						</div>

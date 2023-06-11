@@ -19,7 +19,6 @@ export default function AdminLayout() {
 
     const navigate = useNavigate();
     const session = useParams();
-    // const [sessionId, setSessionId] = useState('');
     const [rerender, setRerender] = useState(false);
 
     const mainPanel = useRef();
@@ -30,8 +29,7 @@ export default function AdminLayout() {
     const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
     const fetchLocation = useCallback(async () => {
-        let sess = extractSessionId(session['*']);
-        // setSessionId(sess);
+        const sess = extractSessionId(session['*']);
         await fetch(`${adminUrl}/location?sessionId=${sess}&robot=N`, )
             .then((res) => {
                 return res.json();
@@ -43,6 +41,7 @@ export default function AdminLayout() {
                     sysUserContext.user = {};
                     sysUserContext.location = location.data.locationId;
                     sysUserContext.user.id = location.data.userId;
+                    sysUserContext.sessionId = sess;
                     setRerender(!rerender);
                 }
             });

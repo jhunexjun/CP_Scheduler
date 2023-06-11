@@ -5,4 +5,5 @@ export const SystemUserContext = createContext({user: {
 												},
 												location: '',
 												sessionId: '',
+												loggingOut: false,
 											});
