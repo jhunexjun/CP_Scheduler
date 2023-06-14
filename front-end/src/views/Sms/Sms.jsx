@@ -32,18 +32,18 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import validator from 'validator';
 
-
 export default () => {
 	const [formInstance, setFormInstance] = useState(null);
 	const [smsRemainingChar, setSmsRemainingChar] = useState('160/160');
 	let [recipient, setRecipient] = useState('');
-	let [smsMessage, setSmsMessage] = useState('');
+	let [smsMessage, setSmsMessage] = useState('');	// text message on write textbox.
 	// let [sentSms, setSentSms] = useState([]);
 	// let [outboxSms, setOutboxSms] = useState([]);
 	const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
-	const [intervalId, setIntervalId] = useState(undefined);
+	const [intervalIdSmsByCust, setIntervalIdSmsByCust] = useState(undefined);	// timer to fetch sms by a customer.
+	const [intervalIdCust, setIntervalIdCust] = useState(undefined);	// timer to fetch customers.
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
@@ -98,13 +98,23 @@ export default () => {
 	useEffect(() => {
 		//fetchSms();
 		fetchCustomers();
-	}, [currentCustomer]);
 
-	const startTimer = (currentCustomer) => {
+		let intervalId = fetchCustomersTimer();
+		setIntervalIdCust(intervalId);
+
+	// }, [currentCustomer]);
+	}, []);
+
+	function fetchCustomersTimer() {
 		return setInterval(async () => {
-				// await fetchCustomers();
+			await fetchCustomers();
+		}, 8000);
+	}
+
+	const fetchSmsByCustTimer = (currentCustomer) => {
+		return setInterval(async () => {
 				await fetchSmsByCustomers(currentCustomer.CUST_NO);
-			}, 5000);
+			}, 8000);
 	}
 
 	function onInitialized(e) {
@@ -227,14 +237,23 @@ export default () => {
 		await fetchSmsByCustomers(current.CUST_NO);
 
 		// facilitate the timer for selected customer.
-		clearInterval(intervalId);
-		let returnIntervalId = startTimer(current);
-		setIntervalId(returnIntervalId);
+		clearInterval(intervalIdSmsByCust);
+		let returnIntervalId = fetchSmsByCustTimer(current);
+		setIntervalIdSmsByCust(returnIntervalId);
 	}
 
 	const scrollToBottom = () => {
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
 	}
+
+	function onSelectedItemKeysChanged(e) {
+		if (e.fullName === 'searchValue') {
+			clearInterval(intervalIdSmsByCust);
+			setCurrentCustomer(null);
+			setConvoByCustomer([]);
+		}
+	}
+
 
 	return (
 		<div className="content">
@@ -251,6 +270,7 @@ export default () => {
 							itemRender={renderListItem}
 							// groupRender={null}
 							elementAttr={{ class: 'list' }}
+							onOptionChanged={onSelectedItemKeysChanged}
 						/>
 					</div>
 				</div>
