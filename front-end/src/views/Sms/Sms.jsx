@@ -38,8 +38,8 @@ export default () => {
 	const [smsRemainingChar, setSmsRemainingChar] = useState('160/160');
 	let [recipient, setRecipient] = useState('');
 	let [smsMessage, setSmsMessage] = useState('');
-	let [sentSms, setSentSms] = useState([]);
-	let [outboxSms, setOutboxSms] = useState([]);
+	// let [sentSms, setSentSms] = useState([]);
+	// let [outboxSms, setOutboxSms] = useState([]);
 	const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
@@ -52,16 +52,16 @@ export default () => {
 	const navigate = useNavigate();
 	const { sessionId } = useParams();
 
-	const fetchSms = useCallback(async () => {
-		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2?sessionId=${sessionId}`)
-			.then((res) => {
-				return res.json()
-			})
-			.then((res) => {
-				setSentSms(filterSms(res.data, 'Sent'));
-				setOutboxSms(filterSms(res.data, 'Outbox'));
-			});
-	}, []);
+	// const fetchSms = useCallback(async () => {
+	// 	await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2?sessionId=${sessionId}`)
+	// 		.then((res) => {
+	// 			return res.json()
+	// 		})
+	// 		.then((res) => {
+	// 			setSentSms(filterSms(res.data, 'Sent'));
+	// 			setOutboxSms(filterSms(res.data, 'Outbox'));
+	// 		});
+	// }, []);
 
 	const fetchCustomers = useCallback(async () => {
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/customers?sessionId=${sessionId}`)
@@ -79,8 +79,9 @@ export default () => {
 
 				setDataSourceOptions(dataStruct);
 			});
-	}, []);
+	}, [currentCustomer]);
 
+	// Upon customer selection.
 	const fetchSmsByCustomers = useCallback(async (customerNo = '') => {
 		if (customerNo === '') return;
 
@@ -95,32 +96,16 @@ export default () => {
 	}, []);
 
 	useEffect(() => {
-		fetchSms();
+		//fetchSms();
 		fetchCustomers();
 	}, [currentCustomer]);
 
 	const startTimer = (currentCustomer) => {
-		return setInterval(() => {
-				fetchSmsByCustomers(currentCustomer.CUST_NO);
-			}, 3000);
+		return setInterval(async () => {
+				// await fetchCustomers();
+				await fetchSmsByCustomers(currentCustomer.CUST_NO);
+			}, 5000);
 	}
-
-	const txtEditorOptions = { height: 90,
-							maxLength: 160,
-							onOptionChanged(event) {
-								if(event.name === "text") {
-									const maxlength = 160;
-									let currentLength = event.value.length;
-
-									if (currentLength > maxlength) {
-										console.log("You have reached the maximum number of characters.");
-										return;
-									}
-
-									setSmsRemainingChar((maxlength - currentLength) + '/160');
-								}
-							},
-						};
 
 	function onInitialized(e) {
 		setFormInstance(e.component);
@@ -198,22 +183,39 @@ export default () => {
 		setSmsRemainingChar((maxlength - currentLength) + '/160');
 	}
 
+	function smsNewMessage(item) {
+		if (parseInt(item.newSmsMsg) > 0)
+			return item.newSmsMsg;
+	}
+
 	function renderListItem(item) {
 		// console.log('item: ', item);
 		return (
-			<div>
-				<div>{item.CUST_NO}</div>
+			<div className="d-flex flex-row justify-content-between">
 				<div className="customer-list">
+					<div>{item.CUST_NO}</div>
 					<div className="name">{item.NAM}</div>
 					<div className="phone">{item.PHONE_1}</div>
 					<div className="address">{item.ADRS_1}</div>
 				</div>
-				{/*<div className="price-container">
-					<div className="price"></div>
-						&nbsp;
-					<div className="caption">per<br />night</div>
-				</div>*/}
+				<div className="pt-4">
+					<span className="badge bg-danger float-end">{smsNewMessage(item)}</span>
+				</div>
 			</div>
+
+			// <div>
+			// 	<div>{item.CUST_NO}</div>
+			// 	<div className="customer-list">
+			// 		<div className="name">{item.NAM}</div>
+			// 		<div className="phone">{item.PHONE_1}</div>
+			// 		<div className="address">{item.ADRS_1}</div>
+			// 	</div>
+			// 	{/*<div className="price-container">
+			// 		<div className="price"></div>
+			// 			&nbsp;
+			// 		<div className="caption">per<br />night</div>
+			// 	</div>*/}
+			// </div>
 		);
 	}
 
@@ -244,7 +246,7 @@ export default () => {
 							dataSource={dataSourceOptions}
 							grouped={false}
 							searchEnabled={true}
-							selectedItemKeys={selectedItemKeys}
+							//selectedItemKeys={setSelectedItemKeys}
 							onSelectionChanged={async (e) => await handleListSelectionChange(e)}
 							itemRender={renderListItem}
 							// groupRender={null}
