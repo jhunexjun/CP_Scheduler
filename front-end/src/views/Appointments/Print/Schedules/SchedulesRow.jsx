@@ -5,10 +5,6 @@ import moment from 'moment';
 const styles = StyleSheet.create({
 	flexDirection: 'row',
 	dataStyles: {
-		// padding: 2,
-		// border: 0.5,
-		// width: 90,
-		// backgroundColor: 'yellow'
 		padding: 5,
 	},
 	text: { color: '#696969', }
@@ -20,7 +16,7 @@ const SchedulesRow = (props) => {
 	let reduced = scheduleData.reduce((prevValue, curValue) => {
 		const { startDate } = curValue;
 
-		let sDate, eDate;
+		let sDate, eDate;	// date ranges.
 
 		if (selectedView === 'Day') {
 			if (moment(startDate).isSame(moment(currentSchedulerDate), 'day'))
@@ -28,9 +24,13 @@ const SchedulesRow = (props) => {
 		} else if (selectedView === 'Week') {
 			const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
 			sDate = moment(currentSchedulerDate).subtract(dayNumOfWeek, 'days');
-			eDate = moment(currentSchedulerDate).add((6 - dayNumOfWeek) + dayNumOfWeek, 'days');
+			// sDate = moment(sDate.format('YYYY-MM-DD'));	// remove the time.
 
-			if (sDate <= moment(startDate) && eDate >= moment(startDate))
+			// eDate = moment(currentSchedulerDate).add((6 - dayNumOfWeek) + dayNumOfWeek, 'days');
+			eDate = moment(currentSchedulerDate).add((6 - dayNumOfWeek), 'days');
+			// eDate = moment(eDate.format('YYYY-MM-DD'));	// remove the time.
+
+			if (sDate.isSameOrBefore(startDate, 'days') && eDate.isSameOrAfter(startDate, 'days'))
 				prevValue.push(curValue);
 		} else {
 			sDate = moment().startOf('month');
