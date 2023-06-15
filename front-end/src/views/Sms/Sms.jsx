@@ -42,12 +42,14 @@ export default () => {
 	const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
-	const [intervalIdSmsByCust, setIntervalIdSmsByCust] = useState(undefined);	// timer to fetch sms by a customer.
-	const [intervalIdCust, setIntervalIdCust] = useState(undefined);	// timer to fetch customers.
+	// const [intervalIdSmsByCust, setIntervalIdSmsByCust] = useState(undefined);	// timer to fetch sms by a customer.
+	// const [intervalIdCust, setIntervalIdCust] = useState(undefined);	// timer to fetch customers.
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
 	const messagesEndRef = useRef();
+
+	const [rerender, setRerender] = useState(false);
 
 	const navigate = useNavigate();
 	const { sessionId } = useParams();
@@ -251,12 +253,13 @@ export default () => {
 	}
 
 	function scrollToBottom() {
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+		setRerender(!rerender);
 	}
 
 	function onSelectedItemKeysChanged(e) {
 		if (e.fullName === 'searchValue') {
-			clearInterval(intervalIdSmsByCust);
+			// clearInterval(intervalIdSmsByCust);
 			setCurrentCustomer(null);
 			setConvoByCustomer([]);
 		}
