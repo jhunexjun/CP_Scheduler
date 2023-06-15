@@ -133,7 +133,7 @@ function Header(props) {
 		<Collapse isOpen={isOpen} navbar className="justify-content-end">
 			<div style={{marginRight: '23px'}}>
 				<span className="me-3">
-					{`Location: ${sysUserContext.location }`}
+					{`Store: ${sysUserContext.location }`}
 				</span>
 				<span className="float-end">
 					<Dropdown>

@@ -4,27 +4,27 @@ import { useParams, useNavigate } from 'react-router-dom';
 import 'devextreme-react/text-area';
 import List from 'devextreme-react/list';
 import ArrayStore from 'devextreme/data/array_store';
-import TileView from 'devextreme-react/tile-view';
+// import TileView from 'devextreme-react/tile-view';
 
-import LabelTemplate from './LabelTemplate';
-import LabelNotesTemplate from './LabelNotesTemplate';
-import smsData from './data';
+// import LabelTemplate from './LabelTemplate';
+// import LabelNotesTemplate from './LabelNotesTemplate';
+// import smsData from './data';
 
 import { uriEncode, isSet, notification } from '../../utils/util';
 import './styles.css';
 import conversationTemplate from './conversationTemplate';
 
 import {
-  MDBContainer,
-  MDBRow,
+  // MDBContainer,
+  // MDBRow,
   MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBIcon,
+  // MDBCard,
+  // MDBCardBody,
+  // MDBIcon,
   MDBBtn,
   MDBTypography,
   MDBTextArea,
-  MDBCardHeader,
+  // MDBCardHeader,
 } from "mdb-react-ui-kit";
 
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
@@ -33,13 +33,13 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import validator from 'validator';
 
 export default () => {
-	const [formInstance, setFormInstance] = useState(null);
+	// const [formInstance, setFormInstance] = useState(null);
 	const [smsRemainingChar, setSmsRemainingChar] = useState('160/160');
-	let [recipient, setRecipient] = useState('');
+	// let [recipient, setRecipient] = useState('');
 	let [smsMessage, setSmsMessage] = useState('');	// text message on write textbox.
 	// let [sentSms, setSentSms] = useState([]);
 	// let [outboxSms, setOutboxSms] = useState([]);
-	const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
+	// const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
 	// const [intervalIdSmsByCust, setIntervalIdSmsByCust] = useState(undefined);	// timer to fetch sms by a customer.
@@ -76,7 +76,7 @@ export default () => {
 											data,	// data should be named 'data'
 											key: 'CUST_NO',
 										}),
-										searchExpr: ['CUST_NO', 'NAM', 'ADRS_1', 'EMAIL_ADRS_1', 'PHONE_1'],
+										searchExpr: ['CUST_NO', 'NAM', 'ADRS_1', 'EMAIL_ADRS_1', 'MBL_PHONE_1'],
 									}
 
 				setDataSourceOptions(dataStruct);
@@ -127,9 +127,9 @@ export default () => {
 			}, 8000);
 	}
 
-	function onInitialized(e) {
-		setFormInstance(e.component);
-	}
+	// function onInitialized(e) {
+	// 	// setFormInstance(e.component);
+	// }
 
 	const postSms = useCallback(async (sms) => {
 		const uriEncoded = uriEncode(sms);
@@ -156,39 +156,39 @@ export default () => {
 	}, []);
 
 	async function handleSubmit(e) {
-		if (!isSet(currentCustomer, 'PHONE_1')) {
+		if (!isSet(currentCustomer, 'MBL_PHONE_1')) {
 			notification('Please select a client.', 'error');
 			return;
 		}
 
-		if (!validator.isMobilePhone(currentCustomer.PHONE_1, ['en-US', 'en-PH'])) {
+		if (!validator.isMobilePhone(currentCustomer.MBL_PHONE_1, ['en-US', 'en-PH'])) {
 			notification('Mobile number is not a US phone number.', 'error');
 			return;
 		}
 
 		// Vincent cellphone number: 808-341-9365
 
-		const sms = { customerNo: currentCustomer.CUST_NO, recipient: currentCustomer.PHONE_1, smsMessage: smsMessage };
+		const sms = { customerNo: currentCustomer.CUST_NO, recipient: currentCustomer.MBL_PHONE_1, smsMessage: smsMessage };
 		await postSms(sms);
 	}
 
-	function filterSms(data, filterBy) {
-		return data.reduce((prevValue, currentValue) => {
-			const { Status } = currentValue;
-			if (Status == filterBy) {
-				prevValue.push({	Id: currentValue.Id,
-							UserId: currentValue.UserId,
-							Recipient: currentValue.Recipient,
-							Sms: currentValue.Sms,
-							Status: currentValue.Status,
-							MessageSid: currentValue.MessageSid,
-							DateTimeSent: currentValue.DateTimeSent,
-						});
-			}
+	// function filterSms(data, filterBy) {
+	// 	return data.reduce((prevValue, currentValue) => {
+	// 		const { Status } = currentValue;
+	// 		if (Status == filterBy) {
+	// 			prevValue.push({	Id: currentValue.Id,
+	// 						UserId: currentValue.UserId,
+	// 						Recipient: currentValue.Recipient,
+	// 						Sms: currentValue.Sms,
+	// 						Status: currentValue.Status,
+	// 						MessageSid: currentValue.MessageSid,
+	// 						DateTimeSent: currentValue.DateTimeSent,
+	// 					});
+	// 		}
 
-			return prevValue;
-		}, []);
-	}
+	// 		return prevValue;
+	// 	}, []);
+	// }
 
 	function textMsgInputHandler(event) {
 		setSmsMessage(event.target.value);
@@ -215,7 +215,7 @@ export default () => {
 				<div className="customer-list">
 					<div>{item.CUST_NO}</div>
 					<div className="name">{item.NAM}</div>
-					<div className="phone">{item.PHONE_1}</div>
+					<div className="phone">{item.MBL_PHONE_1}</div>
 					<div className="address">{item.ADRS_1}</div>
 				</div>
 				<div className="pt-4">
@@ -227,7 +227,7 @@ export default () => {
 			// 	<div>{item.CUST_NO}</div>
 			// 	<div className="customer-list">
 			// 		<div className="name">{item.NAM}</div>
-			// 		<div className="phone">{item.PHONE_1}</div>
+			// 		<div className="phone">{item.MBL_PHONE_1}</div>
 			// 		<div className="address">{item.ADRS_1}</div>
 			// 	</div>
 			// 	{/*<div className="price-container">
@@ -243,7 +243,7 @@ export default () => {
 		const current = JSON.parse(JSON.stringify(e.addedItems[0]));
 
 		setCurrentCustomer(current);
-		setSelectedItemKeys([current.CUST_NO]);
+		// setSelectedItemKeys([current.CUST_NO]);
 		await fetchSmsByCustomers(current.CUST_NO);
 
 		// facilitate the timer for selected customer.
@@ -299,7 +299,7 @@ export default () => {
 								<div className="mobile-phone-container pt-2">
 									<div className="name">
 										{currentCustomer ? (<i className={`dx-icon dx-icon-tel`}></i> ) : ``}
-										<span className="ms-1">{currentCustomer?.PHONE_1}</span>
+										<span className="ms-1">{currentCustomer?.MBL_PHONE_1}</span>
 									</div>
 								</div>
 							</div>
