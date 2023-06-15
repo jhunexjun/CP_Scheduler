@@ -53,14 +53,14 @@ function extract(string, text) {
 }
 
 function extractSessionId(string) {
-	if (string.toLowerCase().includes('appointment'))
-		return extract(string, 'appointment');
+	if (string.toLowerCase().includes('appointments'))
+		return extract(string, 'appointments');
 
 	if (string.toLowerCase().includes('sms'))
 		return extract(string, 'sms');
 
-	if (string.toLowerCase().includes('invoice'))
-		return extract(string, 'invoice');
+	if (string.toLowerCase().includes('workorder'))
+		return extract(string, 'workorder');
 
 	// const pattern = /appointment\/([a-z-A-Z0-9]+)/;
 	// const matches = pattern.exec(string);

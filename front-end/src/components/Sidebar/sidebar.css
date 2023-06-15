@@ -1,0 +1,4 @@
+.nav-link.active.highlighted {
+	font-weight: bold;
+	color: white!important;
+}

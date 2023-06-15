@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, Image } from '@react-pdf/renderer';
 
 import logo from '../../../../assets/compuTant/img/total-offroad-more-transparent.png';
 
-import HeaderAddrsFrom from '../../../Invoices/Invoice/Header/HeaderAddrsFrom';
+import HeaderAddrsFrom from '../../../WorkOrders/Prints/Header/HeaderAddrsFrom';
 
 import moment from 'moment';
 

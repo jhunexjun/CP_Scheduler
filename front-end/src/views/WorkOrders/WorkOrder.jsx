@@ -2,7 +2,7 @@ import { /*createContext,*/ useState, useCallback, } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 
 import { PDFViewer } from '@react-pdf/renderer';
-import invoiceDocumentContainer from './Invoice/InvoiceDocumentContainer';
+import workOrderDocumentContainer from './Prints/WorkOrderDocumentContainer';
 
 import JsBarcode from 'jsbarcode';
 
@@ -84,9 +84,9 @@ export default () => {
 	const [data, setData] = useState(defaultData);
 	const [popupVisible, setPopupVisible] = useState(false);
 	const navigate = useNavigate();
-	const [invoices, setInvoices] = useState([]);
-	const [displayInvoice, setDisplayInvoice] = useState(false);
-	const [selectedInvoiceNo, setSelectedInvoiceNo] = useState(null);
+	const [workOrders, setWorkOrders] = useState([]);
+	const [displayWorkOrder, setDisplayWorkOrder] = useState(false);
+	const [selectedWorkOrderNo, setSelectedWorkOrderNo] = useState(null);
 
 	const fetchInvoiceData = useCallback(async (invoiceNo) => {
 		await fetch(`${adminUrl}/invoice?sessionId=${sessionId}&invoiceNo=${invoiceNo}`)
@@ -101,7 +101,7 @@ export default () => {
 				} else {
 					invoice.data.barcode.base64 = getImgBase64String(invoice.data.table[0].TKT_NO);
 					setData(invoice);
-					setDisplayInvoice(true);
+					setDisplayWorkOrder(true);
 				}
 			});
 	}, []);
@@ -112,7 +112,7 @@ export default () => {
 				return res.json()
 			})
 			.then((res) => {
-				setInvoices(res.data);
+				setWorkOrders(res.data);
 			});
 	}, []);
 
@@ -123,7 +123,7 @@ export default () => {
 	}
 
 	async function fetchInvoice() {
-		setDisplayInvoice(false);
+		setDisplayWorkOrder(false);
 		await fetchInvoiceData(invoiceNo);
 	}
 
@@ -142,8 +142,8 @@ export default () => {
 	}
 
 	function hideAndSelect() {
-		setDisplayInvoice(false);
-		setInvoiceNo(selectedInvoiceNo);
+		setDisplayWorkOrder(false);
+		setInvoiceNo(selectedWorkOrderNo);
 		setPopupVisible(false);
 	}
 
@@ -153,15 +153,15 @@ export default () => {
 	}
 
 	function showTheInvoice() {
-		if (displayInvoice)
-			return (<PDFViewer width={'100%'} height={700}>{invoiceDocumentContainer(data)}</PDFViewer>);
+		if (displayWorkOrder)
+			return (<PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>);
 		else
 			return null;
 	}
 
 	function onSelectionChanged({ selectedRowsData }) {
 		const data = selectedRowsData[0];
-		setSelectedInvoiceNo(data && data.TKT_NO);
+		setSelectedWorkOrderNo(data && data.TKT_NO);
 	}
 
 	return (
@@ -177,7 +177,7 @@ export default () => {
 				<div className="col">
 					<div className="row g-3 align-items-center">
 						<div className="col-auto">
-							<label htmlFor="inputInvoiceNo" className="col-form-label">Invoice no</label>
+							<label htmlFor="inputInvoiceNo" className="col-form-label">Work order #</label>
 						</div>
 						<div className="col-auto">
 							<input type="text" id="inputInvoiceNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
@@ -188,7 +188,7 @@ export default () => {
 							</span>
 						</div>
 						<div className="col-auto">
-							<span onClick={ async () => await showInvoiceList() } style={{cursor: 'pointer'}} title="Show the list of invoices." >
+							<span onClick={ async () => await showInvoiceList() } style={{cursor: 'pointer'}} title="Show the list of workOrders." >
 								<UilListUl size="20" color="#61DAFB" />
 							</span>
 						</div>
@@ -223,7 +223,7 @@ export default () => {
 							location="after"
 							options={closeButtonOptions}
 						/>
-						<DataGrid dataSource={invoices} columnAutoWidth={true} onSelectionChanged={onSelectionChanged}>
+						<DataGrid dataSource={workOrders} columnAutoWidth={true} onSelectionChanged={onSelectionChanged}>
 							<Column dataField="TKT_NO" caption="Work order #" />
 							<Column dataField="TKT_DAT" dataType="date" caption="Date" />
 							{/*<Column dataField="CUST_NO" caption="Customer #" />*/}

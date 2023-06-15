@@ -2,7 +2,7 @@ import { View, Image, StyleSheet } from '@react-pdf/renderer';
 
 import logo from '../../../../assets/compuTant/img/total-offroad-more-transparent.png';
 import HeaderAddrsFrom from './HeaderAddrsFrom';
-import BillingAndInvoiceAddrs from './BillingAndInvoiceAddrs';
+import BillingAndWorkOrderAddrs from './BillingAndWorkOrderAddrs';
 import VehicleInfo from './VehicleInfo';
 import WorkOrderMeta from './WorkOrderMeta';
 
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 });
 
 
-const InvoiceHeadersContent = (props) => (
+const WorkOrderHeadersContent = (props) => (
 	<View style={{flexDirection: 'column'}}>
 		<View style={{flexDirection: 'row'}}>
 			<View style={[styles.addresses, styles.common]}>
@@ -32,7 +32,7 @@ const InvoiceHeadersContent = (props) => (
 						<HeaderAddrsFrom />
 					</View>
 
-					<BillingAndInvoiceAddrs {...props} />
+					<BillingAndWorkOrderAddrs {...props} />
 				</View>
 			</View>
 
@@ -42,4 +42,4 @@ const InvoiceHeadersContent = (props) => (
 	</View>
 );
 
-export default InvoiceHeadersContent
+export default WorkOrderHeadersContent

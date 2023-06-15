@@ -61,6 +61,8 @@ const Sched = ({
 			e.cancel = true;
 			return;
 		}
+
+		// verify the hours.
 	}
 
 

@@ -68,7 +68,7 @@ const Appointment = () => {
 			})
 			.then((workOrders) => {
 				if (workOrders.status !== 'Error' ) {
-					appendInvoices(workOrders);
+					appendWorkOrders(workOrders);
 				} else {
 					// console.log(workOrders);
 					navigate('/');
@@ -146,7 +146,7 @@ const Appointment = () => {
 		setSelectBoxTechnicians(initTechnicians);
 	}
 
-	function appendInvoices(workOrders) {	// to do: rename appendInvoices to appendWorkOrders to for sanity.
+	function appendWorkOrders(workOrders) {
 		// const initWorkOrders = [];
 
 		const initWorkOrders2 = workOrders.data.reduce((prevValue, curValue) => {

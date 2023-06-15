@@ -1,6 +1,6 @@
 {
-  "short_name": "CompuTant Dashboard",
-  "name": "CompuTant new web dashboard",
+  "short_name": "CompuTant Scheduler",
+  "name": "CompuTant Scheduler and SMS",
   "icons": [
     {
       "src": "favicon.ico",

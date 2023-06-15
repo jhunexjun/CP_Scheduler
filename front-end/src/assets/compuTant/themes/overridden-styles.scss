@@ -14,7 +14,13 @@
     bottom: -95px;
 }
 
-.sidebar .nav li > a, .off-canvas-sidebar .nav li > a > p.cmpt-addrs {
+.sidebar .nav li > a, .off-canvas-sidebar .nav li > a {
     line-height: 1.5;
     text-transform: none;
+    font-weight: 500;
+}
+
+.sidebar .nav li > a > p.cmpt-addrs {
+    font-weight: bold;
+    font-size: 14px;
 }

@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 
-const invoiceDocumentContainer = (props) => {
+const workOrderDocumentContainer = (props) => {
 	return (
 		<Document>
 			<Page size='LETTER' style={styles.page}>
@@ -35,4 +35,4 @@ const invoiceDocumentContainer = (props) => {
 	);
 }
 
-export default invoiceDocumentContainer
+export default workOrderDocumentContainer

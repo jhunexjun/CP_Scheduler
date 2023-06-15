@@ -47,7 +47,7 @@ export default () => {
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
-	const messagesEndRef = useRef(null);
+	const messagesEndRef = useRef();
 
 	const navigate = useNavigate();
 	const { sessionId } = useParams();
@@ -91,7 +91,7 @@ export default () => {
 			})
 			.then((res) => {
 				setConvoByCustomer(res.data);
-				//scrollToBottom();
+				scrollToBottom();
 			});
 	}, []);
 
@@ -99,11 +99,16 @@ export default () => {
 		//fetchSms();
 		fetchCustomers();
 
-		let intervalId = fetchCustomersTimer();
-		setIntervalIdCust(intervalId);
+		let customersTimer = fetchCustomersTimer();
+		let smsByCustTimer = fetchSmsByCustTimer(currentCustomer);
 
-	// }, [currentCustomer]);
-	}, []);
+		return () => {
+			clearInterval(customersTimer);
+			clearInterval(smsByCustTimer);
+		};
+
+	}, [currentCustomer]);
+	// }, []);
 
 	function fetchCustomersTimer() {
 		return setInterval(async () => {
@@ -112,6 +117,9 @@ export default () => {
 	}
 
 	const fetchSmsByCustTimer = (currentCustomer) => {
+		if (currentCustomer === undefined || currentCustomer === null)
+			return null;
+
 		return setInterval(async () => {
 				await fetchSmsByCustomers(currentCustomer.CUST_NO);
 			}, 8000);
@@ -237,12 +245,12 @@ export default () => {
 		await fetchSmsByCustomers(current.CUST_NO);
 
 		// facilitate the timer for selected customer.
-		clearInterval(intervalIdSmsByCust);
-		let returnIntervalId = fetchSmsByCustTimer(current);
-		setIntervalIdSmsByCust(returnIntervalId);
+		// clearInterval(intervalIdSmsByCust);
+		// let returnIntervalId = fetchSmsByCustTimer(current);
+		// setIntervalIdSmsByCust(returnIntervalId);
 	}
 
-	const scrollToBottom = () => {
+	function scrollToBottom() {
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
 	}
 
@@ -254,11 +262,10 @@ export default () => {
 		}
 	}
 
-
 	return (
 		<div className="content">
 			<div className="row">
-				<div className="col-3">
+				<div className="col-3" style={{borderWidth: 0.5}}>
 					<div className="left">
 						<List
 							selectionMode="single"

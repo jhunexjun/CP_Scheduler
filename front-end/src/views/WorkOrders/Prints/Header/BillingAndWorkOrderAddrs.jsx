@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 });
 
 
-const InvBillingAndInvoiceAddrs = (props) => {
+const BillingAndWorkOrderAddrs = (props) => {
 	return (
 		<View style={styles.common}>
 			<View style={[styles.billingAddrss, {marginRight: 3}]}>
@@ -47,4 +47,4 @@ const InvBillingAndInvoiceAddrs = (props) => {
 		</View>);
 };
 
-export default InvBillingAndInvoiceAddrs;
+export default BillingAndWorkOrderAddrs;

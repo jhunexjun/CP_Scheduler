@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import { Link, NavLink, useParams } from "react-router-dom";
 import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
@@ -25,15 +25,17 @@ import PerfectScrollbar from "perfect-scrollbar";
 import routes from "../../routes";
 import logo from "../../assets/compuTant/img/total-offroad-more-transparent.png";
 
-import { extractSessionId } from '../../utils/util'
-
+// import { extractSessionId } from '../../utils/util'
+import { SystemUserContext } from '../../Context/SystemUserContext';
+import './sidebar.css';
 
 let ps;
 
 function Sidebar(props) {
 		const sidebar = useRef();
 		const session = useParams();
-		const [sessionId, setSessionId] = useState('');
+		// const [sessionId, setSessionId] = useState('');
+		const sysUserContext = useContext(SystemUserContext);
 
 		// verifies if routeName is the one active (in browser input)
 		const activeRoute = (routeName) => {
@@ -41,7 +43,7 @@ function Sidebar(props) {
 		};
 
 		useEffect(() => {
-			setSessionId(extractSessionId(session['*']));
+			// setSessionId(extractSessionId(session['*']));
 
 			if (navigator.platform.indexOf("Win") > -1) {
 				ps = new PerfectScrollbar(sidebar.current, {
@@ -74,15 +76,15 @@ function Sidebar(props) {
 				<div className="sidebar-wrapper" ref={ sidebar }>
 					<Nav>
 						{routes.map((route, key) => {
-							let newPath = route.path.replace(':sessionId', sessionId)
+							let newPath = route.path.replace(':sessionId', sysUserContext.sessionId);
 							return (
-								<li key={key} className={ activeRoute(route.name) }>
+								<li key={key} className={ activeRoute(route.comparisonText) }>
 									<NavLink to={ route.layout + newPath }
 											className={ ({ isActive }) => {
-																return isActive ? "nav-link active" : "nav-link"
+																return isActive ? "nav-link active highlighted" : "nav-link"
 														} }>
 										<i className={route.icon} />
-										<p>{route.name}</p>
+										<p style={{fontSize: '14px'}}>{route.name}</p>
 									</NavLink>
 								</li>
 								);
@@ -91,10 +93,10 @@ function Sidebar(props) {
 					</Nav>
 					<Nav>
 						<li className="compuTant-logo">
-							<NavLink to='https://www.poshighway.com/' target="_blank">
+							<NavLink to='https://www.poshighway.com/' target="_blank" style={{opacity: 1}}>
 								<p className='cmpt-addrs'>
 									Powered by POS Highway<br />
-									Website: https://www.poshighway.com<br />
+									https://www.poshighway.com<br />
 									Tel no: 888-881-1988<br />
 								</p>
 							</NavLink>

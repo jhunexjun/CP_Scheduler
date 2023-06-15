@@ -14,5 +14,5 @@ module.exports = function(app) {
 	app.use(cors());
 	app.use('/createsession', createSessionRoute);
 	app.use('/admin', checkSessionIdMw, adminRoute(app));
-	app.post('/sms', smsRoute);
+	app.post('/sms', smsRoute);	// Twilio webhook.
 }

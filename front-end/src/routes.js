@@ -1,20 +1,22 @@
 import Appointment from './views/Appointments/Appointment';
 import Sms from './views/Sms/Sms';
-import Invoice from './views/Invoices/Invoice';
+import WorkOrder from './views/WorkOrders/WorkOrder';
 
 const routes = [
 	{
-		path: "/appointment/:sessionId",  // i.e. /admin/appointment/<sessionId>
-		name: "Appointment",
+		path: "/appointments/:sessionId",  // i.e. /admin/appointment/<sessionId>
+		name: "Appointments",
 		icon: "nc-icon nc-calendar-60",
 		component: <Appointment />,
+		comparisonText: 'appointments',	// to make the sidebar menu highlighted as active.
 		layout: "/admin",
 	},
 	{
-		path: "/invoice/:sessionId",  // i.e. /admin/invoice/<sessionId>
-		name: "Invoice",
+		path: "/workorder/:sessionId",  // i.e. /admin/invoice/<sessionId>
+		name: "Work Orders",
 		icon: "nc-icon nc-single-copy-04",
-		component: <Invoice />,
+		component: <WorkOrder />,
+		comparisonText: 'workorder',
 		layout: "/admin",
 	},
 	{
@@ -22,6 +24,7 @@ const routes = [
 		name: "SMS",
 		icon: "nc-icon nc-mobile",
 		component: <Sms />,
+		comparisonText: 'sms',
 		layout: "/admin",
 	},
 ];
