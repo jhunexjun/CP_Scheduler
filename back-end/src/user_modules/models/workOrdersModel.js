@@ -51,6 +51,7 @@ async function getWorkOrders(req) {
 			let objCust = { id: item.TKT_NO,
 							text: item.NOTE_TXT,
 							docId: item.DOC_ID,
+							docDate: item.TKT_DT,
 							custNo: item.CUST_NO,
 							billNam: item.BILL_NAM,
 							billPhone1: item.BILL_PHONE_1,

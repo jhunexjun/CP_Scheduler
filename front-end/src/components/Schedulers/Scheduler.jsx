@@ -358,7 +358,13 @@ const Sched = ({
 			},
 		]);
 
-		e.popup.option('onHiding', function(args) {
+		// e.popup.option('container', undefined);
+		// e.popup.option('width', '150vw');
+
+		// e.popup.option('showTitle', true);
+		// e.popup.option('title', e.appointmentData.text ? e.appointmentData.text : 'Create a new appointment');
+
+		e.popup.option('onHiding', function() {	// with args.
 			startTimer();
 		});
 	}

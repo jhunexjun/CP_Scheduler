@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 
 // import '../../assets/compuTant/themes/custom-styles.scss';
 
+import moment from 'moment';
+
 import 'devextreme/dist/css/dx.light.css';
 
 import { isSet, isSetScalar } from '../../utils/util';
@@ -102,6 +104,27 @@ const Appointment = () => {
 		return () => clearInterval(interval);
 	}, []);
 
+	const stopTimer = useCallback(() => {
+		clearInterval(intervalCounter);
+	}, [intervalCounter]);
+
+	const startTimer = useCallback(() => {
+		let interval = setInterval(() => {
+			setCountdown((countdown) => {
+				if (countdown <= 0) {
+					fetchData();
+					return refreshInMinutes * 60;
+				} else {
+					return countdown - 1;
+				}
+
+			});
+		}, 1000);
+
+		setIntervalCounter(interval);
+		return interval;
+	}, [])
+
 
 	function appendTechnicians(technicians) {
 		const initTechnicians = [];
@@ -158,9 +181,9 @@ const Appointment = () => {
 				if (obj === undefined) {
 					let x = { 	id: curValue.id,
 								text: curValue.text,
-								text2: curValue.id.concat(' ~ ',
+								text2: curValue.id.concat(' ~ ', moment(new Date(curValue.docDate)).format('MM/DD/YYYY'), ' ~ ',
 										(curValue.billNam === null) ? '' : curValue.billNam,
-										' (Tel#', curValue.billPhone1 ?? '',') ',
+										' (#', curValue.billPhone1 ?? '',') ',
 										' ~ ',
 										curValue.plateNo ?? ''),
 								custNo: curValue.custNo,
@@ -224,65 +247,6 @@ const Appointment = () => {
 		// console.log("scheduleDataMasterCopy: ", scheduleDataMasterCopy);
 	}
 
-	const stopTimer = useCallback(() => {
-		clearInterval(intervalCounter);
-	}, [intervalCounter]);
-
-	const startTimer = useCallback(() => {
-		let interval = setInterval(() => {
-			setCountdown((countdown) => {
-				if (countdown <= 0) {
-					fetchData();
-					return refreshInMinutes * 60;
-				} else {
-					return countdown - 1;
-				}
-
-			});
-		}, 1000);
-
-		setIntervalCounter(interval);
-		return interval;
-	}, [])
-
-
-	// function dataGridRender() {
-	// 	return (
-	// 		<DataGrid dataSource={workOrders}
-	// 			columns={gridColumns}
-	// 			hoverStateEnabled={true}
-	// 			selectedRowKeys={gridBoxValue}
-	// 			onSelectionChanged={dataGridOnSelectionChanged}
-	// 			height="100%">
-	// 			<Selection mode="single" />
-	// 			<Scrolling mode="virtual" />
-	// 			<Paging enabled={true} pageSize={10} />
-	// 			<FilterRow visible={true} />
-	// 		</DataGrid>
-	// 	);
-	// }
-
-	// function syncDataGridSelection(e) {
-	// 	// console.log(e.value);
-	// 	setGridBoxValue(e.value);
-	// }
-
-	// function dataGridOnSelectionChanged(e) {
-	// 	setGridBoxValue(e.selectedRowKeys);
-	// 	setIsGridBoxOpened(false);
-	// }
-
-	// function gridBoxDisplayExpr(item) {
-	// 	// console.log("gridBoxDisplayExpr: ", item);
-	// 	return item && `${item.id}`;
-	// }
-
-	// function onGridBoxOpened(e) {
-	// 	if (e.name === 'opened') {
-	// 		setIsGridBoxOpened(e.value);
-	// 	}
-	// }
-
 	function updateNow(e) {
 		e.event.preventDefault();
 		fetchData();
@@ -309,10 +273,6 @@ const Appointment = () => {
 		}
 		setTechnicians(techs);
 	}
-
-	// function showPrintPopup(value) {
-	// 	setshowPrintPopup(value);
-	// }
 
     return (
     	<div className="content">
