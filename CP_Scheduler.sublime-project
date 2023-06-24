@@ -2,7 +2,10 @@
 	"folders":
 	[
 		{
-			"path": "."
-		}
-	]
+			"path": ".",
+		},
+		{
+			"path": "C:\\Users\\Jhun\\Downloads\\paper-dashboard-react-main-orig\\paper-dashboard-react-main"
+		},
+	],
 }
