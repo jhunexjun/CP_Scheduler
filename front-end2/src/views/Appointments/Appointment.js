@@ -1,21 +1,3 @@
-/*!
-
-=========================================================
-* Paper Dashboard React - v1.3.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/paper-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-* Licensed under MIT (https://github.com/creativetimofficial/paper-dashboard-react/blob/main/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import { useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -36,11 +18,9 @@ import moment from 'moment';
 
 import 'devextreme/dist/css/dx.light.css';
 
-import { isSet, isSetScalar, isNullOrWhiteSpace } from '../../utils/util';
+import './appointment.css';
 
-// import DropDownBox from 'devextreme-react/drop-down-box';
-// import DataGrid, { Selection, Paging, FilterRow, Scrolling, } from 'devextreme-react/data-grid';
-// import 'whatwg-fetch';
+import { isSet, isSetScalar, isNullOrWhiteSpace } from '../../utils/util';
 
 import Scheduler from '../../components/Schedulers/Scheduler';
 import SelectBox from 'devextreme-react/select-box';
@@ -71,10 +51,6 @@ function Appointment() {
   let [currentSchedulerDate, setCurrentSchedulerDate] = useState(new Date());
 
   const cookies = new Cookies();
-
-  // const [gridBoxValue, setGridBoxValue] = useState([]);
-  // const [isGridBoxOpened, setIsGridBoxOpened] = useState(false);
-  // const gridColumns = ['id', 'custNo', 'billNam', 'text'];
 
   const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
@@ -159,7 +135,6 @@ function Appointment() {
     setIntervalCounter(interval);
     return interval;
   }, [])
-
 
   function appendTechnicians(technicians) {
     const initTechnicians = [];
@@ -313,42 +288,39 @@ function Appointment() {
     <>
       <div className="content">
         <Row>
-          <Col md="2">
-            <Card>
-              <CardBody>
-                <Button type="success"
-                  text={`Update in ${countdown}`}
-                  onClick={(e) => updateNow(e)} />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md="3">
-            <Card>
-              <CardBody>
+          <Col md="12">
+            <div className="d-flex flex-row align-items-center">
+              <div className="p-2">
+                Technician
+              </div>
+              <div className="p-2 mr-auto">
                 <SelectBox dataSource={selectBoxTechnicians}
-                    displayExpr="text"
-                    searchEnabled={true}
-                    searchMode="contains"
-                    searchExpr="text"
-                    searchTimeout={200}
-                    minSearchLength={0}
-                    showDataBeforeSearch={false}
-                    onValueChanged={(e) => techniciansOnValueChanged(e)}
-                    placeholder="Select technicians"
-                    defaultValue={selectBoxTechnicians[0]}
-                  />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col md="2">
-            <Card>
-              <CardBody>
+                  displayExpr="text"
+                  searchEnabled={true}
+                  searchMode="contains"
+                  searchExpr="text"
+                  searchTimeout={200}
+                  minSearchLength={0}
+                  showDataBeforeSearch={false}
+                  onValueChanged={(e) => techniciansOnValueChanged(e)}
+                  placeholder="Select technicians"
+                  defaultValue={selectBoxTechnicians[0]}
+                />
+              </div>
+              <div className="p-2">
                 <Button icon="print"
                   type="success"
                   text="Print"
-                  onClick={() => setShowPrintPopup(true)} />
-              </CardBody>
-            </Card>
+                  onClick={() => setShowPrintPopup(true)}
+                />
+              </div>
+              <div className="pl-4 p-2">
+                <Button type="success"
+                  text={`Update in ${countdown}`}
+                  onClick={(e) => updateNow(e)}
+                />
+              </div>
+            </div>
           </Col>
         </Row>
         <Row>
@@ -369,16 +341,14 @@ function Appointment() {
             </Card>
           </Col>
         </Row>
-        <Row>
-          <Col md="12">
-            <PrintSchedule popupVisible={showPrintPopup}
-              setShowPrintPopup={setShowPrintPopup}
-              selectedView={selectedView}
-              scheduleData={scheduleData}
-              currentSchedulerDate={currentSchedulerDate}
-            />
-          </Col>
-        </Row>
+        <div>
+          <PrintSchedule popupVisible={showPrintPopup}
+            setShowPrintPopup={setShowPrintPopup}
+            selectedView={selectedView}
+            scheduleData={scheduleData}
+            currentSchedulerDate={currentSchedulerDate}
+          />
+        </div>
       </div>
     </>
   );

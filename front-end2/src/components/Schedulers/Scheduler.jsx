@@ -1,5 +1,4 @@
 import { memo } from 'react';
-// import { useParams } from 'react-router-dom';
 
 import Scheduler, { Resource, View } from 'devextreme-react/scheduler';
 import Query from 'devextreme/data/query';
@@ -22,7 +21,6 @@ const Sched = ({
 				setCurrentSchedulerDate,
 			}) => {
 	const groups = ['technicianIds'];
-	// const [popupVisible, setPopupVisible] = useState(false);
 
 	let techs = [], techs2 = [];
 
@@ -40,7 +38,6 @@ const Sched = ({
 		}
 	}
 
-	// let { sessionId } = useParams();
 	const cookies = new Cookies();
 	// let robot = 'N';
 	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule?sessionId=${cookies.get('sessionId')}`;
@@ -148,7 +145,6 @@ const Sched = ({
 	async function updateScheduleAsync(params) {
 		const editSched = {
 			id: params.id,
-			// subject: params.subject,
 			subject: params.text,
 			utcDateFrom: params.startDate,
 			utcDateTo: params.endDate,
@@ -373,7 +369,6 @@ const Sched = ({
 	}
 
 	const handlePropertyChange = (e) => {
-		// console.log('e: ', e);
 		if (e.name === 'currentView') {
 			setSelectedView(e.value);
 		}
@@ -386,7 +381,7 @@ const Sched = ({
 
 	return (
 		<>
-			<Scheduler height={650}
+			<Scheduler height={635}
 				dataSource={scheduleData}
 				// dataCellComponent={DataCell}
 				// resourceCellComponent={ResourceCell}

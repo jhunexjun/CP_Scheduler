@@ -14,6 +14,8 @@ import ArrayStore from 'devextreme/data/array_store';
 
 import { uriEncode, isSet, notification } from '../../utils/util';
 import './styles.css';
+import { Row, Col, Card, CardBody, Button } from 'reactstrap';
+
 import conversationTemplate from './conversationTemplate';
 
 import {
@@ -215,7 +217,7 @@ export default () => {
 		// console.log('item: ', item);
 		return (
 			<div className="d-flex flex-row justify-content-between">
-				<div className="customer-list">
+				<div className="cmpt-customer-list">
 					<div>{item.CUST_NO}</div>
 					<div className="name">{item.NAM}</div>
 					<div className="phone">{item.MBL_PHONE_1}</div>
@@ -270,102 +272,74 @@ export default () => {
 
 	return (
 		<div className="content">
-			<div className="row">
-				<div className="col-3" style={{borderWidth: 0.5}}>
-					<div className="left">
-						<List
-							selectionMode="single"
-							dataSource={dataSourceOptions}
-							grouped={false}
-							searchEnabled={true}
-							//selectedItemKeys={setSelectedItemKeys}
-							onSelectionChanged={async (e) => await handleListSelectionChange(e)}
-							itemRender={renderListItem}
-							// groupRender={null}
-							elementAttr={{ class: 'list' }}
-							onOptionChanged={onSelectedItemKeysChanged}
-						/>
-					</div>
-				</div>
-				<div className="col-8">
-					<div className="row">
-						<MDBCol md="5" lg="6" xl="7">
-							{currentCustomer?.CUST_NO}
-						</MDBCol>
-					</div>
-					<div className="row">
-						<MDBCol md="5" lg="6" xl="7">
-							<div className="header">
-								<div className="name-container">
-									<div className="name">{currentCustomer?.NAM}</div>
+			<Row>
+				<Col md="12">
+					<Card>
+						<CardBody>
+							<div className="d-flex flex-row" style={{height: '685px'}}>
+								<div className="w-25">
+									<List
+										selectionMode="single"
+										dataSource={dataSourceOptions}
+										grouped={false}
+										searchEnabled={true}
+										//selectedItemKeys={setSelectedItemKeys}
+										onSelectionChanged={async (e) => await handleListSelectionChange(e)}
+										itemRender={renderListItem}
+										// groupRender={null}
+										elementAttr={{ class: 'list' }}
+										onOptionChanged={onSelectedItemKeysChanged}
+									/>
 								</div>
-								<div className="mobile-phone-container pt-2">
-									<div className="name">
-										{currentCustomer ? (<i className={`dx-icon dx-icon-tel`}></i> ) : ``}
-										<span className="ms-1">{currentCustomer?.MBL_PHONE_1}</span>
+								<div className="w-50 ml-4 cmpt-customer-and-text">
+									<div className="d-flex flex-column p-2">
+										<div className="d-flex flex-column p-2">
+											<div className="mb-2" style={{minHeight: '67px'}}>
+												<div className="cmpt-customer-no">{ currentCustomer?.CUST_NO }</div>
+												<div className="d-flex flex-row">
+													<div className="cmpt-customer-name mr-auto">{currentCustomer?.NAM}</div>
+													{currentCustomer ? (<i className={`dx-icon dx-icon-tel`}></i> ) : ``}
+													<span className="ms-1">{currentCustomer?.MBL_PHONE_1}</span>
+												</div>
+												<div>
+													<span>
+														<span className="mr-2">{ currentCustomer ? (<i className={`nc-icon nc-istanbul`}></i>) : `` }</span>
+														<span>{ currentCustomer?.ADRS_1 }</span>
+													</span>
+												</div>
+											</div>
+											<div><hr className="cmpt-hr" /></div>
+											<div>
+												<MDBTypography listUnStyled style={{overflowY: 'auto', height: '430px'}}>
+													{conversationTemplate(convoByCustomer)}
+												</MDBTypography>
+											</div>
+											<div>
+												<MDBTextArea
+													// label="Message"
+													rows={4}
+													//style={{background: 'white'}}
+													onChange={(e) => { textMsgInputHandler(e) }}
+													maxLength={160}
+													value={smsMessage}
+												/>
+											</div>
+											<div className="text-right">
+												<Button className="btn-round" color="primary" onClick={async (e) => await handleSubmit(e)}>
+												  Send
+												</Button>
+											</div>
+
+										</div>
+										
+
 									</div>
 								</div>
 							</div>
-						</MDBCol>
-					</div>
-					<div className="row">
-						<MDBCol md="5" lg="6" xl="7">
-							{currentCustomer ? (<i className={`nc-icon nc-istanbul`}></i>) : ``}
-							<span className="ms-1">{currentCustomer?.ADRS_1}</span>
-						</MDBCol>
-					</div>
-					<div className="row">
-						<MDBCol md="5" lg="6" xl="7">
-							<hr />
-						</MDBCol>
-					</div>
-					<div className="row">
-						<MDBCol md="5" lg="6" xl="7">
-							<div style={{height: '464px', overflowY: 'auto'}}>
-								<MDBTypography listUnStyled>
-									{conversationTemplate(convoByCustomer)}
-									{/*<li className="d-flex justify-content-between mb-4">
-										<img
-											src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/avatar-6.webp"
-											alt="avatar"
-											className="rounded-circle d-flex align-self-start me-3 shadow-1-strong"
-											width="60"
-										/>
-										<MDBCard>
-											<MDBCardHeader className="d-flex justify-content-between p-3">
-												<p className="fw-bold mb-0">Brad Pitt</p>
-												<p className="text-muted small mb-0">
-													<MDBIcon far icon="clock" /> 10 mins ago
-												</p>
-											</MDBCardHeader>
-											<MDBCardBody>
-												<p className="mb-0">
-													Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-													do eiusmod tempor incididunt ut labore et dolore magna
-													aliqua.
-												</p>
-											</MDBCardBody>
-										</MDBCard>
-									</li>*/}
-								</MDBTypography>
-								<div ref={messagesEndRef} />
-							</div>
-							<MDBTextArea
-								label="Message"
-								rows={4}
-								style={{background: 'white'}}
-								onChange={(e) => { textMsgInputHandler(e) }}
-								maxLength={160}
-								value={smsMessage}
-								className="mt-3"
-							/>
-							<MDBBtn color="info" rounded className="float-end" onClick={async (e) => await handleSubmit(e)}>
-								Send
-							</MDBBtn>
-						</MDBCol>
-					</div>
-				</div>
-			</div>
+						</CardBody>
+					</Card>
+				</Col>
+			</Row>
 		</div>
 	)
 }

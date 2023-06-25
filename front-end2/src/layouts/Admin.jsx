@@ -103,27 +103,29 @@ function Dashboard(props) {
 
   return (
     <div className="wrapper">
-      <Sidebar
-        {...props}
-        routes={routes}
-        bgColor={backgroundColor}
-        activeColor={activeColor}
-      />
-      <div className="main-panel" ref={mainPanel}>
-        <Navbar {...props} />
-        <Routes>
-          {routes.map((prop, key) => {
-            return (
-              <Route
-                path={prop.path}
-                element={prop.component}
-                key={key}
-                exact
-              />
-            );
-          })}
-        </Routes>
-      </div>
+      <SystemUserContext.Provider value={sysUserContext}>
+        <Sidebar
+          {...props}
+          routes={routes}
+          bgColor={backgroundColor}
+          activeColor={activeColor}
+        />
+        <div className="main-panel" ref={mainPanel}>
+          <Navbar {...props} />
+          <Routes>
+            {routes.map((prop, key) => {
+              return (
+                <Route
+                  path={prop.path}
+                  element={prop.component}
+                  key={key}
+                  exact
+                />
+              );
+            })}
+          </Routes>
+        </div>
+      </SystemUserContext.Provider>
     </div>
   );
 }
