@@ -106,22 +106,22 @@ export default () => {
 		//fetchSms();
 		fetchCustomers();
 
-		let customersTimer = fetchCustomersTimer();
+		// let customersTimer = fetchCustomersTimer();
 		let smsByCustTimer = fetchSmsByCustTimer(currentCustomer);
 
 		return () => {
-			clearInterval(customersTimer);
+			// clearInterval(customersTimer);
 			clearInterval(smsByCustTimer);
 		};
 
-	}, [currentCustomer]);
-	// }, []);
+	// }, [currentCustomer]);
+	}, []);
 
-	function fetchCustomersTimer() {
-		return setInterval(async () => {
-			await fetchCustomers();
-		}, 8000);
-	}
+	// function fetchCustomersTimer() {
+	// 	return setInterval(async () => {
+	// 		await fetchCustomers();
+	// 	}, 8000);
+	// }
 
 	const fetchSmsByCustTimer = (currentCustomer) => {
 		if (currentCustomer === undefined || currentCustomer === null)

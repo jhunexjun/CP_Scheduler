@@ -15,7 +15,7 @@ const inboxTpl = (item, index) => (
 			className="rounded-circle d-flex align-self-start me-3 shadow-1-strong mr-1"
 			width="60"
 		/>
-		<div /*style={{width: '100%'}}*/>
+		<div>
 			<MDBCard>
 			<MDBCardHeader className="d-flex p-3">
 				<p className="fw-bold mb-0 me-3">{item.name}</p>
