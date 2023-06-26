@@ -57,7 +57,7 @@ function Sidebar(props) {
       data-active-color={props.activeColor}
     >
       <div className="logo mt-3">
-        <Link to="https://www.poshighway.com/" target="_blank">
+        <Link to={process.env.REACT_APP_COMPANY_WEBSITE} target="_blank">
           <div className="logo-img">
             <img src={logo} alt="react-logo" />
           </div>
