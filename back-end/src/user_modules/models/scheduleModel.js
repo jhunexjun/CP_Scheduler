@@ -1,6 +1,9 @@
-const Request = require('tedious').Request
+const Request = require('tedious').Request;
 const TYPES = require('tedious').TYPES;
 const utils = require('../utils/util');
+
+const msSql = require('mssql');
+const msSqlConnect = require('../dbConnections/msSqlConnect');
 
 const schedulerSql = require('../sqlStatements/schedulerSql');
 
@@ -15,47 +18,90 @@ module.exports = {
 async function getSchedule(req) {
 	try {
 		const sql = schedulerSql.getSchedule();
-		let request = new Request(sql, (err, rowCount) => {
-			if (err)
-				console.log(err);
-		});
+		// let request = new Request(sql, (err, rowCount) => {
+		// 	if (err)
+		// 		console.log(err);
+		// });
 
-		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
-		request.addParameter('technicianId', TYPES.VarChar, req.query.technicianId);
-		// request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');	// if Y we assume it's robot.
+		// request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
+		// request.addParameter('technicianId', TYPES.VarChar, req.query.technicianId);
+		// // request.addParameter('robot', TYPES.VarChar, req.query.robot ?? 'Y');	// if Y we assume it's robot.
 
-		const scheds = await utils.executeRequestAsync(request);
-		// console.log('scheds: ', scheds)
+		// const scheds = await utils.executeRequestAsync(request);
+		// // console.log('scheds: ', scheds)
 
-		if (scheds.length <= 0 || scheds[0].hasOwnProperty('errorNo')) {
-			return scheds;
-		} else {
-			let schedsGroupedById = scheds.reduce((prevValue, currentValue) => {
-				const { id } = currentValue;
-				let obj = prevValue.find(o => o.id === id);
+		// if (scheds.length <= 0 || scheds[0].hasOwnProperty('errorNo')) {
+		// 	return scheds;
+		// } else {
+		// 	let schedsGroupedById = scheds.reduce((prevValue, currentValue) => {
+		// 		const { id } = currentValue;
+		// 		let obj = prevValue.find(o => o.id === id);
 
-				if (obj === undefined) {
-					let x = {	id: id,
-								subject: currentValue.subject,
-								utcDateFrom: currentValue.utcDateFrom,
-								utcDateTo: currentValue.utcDateTo,
-								description: currentValue.description,
-								technicianIds: (currentValue.technicianId == null) ? [] : [currentValue.technicianId],
-								invoiceNo: currentValue.invoiceNo,	// invoice no. is mandatory.
-								allDay: currentValue.allDay,
-								recurrenceRule: currentValue.recurrenceRule,
-								createdBy: currentValue.createdBy,
-							};
-					prevValue.push(x);
+		// 		if (obj === undefined) {
+		// 			let x = {	id: id,
+		// 						subject: currentValue.subject,
+		// 						utcDateFrom: currentValue.utcDateFrom,
+		// 						utcDateTo: currentValue.utcDateTo,
+		// 						description: currentValue.description,
+		// 						technicianIds: (currentValue.technicianId == null) ? [] : [currentValue.technicianId],
+		// 						invoiceNo: currentValue.invoiceNo,	// invoice no. is mandatory.
+		// 						allDay: currentValue.allDay,
+		// 						recurrenceRule: currentValue.recurrenceRule,
+		// 						createdBy: currentValue.createdBy,
+		// 					};
+		// 			prevValue.push(x);
+		// 		} else {
+		// 			obj.technicianIds.push(currentValue.technicianId);
+		// 		}
+
+		// 		return prevValue;
+		// 	}, []);
+
+		// 	return schedsGroupedById;
+		// }
+
+
+		return await msSqlConnect.getInstance().then(pool => {
+				return pool.request()
+					.input('sessionId', msSql.VarChar, req.query.sessionId)
+					.input('technicianId', msSql.VarChar, req.query.technicianId)
+					.query(sql)
+			}).then(result => {
+				// return result.recordset;
+
+				if (result.recordset.length <= 0 || result.recordset[0].hasOwnProperty('errorNo')) {
+					return result.recordset;
 				} else {
-					obj.technicianIds.push(currentValue.technicianId);
+					let schedsGroupedById = result.recordset.reduce((prevValue, currentValue) => {
+						const { id } = currentValue;
+						let obj = prevValue.find(o => o.id === id);
+
+						if (obj === undefined) {
+							let x = {	id: id,
+										subject: currentValue.subject,
+										utcDateFrom: currentValue.utcDateFrom,
+										utcDateTo: currentValue.utcDateTo,
+										description: currentValue.description,
+										technicianIds: (currentValue.technicianId == null) ? [] : [currentValue.technicianId],
+										invoiceNo: currentValue.invoiceNo,	// invoice no. is mandatory.
+										allDay: currentValue.allDay,
+										recurrenceRule: currentValue.recurrenceRule,
+										createdBy: currentValue.createdBy,
+									};
+							prevValue.push(x);
+						} else {
+							obj.technicianIds.push(currentValue.technicianId);
+						}
+
+						return prevValue;
+					}, []);
+
+					return schedsGroupedById;
 				}
 
-				return prevValue;
-			}, []);
-
-			return schedsGroupedById;
-		}
+			}).catch(err => {
+				console.log(err);
+			});
 	} catch(e) {
 		throw e;
 	}
@@ -68,32 +114,57 @@ async function addSchedule(req) {
 			utils.isSet(req.body, 'recurrenceRule')
 		);
 
-		let request = new Request(sql, (err, rowCount) => {
-			if (err)
-				console.log(err);
+		// let request = new Request(sql, (err, rowCount) => {
+		// 	if (err)
+		// 		console.log(err);
+		// });
+
+		// request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
+		// request.addParameter('subject', TYPES.NVarChar, req.body.subject);
+		// request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
+		// request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
+		// request.addParameter('description', TYPES.NVarChar, utils.isSet(req.body, "description") ? req.body.description : null);
+		// request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
+
+		// if (utils.isSet(req.body, 'allDay'))
+		// 	request.addParameter('allDay', TYPES.Char, 'Y');
+		// if (utils.isSet(req.body, 'recurrenceRule'))
+		// 	request.addParameter('recurrenceRule', TYPES.NVarChar, req.body.recurrenceRule);
+
+		// let schedId = await utils.executeRequestAsync(request);
+		// // console.log("schedId: ", schedId);
+
+		// req.body.id = schedId[0].newId;
+		// req.body.technicianIds = req.body.technicianIds.split(",");	// string to array.
+
+		// await insertIntoSchedTechnicians(req);
+
+
+		return await msSqlConnect.getInstance().then(pool => {
+			let poolRequest = pool.request()
+				.input('sessionId', msSql.VarChar, req.query.sessionId)
+				.input('subject', msSql.VarChar, req.body.subject)
+				.input('utcDateFrom', msSql.VarChar, req.body.utcDateFrom)
+				.input('utcDateTo', msSql.VarChar, req.body.utcDateTo)
+				.input('description', msSql.VarChar, utils.isSet(req.body, "description") ? req.body.description : null)
+				.input('invoiceNo', msSql.VarChar, req.body.invoiceNo)
+
+			if (utils.isSet(req.body, 'allDay'))
+				poolRequest.input('allDay', msSql.Char, 'Y');
+			if (utils.isSet(req.body, 'recurrenceRule'))
+				poolRequest.input('recurrenceRule', msSql.NVarChar, req.body.recurrenceRule)
+
+			return poolRequest.query(sql)
+		}).then(async result => {
+			req.body.id = result.recordset[0].newId;
+			req.body.technicianIds = req.body.technicianIds.split(",");	// string to array.
+
+			await insertIntoSchedTechnicians(req);
+
+			return { status: "OK" , message: "New schedule was added successfully", data: { id: result.recordset[0].newId } };
+		}).catch(err => {
+			console.log(err);
 		});
-
-		request.addParameter('sessionId', TYPES.VarChar, req.query.sessionId);
-		request.addParameter('subject', TYPES.NVarChar, req.body.subject);
-		request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
-		request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
-		request.addParameter('description', TYPES.NVarChar, utils.isSet(req.body, "description") ? req.body.description : null);
-		request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
-
-		if (utils.isSet(req.body, 'allDay'))
-			request.addParameter('allDay', TYPES.Char, 'Y');
-		if (utils.isSet(req.body, 'recurrenceRule'))
-			request.addParameter('recurrenceRule', TYPES.NVarChar, req.body.recurrenceRule);
-
-		let schedId = await utils.executeRequestAsync(request);
-		// console.log("schedId: ", schedId);
-
-		req.body.id = schedId[0].newId;
-		req.body.technicianIds = req.body.technicianIds.split(",");	// string to array.
-
-		await insertIntoSchedTechnicians(req);
-
-		return { status: "OK" , message: "New schedule was added successfully", data: { id: schedId[0].newId } };
 	} catch(e) {
 		throw e;
 	}
@@ -230,12 +301,21 @@ async function insertIntoSchedTechnicians(req) {
 		sql += `insert into USR_schedules_technicians(schedId, technicianId) values(${req.body.id}, '${value}');`;
 	})
 
-	let request = new Request(sql, (err, rowCount) => {
-		if (err)
-			console.log(err);
-	});
+	// let request = new Request(sql, (err, rowCount) => {
+	// 	if (err)
+	// 		console.log(err);
+	// });
 
-	await utils.executeRequestAsync(request);
+	// await utils.executeRequestAsync(request);
+
+	return await msSqlConnect.getInstance().then(pool => {
+				return pool.request()
+					.query(sql)
+			}).then(result => {
+				return result.recordset;
+			}).catch(err => {
+				console.log(err);
+			});
 }
 
 // async function getScheduleById(id) {
