@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useContext } from 'react';
 
 import Scheduler, { Resource, View } from 'devextreme-react/scheduler';
 import Query from 'devextreme/data/query';
@@ -7,6 +7,8 @@ import notify from 'devextreme/ui/notify';
 import Cookies from 'universal-cookie';
 
 import { uriEncode, isSet } from '../../utils/util';
+
+import { SystemUserContext } from '../../Context/SystemUserContext';
 
 
 const Sched = ({
@@ -41,6 +43,8 @@ const Sched = ({
 	const cookies = new Cookies();
 	// let robot = 'N';
 	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule?sessionId=${cookies.get('sessionId')}`;
+
+	const sysUserContext = useContext(SystemUserContext);
 
 
 	function datesAreValid(e, startDt, endDt) {
@@ -111,11 +115,24 @@ const Sched = ({
 				return res.json()
 			})
 			.then((json) => {
-				//setToastOpen(true);	// to implement html for toast.
-
 				const newScheduleData = [...scheduleData];
 				newScheduleData[newScheduleData.length - 1].id = json.data.id;
+				newScheduleData[newScheduleData.length - 1].startDate = addSched.utcDateFrom;
+				newScheduleData[newScheduleData.length - 1].endDate = addSched.utcDateTo;
+				newScheduleData[newScheduleData.length - 1].text = addSched.subject;
+				newScheduleData[newScheduleData.length - 1].description = addSched.description;
+				newScheduleData[newScheduleData.length - 1].technicianIds = addSched.technicianIds;
+				newScheduleData[newScheduleData.length - 1].invoiceNo = addSched.invoiceNo;
+
+				if (params.allDay)
+					newScheduleData[newScheduleData.length - 1].allDay = true;
+				if (params.recurrenceRule)
+					newScheduleData[newScheduleData.length - 1].recurrenceRule = params.recurrenceRule
+
+				newScheduleData[newScheduleData.length - 1].createdBy = sysUserContext.user.id;
+
 				setScheduleData(newScheduleData);
+
 				addedToast(params.text);
 				return json;
 			});
