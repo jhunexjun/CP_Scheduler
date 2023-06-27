@@ -51,9 +51,9 @@ export default () => {
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
-	const messagesEndRef = useRef();
+	// const messagesEndRef = useRef(null);
 
-	const [rerender, setRerender] = useState(false);
+	// const [rerender, setRerender] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -98,7 +98,7 @@ export default () => {
 			})
 			.then((res) => {
 				setConvoByCustomer(res.data);
-				scrollToBottom();
+				//scrollToBottom();
 			});
 	}, []);
 
@@ -116,6 +116,8 @@ export default () => {
 
 	// }, [currentCustomer]);
 	}, []);
+
+
 
 	// function fetchCustomersTimer() {
 	// 	return setInterval(async () => {
@@ -156,7 +158,7 @@ export default () => {
 				notification('SMS has been sent!', 'success');
 				setSmsMessage('');
 				await fetchSmsByCustomers(sms.customerNo);
-				scrollToBottom();	// not working yet.
+				//scrollToBottom();	// not working yet.
 			});
 	}, []);
 
@@ -257,10 +259,10 @@ export default () => {
 		// setIntervalIdSmsByCust(returnIntervalId);
 	}
 
-	function scrollToBottom() {
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-		setRerender(!rerender);
-	}
+	// function scrollToBottom() {
+	// 	messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	// 	setRerender(!rerender);
+	// }
 
 	function onSelectedItemKeysChanged(e) {
 		if (e.fullName === 'searchValue') {
@@ -329,10 +331,7 @@ export default () => {
 												  Send
 												</Button>
 											</div>
-
 										</div>
-										
-
 									</div>
 								</div>
 							</div>

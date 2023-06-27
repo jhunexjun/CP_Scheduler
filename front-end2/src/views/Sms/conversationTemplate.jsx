@@ -1,7 +1,20 @@
+import { useRef, useEffect } from 'react';
+
 import isInboxTemplate from './isInboxTemplate';
 import sentItemsTemplate from './sentItemsTemplate';
 
-const conv = (conversation) => {
+
+const Converse = (conversation) => {
+	useEffect(() => {
+		scrollToBottom();
+	}, [conversation]);
+
+	const messagesEndRef = useRef(null);
+
+	function scrollToBottom() {
+		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+	}
+
 	let messages = conversation.map((item, index) => {
 		if (item.fromTable === 'inbox')
 			return isInboxTemplate(item, index);
@@ -9,7 +22,10 @@ const conv = (conversation) => {
 			return sentItemsTemplate(item, index);
 	});
 
-	return <>{messages}</>
+	return <>
+			{messages}
+			<div ref={messagesEndRef} />
+		</>
 }
 
-export default conv;
+export default Converse;

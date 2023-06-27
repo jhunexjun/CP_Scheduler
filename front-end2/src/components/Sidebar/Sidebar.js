@@ -24,6 +24,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 
 // import logo from "logo.svg";
 import logo from "../../assets/compuTant/img/total-offroad-more-transparent.png";
+import './Sidebar.css';
 
 var ps;
 
