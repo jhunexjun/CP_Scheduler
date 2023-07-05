@@ -64,7 +64,7 @@ Then run `$ pm2 serve build/ --spa --name Scheduler-FE-3000 --port 3000`
 To run in production using node-windows instead of pm2. node-windows is better by the way.
 1. `npm i node-windows -g`. Close the terminal and run as Administrator.
 2. Run `npm link node-windows`.
-3. Go to the root dir and copy the service.js to the dist/ directory.
+3. Go to the root directory and copy the `service.js` to the dist/ directory.
 4. From dist dir, run `node service.js`.
 5. It should show the new service `CompuTant Scheduler` to the windows service.
 6. It will create new directory daemon in your current dir.

@@ -1,15 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Cookies from 'universal-cookie';
 
 // reactstrap components
 import {
   Card,
-  CardHeader,
   CardBody,
-  CardTitle,
-  Table,
   Row,
   Col,
 } from "reactstrap";

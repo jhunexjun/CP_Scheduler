@@ -26,3 +26,8 @@
 .cmpt-conversation {
 	box-shadow: 0 6px 10px 3px rgba(0, 0, 0, 0.15);
 }
+
+#cmpt-textbox {
+	background: #fafafa;
+	line-height: 1.2;
+}

@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useRef } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
@@ -6,11 +6,6 @@ import Cookies from 'universal-cookie';
 import 'devextreme-react/text-area';
 import List from 'devextreme-react/list';
 import ArrayStore from 'devextreme/data/array_store';
-// import TileView from 'devextreme-react/tile-view';
-
-// import LabelTemplate from './LabelTemplate';
-// import LabelNotesTemplate from './LabelNotesTemplate';
-// import smsData from './data';
 
 import { uriEncode, isSet, notification } from '../../utils/util';
 import './styles.css';
@@ -19,56 +14,26 @@ import { Row, Col, Card, CardBody, Button } from 'reactstrap';
 import conversationTemplate from './conversationTemplate';
 
 import {
-  // MDBContainer,
-  // MDBRow,
-  MDBCol,
-  // MDBCard,
-  // MDBCardBody,
-  // MDBIcon,
-  MDBBtn,
   MDBTypography,
   MDBTextArea,
-  // MDBCardHeader,
 } from "mdb-react-ui-kit";
 
-// import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+// import 'mdb-react-ui-kit/dist/css/mdb.min.css'; do not use this, it affects the UI of the entire system.
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import validator from 'validator';
 
 export default () => {
-	// const [formInstance, setFormInstance] = useState(null);
 	const [smsRemainingChar, setSmsRemainingChar] = useState('160/160');
-	// let [recipient, setRecipient] = useState('');
 	let [smsMessage, setSmsMessage] = useState('');	// text message on write textbox.
-	// let [sentSms, setSentSms] = useState([]);
-	// let [outboxSms, setOutboxSms] = useState([]);
-	// const [selectedItemKeys, setSelectedItemKeys] = useState([0]);
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
-	// const [intervalIdSmsByCust, setIntervalIdSmsByCust] = useState(undefined);	// timer to fetch sms by a customer.
-	// const [intervalIdCust, setIntervalIdCust] = useState(undefined);	// timer to fetch customers.
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
-
-	// const messagesEndRef = useRef(null);
-
-	// const [rerender, setRerender] = useState(false);
 
 	const navigate = useNavigate();
 
 	const cookies = new Cookies();
-
-	// const fetchSms = useCallback(async () => {
-	// 	await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms2?sessionId=${sessionId}`)
-	// 		.then((res) => {
-	// 			return res.json()
-	// 		})
-	// 		.then((res) => {
-	// 			setSentSms(filterSms(res.data, 'Sent'));
-	// 			setOutboxSms(filterSms(res.data, 'Outbox'));
-	// 		});
-	// }, []);
 
 	const fetchCustomers = useCallback(async () => {
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/customers?sessionId=${cookies.get('sessionId')}`)
@@ -98,12 +63,10 @@ export default () => {
 			})
 			.then((res) => {
 				setConvoByCustomer(res.data);
-				//scrollToBottom();
 			});
 	}, []);
 
 	useEffect(() => {
-		//fetchSms();
 		fetchCustomers();
 
 		// let customersTimer = fetchCustomersTimer();
@@ -134,10 +97,6 @@ export default () => {
 			}, 8000);
 	}
 
-	// function onInitialized(e) {
-	// 	// setFormInstance(e.component);
-	// }
-
 	const postSms = useCallback(async (sms) => {
 		const uriEncoded = uriEncode(sms);
 		const optionHeaders = {
@@ -158,7 +117,6 @@ export default () => {
 				notification('SMS has been sent!', 'success');
 				setSmsMessage('');
 				await fetchSmsByCustomers(sms.customerNo);
-				//scrollToBottom();	// not working yet.
 			});
 	}, []);
 
@@ -179,24 +137,6 @@ export default () => {
 		await postSms(sms);
 	}
 
-	// function filterSms(data, filterBy) {
-	// 	return data.reduce((prevValue, currentValue) => {
-	// 		const { Status } = currentValue;
-	// 		if (Status == filterBy) {
-	// 			prevValue.push({	Id: currentValue.Id,
-	// 						UserId: currentValue.UserId,
-	// 						Recipient: currentValue.Recipient,
-	// 						Sms: currentValue.Sms,
-	// 						Status: currentValue.Status,
-	// 						MessageSid: currentValue.MessageSid,
-	// 						DateTimeSent: currentValue.DateTimeSent,
-	// 					});
-	// 		}
-
-	// 		return prevValue;
-	// 	}, []);
-	// }
-
 	function textMsgInputHandler(event) {
 		setSmsMessage(event.target.value);
 		const maxlength = 160;
@@ -216,7 +156,6 @@ export default () => {
 	}
 
 	function renderListItem(item) {
-		// console.log('item: ', item);
 		return (
 			<div className="d-flex flex-row justify-content-between">
 				<div className="cmpt-customer-list">
@@ -229,20 +168,6 @@ export default () => {
 					<span className="badge bg-danger float-end">{smsNewMessage(item)}</span>
 				</div>
 			</div>
-
-			// <div>
-			// 	<div>{item.CUST_NO}</div>
-			// 	<div className="customer-list">
-			// 		<div className="name">{item.NAM}</div>
-			// 		<div className="phone">{item.MBL_PHONE_1}</div>
-			// 		<div className="address">{item.ADRS_1}</div>
-			// 	</div>
-			// 	{/*<div className="price-container">
-			// 		<div className="price"></div>
-			// 			&nbsp;
-			// 		<div className="caption">per<br />night</div>
-			// 	</div>*/}
-			// </div>
 		);
 	}
 
@@ -250,7 +175,6 @@ export default () => {
 		const current = JSON.parse(JSON.stringify(e.addedItems[0]));
 
 		setCurrentCustomer(current);
-		// setSelectedItemKeys([current.CUST_NO]);
 		await fetchSmsByCustomers(current.CUST_NO);
 
 		// facilitate the timer for selected customer.
@@ -258,11 +182,6 @@ export default () => {
 		// let returnIntervalId = fetchSmsByCustTimer(current);
 		// setIntervalIdSmsByCust(returnIntervalId);
 	}
-
-	// function scrollToBottom() {
-	// 	messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-	// 	setRerender(!rerender);
-	// }
 
 	function onSelectedItemKeysChanged(e) {
 		if (e.fullName === 'searchValue') {
@@ -320,10 +239,11 @@ export default () => {
 												<MDBTextArea
 													// label="Message"
 													rows={4}
-													//style={{background: 'white'}}
+													style={{background: '#fafafa'}}
 													onChange={(e) => { textMsgInputHandler(e) }}
 													maxLength={160}
 													value={smsMessage}
+													id="cmpt-textbox"
 												/>
 											</div>
 											<div className="text-right">

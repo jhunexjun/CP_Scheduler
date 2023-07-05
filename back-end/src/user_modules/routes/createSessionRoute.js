@@ -13,7 +13,7 @@ module.exports = async function(req, res) {
 			return;
 		}
 
-		const sessionId = await sessionModel.createSession(req)
+		const sessionId = await sessionModel.createSession(req);
 
 		res.json({ status: 'OK', data: sessionId });
 	} catch(e) {

@@ -25,7 +25,7 @@
 // import UserPage from "views/User.js";
 // import UpgradeToPro from "views/Upgrade.js";
 
-import Appointments from "views/Appointments/Appointment.js";
+import Appointments from "views/Appointments/Appointment";
 import Sms from 'views/Sms/Sms';
 import WorkOrder from 'views/WorkOrders/WorkOrder';
 
