@@ -33,8 +33,8 @@ const SchedulesRow = (props) => {
 			if (sDate.isSameOrBefore(startDate, 'days') && eDate.isSameOrAfter(startDate, 'days'))
 				prevValue.push(curValue);
 		} else {
-			sDate = moment().startOf('month');
-			eDate = moment().endOf('month');
+			sDate = moment(currentSchedulerDate).startOf('month');
+			eDate = moment(currentSchedulerDate).endOf('month');
 
 			if (sDate <= moment(startDate) && eDate >= moment(startDate))
 				prevValue.push(curValue);

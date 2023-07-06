@@ -391,7 +391,7 @@ const Sched = ({
 		}
 
 		if (e.name === 'currentDate') {
-			console.log('currentDate: ', e);
+			// console.log('currentDate: ', e);
 			setCurrentSchedulerDate(e.value);
 		}
 	}
