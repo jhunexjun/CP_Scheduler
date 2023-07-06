@@ -7,7 +7,8 @@ import {
 
 import { getDuration } from './util';
 
-import sentItemLogo from '../../assets/compuTant/img/POS Highway Logo.jpg';
+// import sentItemLogo from '../../assets/compuTant/img/POS Highway Logo.jpg';
+import sentItemLogo from '../../assets/compuTant/img/POS_highway_square_logo.jpg';
 
 const sentItemsTpl = (item, index) => {
 	return <li className="d-flex justify-content-end mb-1" key={index}>

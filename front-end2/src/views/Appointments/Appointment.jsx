@@ -286,7 +286,7 @@ function Appointment() {
       <div className="content">
         <Row>
           <Col md="12">
-            <div className="d-flex flex-row align-items-center">
+            <div className="d-flex flex-sm-row flex-column align-items-center">
               <div className="p-2">
                 Technician
               </div>

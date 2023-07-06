@@ -16,14 +16,17 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useEffect, useContext, useRef } from "react";
-import { Link, NavLink, useLocation, useParams } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
 // import logo from "logo.svg";
-import logo from "../../assets/compuTant/img/total-offroad-more-transparent.png";
+// import logo from "../../assets/compuTant/img/total-offroad-more-transparent.png";
+// import logo from "../../assets/compuTant/img/POS_highway_square_logo.jpg";
+// import logo from "../../assets/compuTant/img/pos_highway_green.png";
+import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
 import './Sidebar.css';
 
 var ps;
@@ -60,7 +63,7 @@ function Sidebar(props) {
       <div className="logo mt-3">
         <Link to={process.env.REACT_APP_COMPANY_WEBSITE} target="_blank">
           <div className="logo-img">
-            <img src={logo} alt="react-logo" />
+            <img src={logo} className='rounded mx-auto d-block' alt="POS Highway"  />
           </div>
         </Link>
       </div>
