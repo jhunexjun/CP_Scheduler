@@ -1,6 +1,7 @@
 import { View, Image, StyleSheet } from '@react-pdf/renderer';
 
-import logo from '../../../../assets/compuTant/img/total-offroad-more-transparent.png';
+// import logo from '../../../../assets/compuTant/img/total-offroad-more-transparent.png';
+import logo from '../../../../assets/compuTant/img/pos_highway_green.png';
 import HeaderAddrsFrom from './HeaderAddrsFrom';
 import BillingAndWorkOrderAddrs from './BillingAndWorkOrderAddrs';
 import VehicleInfo from './VehicleInfo';
@@ -12,9 +13,10 @@ const styles = StyleSheet.create({
 		marginRight: 5,
 	},
 	logo: {
-		width: 150,
-		height: 55,
-		margin: 10,
+		width: 220,
+		height: 45,
+		marginBottom: 3,
+		marginRight: 3
 	},
 	addresses: {
 		flexDirection: 'row',
@@ -27,7 +29,7 @@ const WorkOrderHeadersContent = (props) => (
 		<View style={{flexDirection: 'row'}}>
 			<View style={[styles.addresses, styles.common]}>
 				<View style={{flexDirection: 'column'}}>
-					<View style={{flexDirection: 'row'}}>
+					<View style={{flexDirection: 'column'}}>
 						<Image src={logo} style={styles.logo} />
 						<HeaderAddrsFrom />
 					</View>

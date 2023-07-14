@@ -27,7 +27,7 @@ import PerfectScrollbar from "perfect-scrollbar";
 // import logo from "../../assets/compuTant/img/POS_highway_square_logo.jpg";
 // import logo from "../../assets/compuTant/img/pos_highway_green.png";
 import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
-import './Sidebar.css';
+import './sidebar.css';
 
 var ps;
 
@@ -84,6 +84,17 @@ function Sidebar(props) {
               </li>
             );
           })}
+        </Nav>
+        <Nav>
+          <li className="cmpt-sidebar-bottom-logo">
+            <NavLink to='https://www.poshighway.com/' target="_blank" style={{opacity: 1}}>
+              <p className='cmpt-sidebar-addrs'>
+                Powered by POS Highway<br />
+                www.poshighway.com<br />
+                Tel No: 888-881-1988<br />
+              </p>
+            </NavLink>
+          </li>
         </Nav>
       </div>
     </div>

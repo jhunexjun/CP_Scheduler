@@ -19,7 +19,7 @@
 // import React from "react";
 
 import { useState, useEffect, useRef, useContext, useCallback } from 'react';
-import { Routes, Route, useLocation, useParams, useNavigate } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
@@ -27,21 +27,23 @@ import Cookies from 'universal-cookie';
 import PerfectScrollbar from "perfect-scrollbar";
 
 import Navbar from "components/Navbars/Navbar.js";
-import Footer from "components/Footer/Footer.js";
+// import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
+// import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
 
 import routes from "routes.js";
 
 import { SystemUserContext } from './../Context/SystemUserContext';
 
-import { extractSessionId } from '../utils/util';
+// import { extractSessionId } from '../utils/util';
 
 var ps;
 
 function Dashboard(props) {
-  const [backgroundColor, setBackgroundColor] = useState("black");
-  const [activeColor, setActiveColor] = useState("info");
+  // const [backgroundColor, setBackgroundColor] = useState("black");
+  const [backgroundColor] = useState("black");
+  // const [activeColor, setActiveColor] = useState("info");
+  const [activeColor] = useState("info");
   const mainPanel = useRef();
   const navigate = useNavigate();
   const location = useLocation();
@@ -93,13 +95,13 @@ function Dashboard(props) {
     fetchLocation();
   }, []);
 
-  const handleActiveClick = (color) => {
-    setActiveColor(color);
-  };
+  // const handleActiveClick = (color) => {
+  //   setActiveColor(color);
+  // };
   
-  const handleBgClick = (color) => {
-    setBackgroundColor(color);
-  };
+  // const handleBgClick = (color) => {
+  //   setBackgroundColor(color);
+  // };
 
   return (
     <div className="wrapper">

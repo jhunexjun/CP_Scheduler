@@ -1,3 +1,15 @@
 .sidebar .nav p, .off-canvas-sidebar .nav p {
-  font-weight: bold;
+  font-weight: 600;
+}
+
+.cmpt-sidebar-bottom-logo {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+}
+
+.cmpt-sidebar-addrs {
+  line-height: 19px;
+  font-weight: normal!important;
+  text-transform: none;
 }
