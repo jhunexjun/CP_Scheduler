@@ -204,10 +204,8 @@ export default () => {
 										dataSource={dataSourceOptions}
 										grouped={false}
 										searchEnabled={true}
-										//selectedItemKeys={setSelectedItemKeys}
 										onSelectionChanged={async (e) => await handleListSelectionChange(e)}
 										itemRender={renderListItem}
-										// groupRender={null}
 										elementAttr={{ class: 'list' }}
 										onOptionChanged={onSelectedItemKeysChanged}
 									/>
@@ -237,7 +235,6 @@ export default () => {
 											</div>
 											<div>
 												<MDBTextArea
-													// label="Message"
 													rows={4}
 													style={{background: '#fafafa'}}
 													onChange={(e) => { textMsgInputHandler(e) }}

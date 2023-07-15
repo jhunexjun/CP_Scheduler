@@ -135,17 +135,14 @@ function Appointment() {
 
   function appendTechnicians(technicians) {
     const initTechnicians = [];
-    //initTechnicians.push(_technicians[0]);
 
     for(let x = 0; x < technicians.data.length; x++) {
       let obj = {
         id: technicians.data[x].id.toString(),
         text: technicians.data[x].text,
-        // idText: technicians.data[x].id + '-' + technicians.data[x].text,
         color: '#56ca85',
         avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'coach-man.png',
         age: null,
-        // discipline: 'ABS, Fitball, StepFit',
         phone1: isSet(technicians.data[x], "phone1") ?  technicians.data[x].phone1.toString() : "",
       }
 
@@ -177,8 +174,6 @@ function Appointment() {
   }
 
   function appendWorkOrders(workOrders) {
-    // const initWorkOrders = [];
-
     const initWorkOrders2 = workOrders.data.reduce((prevValue, curValue) => {
       const { id } = curValue;
 
@@ -250,8 +245,6 @@ function Appointment() {
     }
 
     setScheduleData(initScheduleData);
-    // scheduleDataMasterCopy = JSON.parse(JSON.stringify(initScheduleData));
-    // console.log("scheduleDataMasterCopy: ", scheduleDataMasterCopy);
   }
 
   function updateNow(e) {

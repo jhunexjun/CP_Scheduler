@@ -1,7 +1,6 @@
 let express = require('express');
 let router = express.Router();
 
-
 const schedulerRoute = require('./schedulerRoute');
 const technicianRoute = require('./technicianRoute');
 const workOrdersRoute = require('./workOrdersRoute');
@@ -14,7 +13,6 @@ const customersRoute = require('./customersRoute');
 const smsRoute = require('./smsRoute');
 const sms2Route = require('./sms2Route');
 const smsByCustomerRoute = require('./smsByCustomerRoute');
-
 
 module.exports = function(app) {
     router.all('/schedule', schedulerRoute);    // http://localhost:8080/admin/scheduler
