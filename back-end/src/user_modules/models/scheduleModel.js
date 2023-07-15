@@ -142,12 +142,12 @@ async function addSchedule(req) {
 
 		return await msSqlConnect.getInstance().then(pool => {
 			let poolRequest = pool.request()
-				.input('sessionId', msSql.VarChar, req.query.sessionId)
-				.input('subject', msSql.VarChar, req.body.subject)
-				.input('utcDateFrom', msSql.VarChar, req.body.utcDateFrom)
-				.input('utcDateTo', msSql.VarChar, req.body.utcDateTo)
-				.input('description', msSql.VarChar, utils.isSet(req.body, "description") ? req.body.description : null)
-				.input('invoiceNo', msSql.VarChar, req.body.invoiceNo)
+				.input('sessionId', msSql.NVarChar, req.query.sessionId)
+				.input('subject', msSql.NVarChar, req.body.subject)
+				.input('utcDateFrom', msSql.DateTime, req.body.utcDateFrom)
+				.input('utcDateTo', msSql.DateTime, req.body.utcDateTo)
+				.input('description', msSql.NVarChar, utils.isSet(req.body, "description") ? req.body.description : null)
+				.input('invoiceNo', msSql.NVarChar, req.body.invoiceNo)
 
 			if (utils.isSet(req.body, 'allDay'))
 				poolRequest.input('allDay', msSql.Char, 'Y');
