@@ -192,7 +192,11 @@ function Appointment() {
                 billNam: curValue.billNam,
                 noteDate: curValue.noteDate,
                 noteUser: curValue.noteUser,
-                serviceType: curValue.serviceType
+                serviceType: curValue.serviceType,
+                text3: curValue.id.concat(' ~ ',
+                                          (curValue.billNam === null) ? '' : curValue.billNam,
+                                          ' ~ ',
+                                          curValue.plateNo ?? ''),
               };
           prevValue.push(x);
         } else {

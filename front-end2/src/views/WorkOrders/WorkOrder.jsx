@@ -86,12 +86,12 @@ export default () => {
 	const [popupVisible, setPopupVisible] = useState(false);
 	const navigate = useNavigate();
 	const [workOrders, setWorkOrders] = useState([]);
-	const [displayWorkOrder, setDisplayWorkOrder] = useState(false);
+	const [showPdfViewer, setShowPdfViewer] = useState(false);
 	const [selectedWorkOrderNo, setSelectedWorkOrderNo] = useState(null);
 
 	const cookies = new Cookies();
 
-	const fetchInvoiceData = useCallback(async (invoiceNo) => {
+	const fetchWorkorderData = useCallback(async (invoiceNo) => {
 		await fetch(`${adminUrl}/invoice?sessionId=${cookies.get('sessionId')}&invoiceNo=${invoiceNo}`)
 			.then((res) => {
 				return res.json()
@@ -104,12 +104,12 @@ export default () => {
 				} else {
 					invoice.data.barcode.base64 = getImgBase64String(invoice.data.table[0].TKT_NO);
 					setData(invoice);
-					setDisplayWorkOrder(true);
+					setShowPdfViewer(true);
 				}
 			});
 	}, []);
 
-	const fetchInvoiceList = useCallback(async () => {
+	const fetchWorkorderList = useCallback(async () => {
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/invoiceslist?sessionId=${cookies.get('sessionId')}`)
 			.then((res) => {
 				return res.json()
@@ -125,9 +125,9 @@ export default () => {
 		return barcodeNode.src;
 	}
 
-	async function fetchInvoice() {
-		setDisplayWorkOrder(false);
-		await fetchInvoiceData(invoiceNo);
+	async function fetchWorkorder() {
+		setShowPdfViewer(false);
+		await fetchWorkorderData(invoiceNo);
 	}
 
 	const selectButtonOptions = {
@@ -144,27 +144,39 @@ export default () => {
 		setPopupVisible(false);
 	}
 
-	function hideAndSelect() {
-		setDisplayWorkOrder(false);
+	async function hideAndSelect() {
+		// setShowPdfViewer(false);
 		setInvoiceNo(selectedWorkOrderNo);
 		setPopupVisible(false);
+		await fetchWorkorder();
 	}
 
-	async function showInvoiceList() {
+	async function showWorkorderList() {
 		setPopupVisible(true);
-		await fetchInvoiceList();
+		await fetchWorkorderList();
 	}
 
 	function showTheInvoice() {
-		if (displayWorkOrder)
+		if (showPdfViewer)
 			return (<PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>);
 		else
 			return null;
 	}
 
-	function onSelectionChanged({ selectedRowsData }) {
+	async function onSelectionChanged({ selectedRowsData }) {
 		const data = selectedRowsData[0];
+
 		setSelectedWorkOrderNo(data && data.TKT_NO);
+		setInvoiceNo(data.TKT_NO);
+
+	}
+
+	async function onCellDblClick(e) {
+		setSelectedWorkOrderNo(e.values[0]);
+		setInvoiceNo(e.values[0]);
+		setPopupVisible(false);
+		setShowPdfViewer(false);
+		await fetchWorkorder();
 	}
 
 	return (
@@ -186,12 +198,12 @@ export default () => {
 							<input type="text" id="inputInvoiceNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
 						</div>
 						<div className="col-auto">
-							<span onClick={ async () => await fetchInvoice() } style={{cursor: 'pointer'}} title="Click to search an invoice.">
+							<span onClick={ async () => await fetchWorkorder() } style={{cursor: 'pointer'}} title="Click to search an invoice.">
 								<UilSearchAlt size="20" color="#61DAFB" />
 							</span>
 						</div>
 						<div className="col-auto">
-							<span onClick={ async () => await showInvoiceList() } style={{cursor: 'pointer'}} title="Show the list of workOrders." >
+							<span onClick={ async () => await showWorkorderList() } style={{cursor: 'pointer'}} title="Show the list of workOrders." >
 								<UilListUl size="20" color="#61DAFB" />
 							</span>
 						</div>
@@ -203,7 +215,7 @@ export default () => {
 			</div>
 			<div className="row">
 				<div className="col">
-					 <Popup
+					<Popup
 						visible={popupVisible}
 						//onHiding={this.hideInfo}
 						dragEnabled={false}
@@ -227,18 +239,23 @@ export default () => {
 							location="after"
 							options={closeButtonOptions}
 						/>
-						<DataGrid dataSource={workOrders} columnAutoWidth={true} onSelectionChanged={onSelectionChanged}>
-							<Column dataField="TKT_NO" caption="Work order #" />
-							<Column dataField="TKT_DAT" dataType="date" caption="Date" />
-							{/*<Column dataField="CUST_NO" caption="Customer #" />*/}
-							<Column dataField="BILL_NAM" caption="Customer Name" />
-							{/*<Column dataField="NOTE_TXT" caption="Note" />*/}
-							<Column dataField="BILL_PHONE_1" caption="Phone" />
-							<Column dataField="USR_LIC_PLATE" caption="Plate #" />
-							<Selection mode="single" />
-							<FilterRow visible={true} />
-							<SearchPanel visible={true} />
-							<Paging defaultPageSize={10} defaultPageIndex={1} />
+						<DataGrid
+							dataSource={workOrders}
+							columnAutoWidth={true}
+							onSelectionChanged={async (e) => await onSelectionChanged(e)}
+							onCellDblClick={async (e) => await onCellDblClick(e)}>
+								<Column dataField="TKT_NO" caption="Work order #" />
+								<Column dataField="TKT_DAT" dataType="date" caption="Date" />
+								{/*<Column dataField="CUST_NO" caption="Customer #" />*/}
+								<Column dataField="BILL_NAM" caption="Customer Name" />
+								{/*<Column dataField="NOTE_TXT" caption="Note" />*/}
+								<Column dataField="BILL_PHONE_1" caption="Phone" />
+								<Column dataField="USR_LIC_PLATE" caption="Plate #" />
+								<Column dataField="USR_VIN_NO" caption="VIN #" />
+								<Selection mode="single" />
+								<FilterRow visible={true} />
+								<SearchPanel visible={true} />
+								<Paging defaultPageSize={10} defaultPageIndex={1} />
 						</DataGrid>
 					</Popup>
 				</div>

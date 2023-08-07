@@ -22,7 +22,7 @@ module.exports = function(app) {
     router.put('/logout', logoutRoute);   // http://localhost:8080/admin/logout
     router.put('/extendsession', extendSessionRoute);   // http://localhost:8080/admin/extendSession
     router.get('/invoice', invoiceRoute);
-    router.get('/invoiceslist', invoicesListRoute);
+    router.get('/invoiceslist', invoicesListRoute); // rename to workorderListRoute.
     router.get('/customers', customersRoute);
     router.post('/sms', smsRoute);  // Twilio webhook.
     router.all('/sms2', sms2Route); // sending SMS from Scheduler.

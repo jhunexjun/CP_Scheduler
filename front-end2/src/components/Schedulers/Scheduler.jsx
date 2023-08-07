@@ -41,7 +41,6 @@ const Sched = ({
 	}
 
 	const cookies = new Cookies();
-	// let robot = 'N';
 	const url = process.env.REACT_APP_API_DOMAIN + `/admin/schedule?sessionId=${cookies.get('sessionId')}`;
 
 	const sysUserContext = useContext(SystemUserContext);
@@ -72,7 +71,7 @@ const Sched = ({
 
 	function onAppointmentAdding(e) {
 		if (e.appointmentData.invoiceNo === undefined || e.appointmentData.invoiceNo === null || e.appointmentData.invoiceNo === "") {
-			showToast('', 'Please  select invoice.', 'warning');
+			showToast('', 'Please select invoice.', 'warning');
 			e.cancel = true;
 		}
 
@@ -151,7 +150,6 @@ const Sched = ({
 		}
 
 		datesAreValid(e, new Date(e.newData.startDate), new Date(e.newData.endDate));
-
 	}
 
 	async function onAppointmentUpdatedAsync(e) {
@@ -272,7 +270,8 @@ const Sched = ({
 							form.updateData('noteDate', '');
 						}
 
-						form.updateData('subject', (invoice && invoice.serviceType) || '');
+						// form.updateData('subject', (invoice && invoice.serviceType) || '');
+						form.updateData('subject', (invoice && invoice.text3) || '');
 						form.updateData('workOrderDetails', (invoice && invoice.text) || '');
 						form.updateData('noteUser', (invoice && invoice.noteUser) || '');
 					},
@@ -309,18 +308,6 @@ const Sched = ({
 					height: '140px'
 				},
 			},
-			// {
-			// 	label: { text: 'Subject' },
-			// 	name: 'subject',
-			// 	// dataField: 'serviceType',
-			// 	// dataField: 'subject',
-			// 	editorType: 'dxTextBox',
-			// 	colSpan: 2,
-			// 	isRequired: true,
-			// 	editorOptions: {
-			// 		value: invoiceInfo.subject,
-			// 	}
-			// },
 			{
 				label: { text: 'Subject' },
 				name: 'subject',	// 'name' is being used by Work Order # onValueChanged() form.updateData('subject', (invoice && invoice.serviceType) || '');
