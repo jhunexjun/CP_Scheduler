@@ -168,7 +168,6 @@ export default () => {
 
 		setSelectedWorkOrderNo(data && data.TKT_NO);
 		setInvoiceNo(data.TKT_NO);
-
 	}
 
 	async function onCellDblClick(e) {
@@ -244,12 +243,12 @@ export default () => {
 							columnAutoWidth={true}
 							onSelectionChanged={async (e) => await onSelectionChanged(e)}
 							onCellDblClick={async (e) => await onCellDblClick(e)}>
+								<Column dataField="BILL_NAM" caption="Customer Name" />
+								<Column dataField="BILL_PHONE_1" caption="Phone" />
 								<Column dataField="TKT_NO" caption="Work order #" />
 								<Column dataField="TKT_DAT" dataType="date" caption="Date" />
-								{/*<Column dataField="CUST_NO" caption="Customer #" />*/}
-								<Column dataField="BILL_NAM" caption="Customer Name" />
-								{/*<Column dataField="NOTE_TXT" caption="Note" />*/}
-								<Column dataField="BILL_PHONE_1" caption="Phone" />
+								<Column dataField="USR_MAKE" caption="Car make" />
+								<Column dataField="USR_MODEL" caption="Car model" />
 								<Column dataField="USR_LIC_PLATE" caption="Plate #" />
 								<Column dataField="USR_VIN_NO" caption="VIN #" />
 								<Selection mode="single" />
