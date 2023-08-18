@@ -45,7 +45,8 @@ export default function AppLogout({ children }) {
 		const optionHeaders = {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-			body: uriEncode({ 	sessionId: cookies.sessionId,
+			body: uriEncode({ 	// sessionId: cookies.sessionId,
+								sessionId: cookies.get('sessionId'),
 								expiryInMinutes: process.env.REACT_APP_INACTIVE_LOGOUT_MINUTES
 							}),
 		}

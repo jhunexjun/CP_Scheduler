@@ -70,7 +70,7 @@ export default () => {
 		fetchCustomers();
 
 		// let customersTimer = fetchCustomersTimer();
-		let smsByCustTimer = fetchSmsByCustTimer(currentCustomer);
+		let smsByCustTimer = fetchSmsBySelectedCustTimer(currentCustomer);
 
 		return () => {
 			// clearInterval(customersTimer);
@@ -88,7 +88,7 @@ export default () => {
 	// 	}, 8000);
 	// }
 
-	const fetchSmsByCustTimer = (currentCustomer) => {
+	const fetchSmsBySelectedCustTimer = (currentCustomer) => {
 		if (currentCustomer === undefined || currentCustomer === null)
 			return null;
 
@@ -179,7 +179,7 @@ export default () => {
 
 		// facilitate the timer for selected customer.
 		// clearInterval(intervalIdSmsByCust);
-		// let returnIntervalId = fetchSmsByCustTimer(current);
+		// let returnIntervalId = fetchSmsBySelectedCustTimer(current);
 		// setIntervalIdSmsByCust(returnIntervalId);
 	}
 
@@ -214,7 +214,7 @@ export default () => {
 									<div className="d-flex flex-column p-2">
 										<div className="d-flex flex-column p-2">
 											<div className="mb-2" style={{minHeight: '67px'}}>
-												<div className="cmpt-customer-no">{ currentCustomer?.CUST_NO }</div>
+												<div className="cmpt-customer-no">Customer no.: { currentCustomer?.CUST_NO }</div>
 												<div className="d-flex flex-row">
 													<div className="cmpt-customer-name mr-auto">{currentCustomer?.NAM}</div>
 													{currentCustomer ? (<i className={`dx-icon dx-icon-tel`}></i> ) : ``}
