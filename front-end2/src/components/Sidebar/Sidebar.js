@@ -35,9 +35,18 @@ function Sidebar(props) {
   const location = useLocation();
   const sidebar = useRef();
 
-  // verifies if routeName is the one active (in browser input)
+  // Verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
-    return location.pathname.indexOf(routeName) > -1 ? "active" : "";
+    const colonIndex = routeName.indexOf(':');
+
+    if (colonIndex === -1) {
+      return location.pathname.indexOf(routeName) > -1 ? "active" : "";
+    } else {
+      const result = routeName.substring(colonIndex);
+      const replacedPath = routeName.replace(result, '');
+
+      return location.pathname.indexOf(replacedPath) > -1 ? "active" : "";
+    }    
   };
 
   useEffect(() => {
@@ -53,6 +62,17 @@ function Sidebar(props) {
       }
     };
   });
+
+  function removeUrlParams(routeName) {
+    const colonIndex = routeName.indexOf(':');
+
+    if (colonIndex > -1) {
+      const result = routeName.substring(colonIndex);
+      return routeName.replace(result, '');
+    } else {
+      return routeName;
+    }
+  }
 
   return (
     <div
@@ -77,7 +97,7 @@ function Sidebar(props) {
                 }
                 key={key}
               >
-                <NavLink to={prop.layout + prop.path} className="nav-NavLink">
+                <NavLink to={ prop.layout + removeUrlParams(prop.path) } className="nav-NavLink">
                   <i className={prop.icon} />
                   <p>{prop.name}</p>
                 </NavLink>

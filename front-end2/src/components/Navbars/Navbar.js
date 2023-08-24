@@ -16,7 +16,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   Collapse,
@@ -43,13 +43,18 @@ import { uriEncode } from '../../utils/util';
 
 import Cookies from 'universal-cookie';
 
+import MessageNotif from './MessageNotif';
+
 function Header(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownNotif, setDropdownNotif] = useState(false);
   const [color, setColor] = useState("transparent");
   const sidebarToggle = useRef();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [notifications, setNotifications] = useState([]);
 
   const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
   const sysUserContext = useContext(SystemUserContext);
@@ -67,6 +72,10 @@ function Header(props) {
 
   const dropdownToggle = (e) => {
     setDropdownOpen(!dropdownOpen);
+  };
+
+  function dropdownNotifToggle(e) {
+    setDropdownNotif(!dropdownNotif);
   };
 
   const getBrand = () => {
@@ -121,6 +130,30 @@ function Header(props) {
     }
   }, [location]);
 
+  const fetchNotifications = useCallback(async () => {
+    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/notifications?sessionId=${cookies.get('sessionId')}`)
+      .then((res) => {
+        return res.json()
+      })
+      .then((res) => {
+        setNotifications(res.data);
+      });
+  }, []);
+
+  useEffect(() => {
+    let notificationsTimer = fetchNotificationsTimer();
+
+    return () => {
+      clearInterval(notificationsTimer);
+    };
+  }, []);
+
+  function fetchNotificationsTimer() {
+    return setInterval(async () => {
+      await fetchNotifications();
+    }, 8000);
+  }
+
   return (
     // add or remove classes depending if we are on full-screen-maps page or not
     <Navbar
@@ -163,12 +196,25 @@ function Header(props) {
                 {`Store: ${sysUserContext.location }`}
               </p>
             </NavItem>
+
+            <Dropdown
+              nav
+              isOpen={dropdownNotif}
+              toggle={(e) => dropdownNotifToggle(e)}
+            >
+              <DropdownToggle nav>
+                <i className="nc-icon nc-bell-55" />
+                <div className="cmpt-notifcation">{ notifications.length > 0 ? notifications.length : "" }</div>
+              </DropdownToggle>
+              <MessageNotif notif={notifications} />
+            </Dropdown>
+
             <Dropdown
               nav
               isOpen={dropdownOpen}
               toggle={(e) => dropdownToggle(e)}
             >
-              <DropdownToggle caret nav>
+              <DropdownToggle nav>
                 <i className="nc-icon nc-settings-gear-65" />
                 <p>
                   <span className="d-lg-none d-md-block">User Profile</span>
@@ -180,6 +226,7 @@ function Header(props) {
                 <DropdownItem tag="a" onClick={logout}>Log-out</DropdownItem>
               </DropdownMenu>
             </Dropdown>
+
           </Nav>
         </Collapse>
       </Container>

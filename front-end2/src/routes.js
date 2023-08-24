@@ -88,7 +88,7 @@ let routes = [
     layout: "/admin",
   },
   {
-    path: "/sms",  // i.e. /admin/invoice/<sessionId>
+    path: "/sms/:notifId?",  // i.e. /admin/invoice/<sessionId>
     name: "SMS",
     icon: "nc-icon nc-mobile",
     component: <Sms />,

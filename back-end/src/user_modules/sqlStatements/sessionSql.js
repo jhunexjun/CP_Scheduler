@@ -3,5 +3,5 @@ module.exports = {
 }
 
 function createSession() {
-	return "exec dbo.USER_SessionCreate @userId, @expiryInMinutes";
+	return "exec dbo.USER_SP_SessionCreate @userId, @expiryInMinutes";
 }

@@ -3,7 +3,7 @@ module.exports = {
 }
 
 function insertSms() {
-	return 'exec dbo.USER_SmsAdd @sessionId, ' +
+	return 'exec dbo.USER_SP_SmsAdd @sessionId, ' +
 								'@custNo, ' +
 								'@recipient, ' +
 								'@sms,' +
@@ -13,17 +13,17 @@ function insertSms() {
 }
 
 function getSms() {
-	return 'exec dbo.USER_SmsGet @sessionId';
+	return 'exec dbo.USER_SP_SmsGet @sessionId';
 }
 
 function getAllSmsByCustomer() {
-	return 'exec dbo.USER_SmsGetByCustomer @sessionId, @custNo';
+	return 'exec dbo.USER_SP_SmsGetByCustomer @sessionId, @custNo';
 }
 
-// After inserting, it runs USER_ProcessTwilioSms - called inside the USER_TwilioSmsAdd.
+// After inserting, it runs USER_SP_ProcessTwilioSms - called inside the USER_SP_TwilioSmsAdd.
 function insertTwilioInbox() {
 	return '' +
-		'EXECUTE [dbo].[USER_TwilioSmsAdd] ' +
+		'EXECUTE [dbo].[USER_SP_TwilioSmsAdd] ' +
 		  '@toCountry ' +
 		  ',@toState ' +
 		  ',@smsMessageSid ' +

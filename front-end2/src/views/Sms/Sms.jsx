@@ -54,7 +54,7 @@ export default () => {
 	}, [currentCustomer]);
 
 	// Upon customer selection.
-	const fetchSmsByCustomers = useCallback(async (customerNo = '') => {
+	const fetchSmsByCustomer = useCallback(async (customerNo = '') => {
 		if (customerNo === '') return;
 
 		await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sms/customer?sessionId=${cookies.get('sessionId')}&custNo=${customerNo}`)
@@ -80,20 +80,27 @@ export default () => {
 	// }, [currentCustomer]);
 	}, []);
 
+	useEffect(() => {
+		let customersTimer = fetchCustomersTimer();
 
+		return () => {
+			clearInterval(customersTimer);
+		};
 
-	// function fetchCustomersTimer() {
-	// 	return setInterval(async () => {
-	// 		await fetchCustomers();
-	// 	}, 8000);
-	// }
+	}, []);
+
+	function fetchCustomersTimer() {
+		return setInterval(async () => {
+			await fetchCustomers();
+		}, 8000);
+	}
 
 	const fetchSmsBySelectedCustTimer = (currentCustomer) => {
 		if (currentCustomer === undefined || currentCustomer === null)
 			return null;
 
 		return setInterval(async () => {
-				await fetchSmsByCustomers(currentCustomer.CUST_NO);
+				await fetchSmsByCustomer(currentCustomer.CUST_NO);
 			}, 8000);
 	}
 
@@ -116,7 +123,7 @@ export default () => {
 				}
 				notification('SMS has been sent!', 'success');
 				setSmsMessage('');
-				await fetchSmsByCustomers(sms.customerNo);
+				await fetchSmsByCustomer(sms.customerNo);
 			});
 	}, []);
 
@@ -153,6 +160,8 @@ export default () => {
 	function smsNewMessage(item) {
 		if (parseInt(item.newSmsMsg) > 0)
 			return item.newSmsMsg;
+		else
+			return '';
 	}
 
 	function renderListItem(item) {
@@ -175,7 +184,7 @@ export default () => {
 		const current = JSON.parse(JSON.stringify(e.addedItems[0]));
 
 		setCurrentCustomer(current);
-		await fetchSmsByCustomers(current.CUST_NO);
+		await fetchSmsByCustomer(current.CUST_NO);
 
 		// facilitate the timer for selected customer.
 		// clearInterval(intervalIdSmsByCust);

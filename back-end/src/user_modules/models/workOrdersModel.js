@@ -12,7 +12,7 @@ module.exports = {
 // We can use this function or incorporate this in the stored proc. But this was usually usaed for dynamic sql.
 // async function sessionIsValid(sessionId) {
 // 	try {
-// 		let request = new Request('exec dbo.USER_CheckSessionValidity @sessionId', (err, rowCount) => {
+// 		let request = new Request('exec dbo.USER_SP_CheckSessionValidity @sessionId', (err, rowCount) => {
 // 			if (err)
 // 				console.log(err);
 // 		});

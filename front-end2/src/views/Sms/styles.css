@@ -1,33 +1,41 @@
 .cmpt-customer-list .name {
-	color: #3b71ca;
-	font-weight: 700;
+  color: #3b71ca;
+  font-weight: 700;
 }
 
 .cmpt-customer-no {
-	font-size: 15px;
+  font-size: 15px;
 }
 
 .cmpt-customer-name {
-	font-size: 16px;
-	font-weight: bold;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .cmpt-customer-and-text {
-	border-width: 0.5px;
-	border-style: solid;
-	border-radius: 5px;
+  border-width: 0.5px;
+  border-style: solid;
+  border-radius: 5px;
 }
 
 .cmpt-hr {
-	margin-top: 0;
-	margin-bottom: 5px;
+  margin-top: 0;
+  margin-bottom: 5px;
 }
 
 .cmpt-conversation {
-	box-shadow: 0 6px 10px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 10px 3px rgba(0, 0, 0, 0.15);
 }
 
 #cmpt-textbox {
-	background: #fafafa;
-	line-height: 1.2;
+  background: #fafafa;
+  line-height: 1.2;
+}
+
+.cmpt-notifcation {
+  position: relative;
+  bottom: 37px;
+  right: -18px;
+  color: red;
+  font-weight: 600;
 }

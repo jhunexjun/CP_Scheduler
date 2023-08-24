@@ -3,5 +3,5 @@ module.exports = {
 }
 
 function getListOfCustomers() {
-	return 'exec dbo.USER_CustomersGet @sessionId';
+	return 'exec dbo.USER_SP_CustomersGet @sessionId';
 }
