@@ -178,3 +178,7 @@ Dribbble: <https://dribbble.com/creativetim>
 Google+: <https://plus.google.com/+CreativetimPage>
 
 Instagram: <https://instagram.com/creativetimofficial>
+
+# For reference on devexpress
+* https://js.devexpress.com/Documentation/Guide/UI_Components/List/Getting_Started_with_List/#Search_Items
+* https://js.devexpress.com/Documentation/ApiReference/UI_Components/dxList/Configuration/#searchValue

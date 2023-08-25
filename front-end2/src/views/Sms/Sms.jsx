@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
@@ -23,11 +23,14 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import validator from 'validator';
 
-export default () => {
-	const [smsRemainingChar, setSmsRemainingChar] = useState('160/160');
+function Sms() {
+	let { notifId } = useParams();
+
+	const [, setSmsRemainingChar] = useState('160/160');
 	let [smsMessage, setSmsMessage] = useState('');	// text message on write textbox.
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
+	// const [listSearchValue, setListSearchValue] = useState('');
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
@@ -86,7 +89,6 @@ export default () => {
 		return () => {
 			clearInterval(customersTimer);
 		};
-
 	}, []);
 
 	function fetchCustomersTimer() {
@@ -168,7 +170,7 @@ export default () => {
 		return (
 			<div className="d-flex flex-row justify-content-between">
 				<div className="cmpt-customer-list">
-					<div>{item.CUST_NO}</div>
+					<div>Cust. No. {item.CUST_NO}</div>
 					<div className="name">{item.NAM}</div>
 					<div className="phone">{item.MBL_PHONE_1}</div>
 					<div className="address">{item.ADRS_1}</div>
@@ -217,6 +219,7 @@ export default () => {
 										itemRender={renderListItem}
 										elementAttr={{ class: 'list' }}
 										onOptionChanged={onSelectedItemKeysChanged}
+										// searchValue={'vincent'}
 									/>
 								</div>
 								<div className="w-50 ml-4 cmpt-customer-and-text">
@@ -268,3 +271,5 @@ export default () => {
 		</div>
 	)
 }
+
+export default Sms;
