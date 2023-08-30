@@ -29,8 +29,4 @@ function getDuration(item) {
   return moment(item.utcDdateAndTime).format('MMM D, YYYY h:mm A');
 }
 
-function searchMobileNoByInboxId(data, inboxId) {
-  
-}
-
-export { getDuration, searchMobileNoByInboxId };
+export { getDuration, };

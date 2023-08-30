@@ -7,7 +7,7 @@ function MessageNotif(props) {
   const navigate = useNavigate();
 
   function notifOnClick(notif) {
-    navigate('/admin/sms/' + notif.id);
+    navigate('/admin/sms/' + notif.customerNo);
   }
 
   return (

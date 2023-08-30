@@ -9,6 +9,8 @@ import ArrayStore from 'devextreme/data/array_store';
 
 import { uriEncode, isSet, notification } from '../../utils/util';
 import './styles.css';
+import { searchMobileNoByInboxId } from './util';
+
 import { Row, Col, Card, CardBody, Button } from 'reactstrap';
 
 import conversationTemplate from './conversationTemplate';
@@ -24,13 +26,13 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import validator from 'validator';
 
 function Sms() {
-	let { notifId } = useParams();
+	let { custNo } = useParams();
 
 	const [, setSmsRemainingChar] = useState('160/160');
 	let [smsMessage, setSmsMessage] = useState('');	// text message on write textbox.
 	const [convoByCustomer, setConvoByCustomer] = useState([]);
 	const [currentCustomer, setCurrentCustomer] = useState(undefined);
-	// const [listSearchValue, setListSearchValue] = useState('');
+	const [listSearchValue, setListSearchValue] = useState('');
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
@@ -70,7 +72,8 @@ function Sms() {
 	}, []);
 
 	useEffect(() => {
-		fetchCustomers();
+		fetchCustomers();		
+		setListSearchValue(custNo);
 
 		// let customersTimer = fetchCustomersTimer();
 		let smsByCustTimer = fetchSmsBySelectedCustTimer(currentCustomer);
@@ -199,6 +202,7 @@ function Sms() {
 			// clearInterval(intervalIdSmsByCust);
 			setCurrentCustomer(null);
 			setConvoByCustomer([]);
+			setListSearchValue(e.value);
 		}
 	}
 
@@ -219,7 +223,7 @@ function Sms() {
 										itemRender={renderListItem}
 										elementAttr={{ class: 'list' }}
 										onOptionChanged={onSelectedItemKeysChanged}
-										// searchValue={'vincent'}
+										searchValue={listSearchValue}
 									/>
 								</div>
 								<div className="w-50 ml-4 cmpt-customer-and-text">
