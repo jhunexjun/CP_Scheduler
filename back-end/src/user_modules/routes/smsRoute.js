@@ -12,7 +12,6 @@ module.exports = async function(req, res) {
     // res.type('text/xml').send(twiml.toString());
 
     const broadcastRecipients = await smsModel.getBroadcastRecipients();
-    console.log('recipients: ', broadcastRecipients);
     const sms = `Scheduler notification: A new text message has arrived!`;
 
     broadcastRecipients.forEach(async (item) => {
