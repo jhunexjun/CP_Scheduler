@@ -4,3 +4,7 @@ dist
 
 Coverage
 coverage
+
+# user-defined
+.env_production
+.env*
