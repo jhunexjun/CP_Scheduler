@@ -1,3 +1,7 @@
+/*
+ * Route for Twilio webhook.
+ */
+
 const smsModel  = require('../models/smsModel');
 const utils = require('../utils/util');
 

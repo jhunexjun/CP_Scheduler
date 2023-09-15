@@ -97,19 +97,6 @@ async function insertTwilioInbox(req) {
     const sql = smsSql.insertTwilioInbox();
     return await msSqlConnect.getInstance().then(pool => {
         return pool.request()
-          // .input('sessionId', msSql.NVarChar, req.query.sessionId)
-          // .input('recipient', msSql.VarChar, req.body.recipient)
-          // .input('sms', msSql.NVarChar, req.body.sms)
-          // .input('dateTimeSent', msSql.DateTime, req.body.dateTimeSent)
-          // .input('status', msSql.nvarchar, req.body.status)
-          // .input('alertId', msSql.int, 0)
-          // .input('sender', msSql.NVarChar, req.body.sender)
-          // .input('message', msSql.VarChar, req.body.message)
-          // .input('messageSid', msSql.NVarChar, req.body.messageSid)
-          // .input('dateTimeReceived', msSql.DateTime, req.body.dateTimeReceived)
-          // .input('dateCreated', msSql.DateTime, req.body.dateCreated)
-          // .input('customerName', msSql.NVarChar, req.body.customerName)
-          // from Twilio
           .input('toCountry', msSql.NVarChar, req.body.ToCountry)
           .input('toState', msSql.NVarChar, req.body.ToState)
           .input('smsMessageSid', msSql.NVarChar, req.body.SmsMessageSid)
@@ -128,7 +115,6 @@ async function insertTwilioInbox(req) {
           .input('accountSid', msSql.NVarChar, req.body.AccountSid)
           .input('from', msSql.NVarChar, req.body.From)
           .input('apiVersion', msSql.NVarChar, req.body.ApiVersion)
-          // end from Twilio
           .query(sql)
       }).then(result => {
         return result.recordset;

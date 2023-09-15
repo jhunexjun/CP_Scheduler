@@ -1,7 +1,7 @@
 module.exports = {
-	extendSessionSql,
+  extendSessionSql,
 }
 
 function extendSessionSql() {
-	return "exec dbo.USER_SP_extendSession @sessionId, @expiryInMinutes";
+  return "exec dbo.USER_SP_extendSession @sessionId, @expiryInMinutes";
 }

@@ -1,15 +1,15 @@
 module.exports = {
-	getInvoice, getInvoiceNotes, getInvoices
+  getInvoice, getInvoiceNotes, getInvoices
 }
 
 function getInvoice() {
-	return 'exec dbo.USER_SP_InvoiceGet @sessionId, @invoiceNo';
+  return 'exec dbo.USER_SP_InvoiceGet @sessionId, @invoiceNo';
 }
 
 function getInvoiceNotes() {
-	return 'exec dbo.USER_SP_InvoiceNotesGet @sessionId, @invoiceNo';
+  return 'exec dbo.USER_SP_InvoiceNotesGet @sessionId, @invoiceNo';
 }
 
 function getInvoices() {
-	return 'exec dbo.USER_SP_InvoicesListGet @sessionId';
+  return 'exec dbo.USER_SP_InvoicesListGet @sessionId';
 }

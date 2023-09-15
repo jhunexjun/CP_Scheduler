@@ -13,14 +13,14 @@ function MessageNotif(props) {
   return (
     <DropdownMenu right>
       <DropdownItem header>Notifications</DropdownItem>
-      {props.notif.map((notif, index) => {
+      { props.notif.map((notif, index) => {
         return (<DropdownItem
                   key={notif.id}
                   onClick={(item) => notifOnClick(notif)}
                 >
                   { notif.from + ` - ` + notif.NAM }
                 </DropdownItem>)
-      })}
+      }) }
     </DropdownMenu>
   );
 }
