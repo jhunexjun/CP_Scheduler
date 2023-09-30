@@ -52,56 +52,19 @@ async function addSms(req) {
   // const countryCode = '+1';  // we only need american number.
   // req.body.recipient = countryCode + req.body.recipient;
 
-  const messageSid = await utils.sendSms(req.body.recipient, req.body.smsMessage);
-  // const messageSid = 'dfdsfAWndmeh1ls';
+  try {
+    // Send SMS via Twilio.
+    const messageSid = await utils.sendSms(req.body.recipient, req.body.smsMessage);
+    // Save SMS to db.
+    await smsModel.insertSms(req, messageSid, 'Sent');
 
-  await smsModel.insertSms(req, messageSid, 'Sent');
-  // sendMail();
-
-
-  // return { status: 'OK', message: `SMS successfully sent to +1${req.body.recipient}. SID: ${messageSid}` };
-  return { status: 'OK', message: `SMS successfully sent to ${req.body.recipient}. SID: ${messageSid}` };
+    return { status: 'OK', message: `SMS successfully sent to ${req.body.recipient}. SID: ${messageSid}` };
+  } catch(e) {
+    console.log(e);
+    return { status: 'Error', message: `Undelivered SMS. You may ask assistance from the software developer. SID: 0` };
+  }
 }
-
-// async function sendSms(recipient, smsMessage) {
-//  const accountSid = process.env.TWILIO_ACCOUNT_SID;
-//  const authToken = process.env.TWILIO_AUTH_TOKEN;
-//  const client = require("twilio")(accountSid, authToken);
-//  return client.messages.create({
-//                body: smsMessage,
-//                from: `${process.env.TWILIO_MOBILENO}`,
-//                to: `${recipient}`
-//                // to: `+63${recipient}`
-//                // to: `+639065165124`
-//                // to: `+639608581818`
-//              }).then(message => message.sid);
-// }
 
 async function getSms(req) {
   return smsModel.getSms(req);
-}
-
-function sendMail() {
-  const mailData = {
-    from: '',
-    subject: '',
-    text: '',
-    html: '',
-    // An array of attachments
-    attachments: [
-      {
-        filename: 'text notes.txt',
-        path: 'notes.txt',
-      },
-    ],
-  }
-
-  mailTransporter = sendMail(mailData, function(err, info) {
-    if (err) {
-      console.log(err);
-      return false;
-    }
-    
-    return true;
-  });
 }

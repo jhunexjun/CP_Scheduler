@@ -21,6 +21,10 @@ module.exports = async function(req, res) {
           notes: invoiceNotes,
           barcode: {
             base64: null
+          },
+          signature: {
+            signature: '',
+            dateSigned: '',
           }
         }
 

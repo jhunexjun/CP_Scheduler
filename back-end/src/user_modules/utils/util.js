@@ -94,6 +94,9 @@ function formatDateMMddYYYYhhmmss(date) {
   return dt + ' ' + time + meridiem;
 }
 
+/* Twilio send SMS.
+ *
+ */
 async function sendSms(recipient, smsMessage) {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;

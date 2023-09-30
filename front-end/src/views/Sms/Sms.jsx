@@ -123,7 +123,7 @@ function Sms() {
 			})
 			.then(async (res) => {
 				if (res.status === 'Error') {
-					navigate('/');
+					notification(res.message, 'error');
 					return;
 				}
 				notification('SMS has been sent!', 'success');

@@ -75,6 +75,9 @@ function extractSessionId(string) {
 }
 
 function formatDateMMddYYYY(date) {
+	if (date === null)
+		return null;
+
 	let d = new Date(date),
 		month = '' + (d.getMonth() + 1),
 		day = '' + d.getDate(),

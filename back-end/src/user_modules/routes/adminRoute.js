@@ -14,6 +14,7 @@ const smsRoute = require('./smsRoute');
 const sms2Route = require('./sms2Route');
 const smsByCustomerRoute = require('./smsByCustomerRoute');
 const notificationsRoute = require('./notificationsRoute');
+const invoiceSign = require('./invoiceSignRoute');
 
 module.exports = function(app) {
   router.all('/schedule', schedulerRoute);    // http://localhost:8080/admin/scheduler
@@ -29,6 +30,7 @@ module.exports = function(app) {
   router.all('/sms2', sms2Route); // sending SMS from Scheduler.
   router.get('/sms/customer', smsByCustomerRoute);    // get all SMS by a Customer.
   router.get('/notifications', notificationsRoute);
+  router.all('/invoicesign', invoiceSign);
 
   return router;
 }

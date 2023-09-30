@@ -72,6 +72,9 @@ To run in production using node-windows instead of pm2. node-windows is better b
 8. Restart the new windows service. You're good to go. 
 
 
+NOTE: To delete pm2 documentation. We've been using node-windows for months already.
+
+
 From front-end folder run
 ```bash
 clear && npm run build && npm start

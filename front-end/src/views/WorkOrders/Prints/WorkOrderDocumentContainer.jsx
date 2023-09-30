@@ -29,7 +29,7 @@ const workOrderDocumentContainer = (props) => {
 				<TableIndex {...props} />
 				<WorkOrderNotes {...props} />
 				<PolicyIndex />
-				<Signature />
+				<Signature {...props} />
 			</Page>
 		</Document>
 	);

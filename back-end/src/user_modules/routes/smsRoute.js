@@ -7,6 +7,8 @@ const utils = require('../utils/util');
 
 const { MessagingResponse } = require('twilio').twiml;
 
+const mailTransporter = require('../utils/mailTransporter');
+
 module.exports = async function(req, res) {
   try {
     await smsModel.insertTwilioInbox(req);
@@ -28,7 +30,24 @@ module.exports = async function(req, res) {
 
       await smsModel.insertSms(data, messageSid, 'Sent');
     });
+
+    // After broadcasting, send an email to notify.
+    // send mail with defined transport object
+    await sendEmail();
   } catch(e) {
     console.log(e);
   }
+}
+
+async function sendEmail() {
+  // send mail with defined transport object
+  const info = await mailTransporter.sendMail({
+    from: 'jmorcilla@computant.com', // sender address
+    to: "jmorcilla@computant.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
 }

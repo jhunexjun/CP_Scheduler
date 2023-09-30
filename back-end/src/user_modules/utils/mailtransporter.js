@@ -1,11 +1,21 @@
 const nodemailer = require('nodemailer');
+const dotenv = require('dotenv');
 
-module.exports = nodemailer.createTransport({
-  port: 465,
-  host: 'smtp.gmail.com',
+dotenv.config();
+
+module.exports = nodemailer.createTransport(
+  {
+  port: process.env.MAIL_PORT,
+  host: process.env.MAIL_HOST,
   auth: {
-    user: '',
-    pass: '',
+    user: process.env.MAIL_USERNAME,
+    pass: process.env.MAIL_PASSWORD,
   },
-  secure: true,
+  secure: process.env.MAIL_SECURE == 'false' ? false : true,
+  
+  // For Office 365
+  // tls: {
+  //   ciphers: 'SSLv3'
+  // },
+  // requireTLS: false,  // maybe needed for Office 365.
 });
