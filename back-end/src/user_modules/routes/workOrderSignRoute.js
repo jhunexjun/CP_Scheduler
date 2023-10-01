@@ -1,5 +1,9 @@
-const invoiceModel = require('../models/invoiceModel');
+const workOrderModel = require('../models/workOrderModel');
 const utils = require('../utils/util');
+// const dotenv = require('dotenv');
+// const mailTransporter = require('../utils/mailTransporter');
+
+// dotenv.config();
 
 let resData;
 
@@ -10,7 +14,7 @@ module.exports = async function(req, res) {
       resData = await getSignature(req);
       res.json(resData);
       break;
-    case 'POST': 
+    case 'POST':
       resData = await saveSignature(req);
       res.json(resData);
       break;
@@ -26,13 +30,13 @@ async function saveSignature(req) {
   if (!utils.isSet(req.body, 'sessionId'))
     return { status: "Error" , message: "sessionId body param is missing." };
 
-  if (!utils.isSet(req.body, 'invoiceNo'))
-    return { status: "Error", message: "invoiceNo body param is missing."};
+  if (!utils.isSet(req.body, 'workOrderNo'))
+    return { status: "Error", message: "workOrderNo body param is missing."};
 
   if (!utils.isSet(req.body, 'signatureImg'))
     return { status: "Error" , message: "signatureImg body param is missing." };
 
-  return await invoiceModel.signInvoice(req);
+  return await workOrderModel.saveSignature(req);
 }
 
 async function getSignature(req) {
@@ -42,5 +46,5 @@ async function getSignature(req) {
   if (!utils.isSet(req.query, 'invoiceNo'))
     return { status: 'Error', message: 'invoiceNo query param is missing.' };
 
-  return await invoiceModel.getInvoiceSignature(req);
+  return await workOrderModel.getInvoiceSignature(req);
 }

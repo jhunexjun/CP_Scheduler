@@ -3,8 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-module.exports = nodemailer.createTransport(
-  {
+module.exports = nodemailer.createTransport({
   port: process.env.MAIL_PORT,
   host: process.env.MAIL_HOST,
   auth: {

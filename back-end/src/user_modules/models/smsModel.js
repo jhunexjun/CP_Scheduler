@@ -4,7 +4,7 @@ const smsSql = require('../sqlStatements/smsSql');
 const util = require('../utils/util');
 
 module.exports = {
-  insertSms, getSms, getAllSmsByCustomer, insertTwilioInbox, insertSmsNoSession, getBroadcastRecipients
+  insertSms, getSms, getAllSmsByCustomer, insertTwilioInbox, insertSmsNoSession, // getBroadcastRecipients
 }
 
 async function insertSms(req, messageSid, smsStatus) {
@@ -126,18 +126,18 @@ async function insertTwilioInbox(req) {
   }
 }
 
-async function getBroadcastRecipients() {
-  try {
-    return await msSqlConnect.getInstance().then(pool => {
-        return pool.request()
-          .query('select mobileNo from USER_broadcastRecipients')
-      }).then(result => {
-        return result.recordset;
-      }).catch(err => {
-        console.log(err);
-      });
-  } catch(e) {
-    throw e;
-  }
-}
+// async function getBroadcastRecipients() {
+//   try {
+//     return await msSqlConnect.getInstance().then(pool => {
+//         return pool.request()
+//           .query('select mobileNo from USER_broadcastRecipients')
+//       }).then(result => {
+//         return result.recordset;
+//       }).catch(err => {
+//         console.log(err);
+//       });
+//   } catch(e) {
+//     throw e;
+//   }
+// }
 

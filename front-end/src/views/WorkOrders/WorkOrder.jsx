@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
-import { PDFViewer } from '@react-pdf/renderer';
+import { PDFViewer, pdf } from '@react-pdf/renderer';
 import workOrderDocumentContainer from './Prints/WorkOrderDocumentContainer';
 
 import JsBarcode from 'jsbarcode';
@@ -21,8 +21,6 @@ import { DataGrid, Column, Selection, Paging, FilterRow, SearchPanel } from 'dev
 import SignatureCanvas from 'react-signature-canvas';
 
 import { uriEncode, notification, formatDateMMddYYYY } from '../../utils/util';
-
-// import styles from './styles.module.css'
 
 const defaultData = {
         data: {
@@ -102,6 +100,7 @@ export default () => {
   const [selectedWorkOrderNo, setSelectedWorkOrderNo] = useState(null);
   const [sigPad, setSigPad] = useState({});
   const [signatureState, setSignatureState] = useState({trimmedDataURL: null});
+  const [emailPopupVisible, setEmailPopupVisible] = useState(false);
 
   const cookies = new Cookies();
 
@@ -121,16 +120,15 @@ export default () => {
         }
       });
   }, []);
-      
-  const postSaveSignature = useCallback(async (signatureData) => {
-    const uriEncoded = uriEncode(signatureData);
+
+  const postSaveSignature = useCallback(async (signature) => {
     const optionHeaders = {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: uriEncoded,
+      body: uriEncode(signature),
     };
 
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/invoicesign`, optionHeaders)
+    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorder`, optionHeaders)
       .then((res) => {
         return res.json()
       })
@@ -142,12 +140,16 @@ export default () => {
 
         setData((prevValue) => {
           let newValue = { ...prevValue };
-          newValue.data.signature.signature = signatureData.signatureImg;
+          newValue.data.signature.signature = signature.signatureImg;
           // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this.
           newValue.data.signature.dateSigned = formatDateMMddYYYY(new Date());
+
           return newValue;
         });
+
         notification('Signature has been saved', 'success');
+
+        setEmailPopupVisible(true);
       });
   }, []);
 
@@ -162,7 +164,7 @@ export default () => {
   }, []);
 
   const fetchWorkorderSignature = useCallback(async (invoice) => {
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/invoicesign?sessionId=${cookies.get('sessionId')}&invoiceNo=${invoice.data.table[0].TKT_NO}`)
+    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorder?sessionId=${cookies.get('sessionId')}&invoiceNo=${invoice.data.table[0].TKT_NO}`)
       .then((res) => {
         return res.json()
       })
@@ -171,6 +173,22 @@ export default () => {
         invoice.data.signature.dateSigned = res != null && res.length > 0 ? res[0].utcDateSigned : null
         setData(invoice);
         setShowPdfViewer(true);
+      });
+  }, []);
+
+  const sendWorkOrderCb = useCallback(async (formData) => {
+    // Do not add content-type. Expressjs will complain.
+    const optionHeaders = {
+      method: 'POST',
+      body: formData,
+    };
+
+    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sendworkorderpdf`, optionHeaders)
+      .then((res) => {
+        return res.json()
+      })
+      .then(async (res) => {
+        notification('Sending pdf has been successful.', 'success');
       });
   }, []);
 
@@ -206,12 +224,12 @@ export default () => {
     await fetchWorkorderList();
   }
 
-  function showTheInvoice() {
-    if (showPdfViewer)
-      return (<PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>);
-    else
-      return null;
-  }
+  // function showTheInvoice() {
+  //   if (showPdfViewer)
+  //     return (<PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>);
+  //   else
+  //     return null;
+  // }
 
   async function onSelectionChanged({ selectedRowsData }) {
     const data = selectedRowsData[0];
@@ -228,7 +246,7 @@ export default () => {
     await fetchWorkorder();
   }
 
-  async function signInvoice() {
+  async function signWorkOrder() {
     if (sigPad.isEmpty()) {
       notification('Please sign document before saving.', 'error');
       return;
@@ -237,30 +255,30 @@ export default () => {
     setSignatureState({ trimmedDataURL: sigPad.getTrimmedCanvas().toDataURL('image/png') });
     setSignPopupVisible(false);
 
-    const signatureData = { sessionId: cookies.get('sessionId'),
-                            signatureImg: sigPad.getTrimmedCanvas().toDataURL('image/png'),
-                            invoiceNo: invoiceNo,
-                          }
-    await postSaveSignature(signatureData);
+    const signature = { sessionId: cookies.get('sessionId'),
+                        workOrderNo: invoiceNo, // to rename invoice to workorder.
+                        signatureImg: sigPad.getTrimmedCanvas().toDataURL('image/png'),
+                      }
+
+    // const formData = new FormData();
+    // formData.append('workOrderPdf', await pdf(workOrderDocumentContainer(data)).toBlob());
+    // formData.append('sessionId', cookies.get('sessionId'));
+    // formData.append('signatureImg', sigPad.getTrimmedCanvas().toDataURL('image/png'));
+    // formData.append('invoiceNo', invoiceNo);
+
+    await postSaveSignature(signature);
   }
-
-  // async function eraseSignature() {
-
-  // }
 
   const saveBtnSignature = {
     text: 'Save',
-    onClick: signInvoice,
+    onClick: signWorkOrder,
   }
-
-  // const eraseBtnSignature = {
-  //   text: 'Erase',
-  //   onClick: eraseSignature,
-  // }
 
   const closeBtnSignature = {
     text: 'Close',
-    onClick: () => { setSignPopupVisible(false); sigPad.clear() },
+    onClick: () => { setSignPopupVisible(false);
+                    sigPad.clear()
+                  },
   }
 
   function signaturePopup() {
@@ -275,6 +293,26 @@ export default () => {
     }
 
     setSignPopupVisible(true);
+  }
+
+  async function sendEmail() {
+    const formData = new FormData();
+    formData.append('sessionId', cookies.get('sessionId'));
+    formData.append('workOrderNo', invoiceNo);
+    formData.append('workOrderPdf', await pdf(workOrderDocumentContainer(data)).toBlob());
+
+    setEmailPopupVisible(false);
+    await sendWorkOrderCb(formData);
+  }
+
+  const yesBtn = {
+    text: 'Yes',
+    onClick: () => sendEmail(),
+  }
+
+  const noBtn = {
+    text: 'No',
+    onClick: () => setEmailPopupVisible(false),
   }
 
   return (
@@ -315,7 +353,15 @@ export default () => {
         </div>
       </div>
       <div className="row">
-        <div className="col">{showTheInvoice()}</div>
+        <div className="col">
+          {
+            showPdfViewer
+            ?
+              <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>
+            :
+            null
+          }
+        </div>
       </div>
       <div className="row">
         <div className="col">
@@ -381,18 +427,36 @@ export default () => {
               location="after"
               options={saveBtnSignature}
             />
-            {/*<ToolbarItem
-              widget="dxButton"
-              toolbar="bottom"
-              location="after"
-              options={eraseBtnSignature}
-            />*/}
             <ToolbarItem
               widget="dxButton"
               toolbar="bottom"
               location="after"
               options={closeBtnSignature}
             />
+          </Popup>
+          
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col">
+          <Popup
+            visible={emailPopupVisible}
+            width={350}
+            height={340}>
+              Do you want to send an e-mail the signed work order?
+              <ToolbarItem
+                widget="dxButton"
+                toolbar="bottom"
+                location="after"
+                options={yesBtn}
+              />
+              <ToolbarItem
+                widget="dxButton"
+                toolbar="bottom"
+                location="after"
+                options={noBtn}
+              />
           </Popup>
         </div>
       </div>

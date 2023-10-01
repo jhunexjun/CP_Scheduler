@@ -1,13 +1,13 @@
 const utils = require('../utils/util');
 // const request = require('request');
-const dotenv = require('dotenv');
+// const dotenv = require('dotenv');
 const smsModel = require('../models/smsModel');
 const mailTransporter = require('../utils/mailTransporter');
 
 let resData;
 
 module.exports = async function(req, res) {
-  dotenv.config();
+  // dotenv.config();
 
   try {
     switch(req.method) {

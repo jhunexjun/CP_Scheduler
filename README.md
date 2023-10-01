@@ -104,6 +104,12 @@ Back-end: http://localhost:8080/createsession?userid=BILLY&expiryinminutes=10
 http://localhost:3000/admin/invoice/40FD37AB-4AE1-4D2E-A7AF-2E51AF2CC8D4
 ```
 
+### Common Issues
+```
+If Windows service is getting stopped after updating the files like in production, probably you have added a new module while
+developing the system. You may update the node_modules as well if that's the case.
+```
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)

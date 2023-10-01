@@ -1,8 +1,8 @@
-const invoiceModel = require('../models/invoiceModel');
+const workOrderModel = require('../models/workOrderModel');
 
 module.exports = async function(req, res) {
   try {
-    const tableData = await invoiceModel.getInvoice(req);
+    const tableData = await workOrderModel.getInvoice(req);
 
     if (tableData.length < 1) {
       res.json({ status: 'OK', message: 'No invoice found.', data: {table: [], notes: []} });
@@ -14,7 +14,7 @@ module.exports = async function(req, res) {
       return;
     }
 
-    const invoiceNotes = await invoiceModel.getInvoiceNotes(req);
+    const invoiceNotes = await workOrderModel.getInvoiceNotes(req);
 
     const x = {
           table: tableData,

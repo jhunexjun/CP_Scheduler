@@ -1,4 +1,9 @@
+const multer = require('multer');
 const cors = require('cors');
+
+const storage = multer.memoryStorage();
+// const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: storage });
 
 const adminRoute = require('./routes/adminRoute');
 const createSessionRoute = require('./routes/createSessionRoute');
@@ -13,6 +18,6 @@ module.exports = function(app) {
 
 	app.use(cors());
 	app.use('/createsession', createSessionRoute);
-	app.use('/admin', checkSessionIdMw, adminRoute(app));
+	app.use('/admin', upload.single('workOrderPdf'), checkSessionIdMw, adminRoute(app));
 	app.post('/sms', smsRoute);	// Twilio webhook.
 }

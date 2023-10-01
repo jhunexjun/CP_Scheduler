@@ -2,9 +2,8 @@ const msSql = require('mssql');
 const msSqlConnect = require('../dbConnections/msSqlConnect');
 const invoiceSql = require('../sqlStatements/invoiceSql');
 
-
 module.exports = {
-  getInvoice, getInvoiceNotes, signInvoice, getInvoiceSignature
+  getInvoice, getInvoiceNotes, saveSignature, getInvoiceSignature
 }
 
 async function getInvoice(req) {
@@ -43,21 +42,22 @@ async function getInvoiceNotes(req) {
   }
 }
 
-async function signInvoice(req) {
+async function saveSignature(req) {
   try {
     return await msSqlConnect.getInstance().then(pool => {
         return pool.request()
           .input('sessionId', msSql.VarChar, req.body.sessionId)
           .input('signatureImg', msSql.Text, req.body.signatureImg)
-          .input('invoiceNo', msSql.NVarChar, req.body.invoiceNo)
+          .input('workOrderNo', msSql.NVarChar, req.body.workOrderNo)
           .output('outputErrNo', msSql.Int)
           .output('outputMessage', msSql.NVarChar(500))
-          .query('exec dbo.USER_SP_InvoiceSignatureSave @sessionId, @signatureImg, @invoiceNo')
-      }).then(result => {
-        if (result.output.outputErrNo === null)
+          .query('exec dbo.USER_SP_InvoiceSignatureSave @sessionId, @signatureImg, @workOrderNo')
+      }).then(async (result) => {
+        if (result.output.outputErrNo === null) {
           return { status: 'OK', message: 'New Id created.', data: result.recordset[0].newId };
-        else
+        } else {
           return { status: 'Error', message: result.output.outputMessage }
+        }
       }).catch(err => {
         console.log(err);
       });
