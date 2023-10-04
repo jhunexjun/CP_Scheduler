@@ -8,3 +8,4 @@ coverage
 # user-defined
 .env_production
 .env*
+files/workorders/

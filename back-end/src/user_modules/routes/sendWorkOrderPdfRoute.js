@@ -1,7 +1,11 @@
-// const workOrderModel = require('../models/workOrderModel');
+/* To merge with workOrderModel.js
+ */
+const fsPromises = require('fs').promises;
+
 const utils = require('../utils/util');
 const dotenv = require('dotenv');
 const mailTransporter = require('../utils/mailTransporter');
+const workOrdersModel = require('../models/workOrdersModel');
 
 dotenv.config();
 
@@ -29,10 +33,16 @@ async function sendPdf(req) {
   if (!utils.isSet(req.body, 'workOrderNo'))
     return { status: "Error", message: "workOrderNo body param is missing."};
 
+  const slsRepEmail = await workOrdersModel.getSlsRepEmailByWorkOrderNo(req.body);
+  const billEmailAdrs = await workOrdersModel.getBillEmailByWorkOrderNo(req.body);
+
   // Send mail with defined transport object
   const info = await mailTransporter.sendMail({
     from: 'jmorcilla@computant.com', // sender address
-    to: process.env.WORKORDER_SIGN_RECIPIENTS, // list of receivers, separated by semi-colon.
+    to: process.env.WORKORDER_SIGN_RECIPIENTS
+        + (slsRepEmail == null ? ';' : `;${slsRepEmail}`)
+        + (billEmailAdrs == null ? ';' : `;${billEmailAdrs}`)
+        , // list of receivers, separated by semi-colon.
     subject: "Scheduler System: Document has been signed.", // Subject line
     text: `This serves as a notification that work order ${req.body.workOrderNo} has been signed.`, // plain text body
     // html: "<b>Hello world?</b>", // html body
@@ -42,7 +52,7 @@ async function sendPdf(req) {
     }]
   });
 
-  // console.log("Message sent: %s", info.messageId);
+  await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workOrderNo}.pdf`, req.file.buffer);
 
   return { status: 'OK', message: `Email sent! Info message id: ${info.messageId}` }
 }

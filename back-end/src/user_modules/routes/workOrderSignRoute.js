@@ -1,9 +1,5 @@
 const workOrderModel = require('../models/workOrderModel');
 const utils = require('../utils/util');
-// const dotenv = require('dotenv');
-// const mailTransporter = require('../utils/mailTransporter');
-
-// dotenv.config();
 
 let resData;
 
