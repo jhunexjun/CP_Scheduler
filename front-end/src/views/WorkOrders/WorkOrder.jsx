@@ -11,7 +11,8 @@ import JsBarcode from 'jsbarcode';
 // See it live, https://iconscout.com/unicons/free-line-icons
 import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
-import Uil500px from '@iconscout/react-unicons/icons/uil-500px';
+import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
+import ResendDocument from './ResendDocument';
 
 // https://js.devexpress.com/Documentation/Guide/UI_Components/Popup/Getting_Started_with_Popup/
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
@@ -21,77 +22,13 @@ import { DataGrid, Column, Selection, Paging, FilterRow, SearchPanel } from 'dev
 import SignatureCanvas from 'react-signature-canvas';
 
 import { uriEncode, notification, formatDateMMddYYYY } from '../../utils/util';
-
-const defaultData = {
-        data: {
-          table: [
-            {
-              CUST_NO: "",
-              SLS_REP: "",
-              TKT_NO: "",
-              TERMS_COD: "",
-              CUST_PO_NO: "",
-              TKT_DAT: "",
-              DESCR: "",
-              ITEM_NO: "",
-              BILL_CITY: null,
-              BILL_EMAIL_ADRS_1: "",
-              BILL_NAM: "",
-              BILL_PHONE_1: "",
-              BILL_STATE: null,
-              BILL_ZIP_COD: null,
-              SHIP_CITY: null,
-              billAddress: "",
-              SHIP_VIA_COD: "",
-              SHIP_DAT: "",
-              SHIP_NAM: "",
-              SHIP_PHONE_1: "",
-              SHIP_STATE: null,
-              SHIP_ZIP_COD: null,
-              shipAddress: "",
-              hours: 0,
-              SalesQty: 0,
-              //NOTE_DAT: "",
-              //NOTE_TXT: "",
-              USR_APPT_DAT: null,
-              USR_APPT_TIM: null,
-              USR_CUSTOMER_OWN_PARTS: null,
-              USR_EXTERIOR: null,
-              USR_ID: "",
-              USR_LIC_PLATE: "",
-              USR_MAKE: "",
-              USR_MODEL: "",
-              USR_ODOMETER_IN: "",
-              USR_ODOMETER_OUT: null,
-              USR_RETAIN_PARTS: null,
-              USR_SERVICE_IN_DAT: null,
-              USR_SERVICE_IN_TIM: null,
-              USR_SERVICE_OUT_DAT: null,
-              USR_SERVICE_OUT_TIM: null,
-              USR_SERVICE_TYP: "",
-              USR_VEHICLE_INFO: "",
-              USR_VIN_NO: "",
-              USR_WHEEL_LOCK: null,
-              USR_YR: '',
-            }
-          ],
-          notes: [{
-            NOTE_DAT: "",
-            NOTE_TXT: "",
-          }],
-          barcode: { base64: null },
-          signature: {
-            signature: '',
-            dateSigned: '',
-          },
-        },
-}
+import DefaultData from './DefaultData';
 
 const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
 export default () => {
   const [invoiceNo, setInvoiceNo] = useState('');
-  const [data, setData] = useState(defaultData);
+  const [data, setData] = useState(DefaultData);
   const [popupVisible, setPopupVisible] = useState(false);
   const [signPopVisible, setSignPopupVisible] = useState(false);
   const navigate = useNavigate();
@@ -101,6 +38,7 @@ export default () => {
   const [sigPad, setSigPad] = useState({});
   const [signatureState, setSignatureState] = useState({trimmedDataURL: null});
   const [emailPopupVisible, setEmailPopupVisible] = useState(false);
+  // const [showResendDocPopup, setShowResendDocPopup] = useState(false);
 
   const cookies = new Cookies();
 
@@ -113,7 +51,7 @@ export default () => {
         if (invoice.status === 'Error') {
           navigate('/');
         } else if (invoice.data.table.length <= 0) {
-          setData(defaultData);
+          setData(DefaultData);
         } else {
           invoice.data.barcode.base64 = getImgBase64String(invoice.data.table[0].TKT_NO);
           await fetchWorkorderSignature(invoice);
@@ -141,7 +79,7 @@ export default () => {
         setData((prevValue) => {
           let newValue = { ...prevValue };
           newValue.data.signature.signature = signature.signatureImg;
-          // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this.
+          // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this and do not use new Date().
           newValue.data.signature.dateSigned = formatDateMMddYYYY(new Date());
 
           return newValue;
@@ -315,6 +253,8 @@ export default () => {
     onClick: () => setEmailPopupVisible(false),
   }
 
+  const pdfBuffer = async () => await pdf(workOrderDocumentContainer(data)).toBlob();
+
   return (
     <div className="content">
       <div className="row">
@@ -343,11 +283,18 @@ export default () => {
                 <UilListUl size="20" color="#61DAFB" />
               </span>
             </div>
-
             <div className="col-auto">
-              <span onClick={ () => signaturePopup() } style={{cursor: 'pointer'}} title="Signature" >
-                <Uil500px size="20" color="#61DAFB" />
+              <span onClick={ () => signaturePopup() } style={{cursor: 'pointer'}} title="Sign" >
+                <UilEdit size="20" color="#61DAFB" />
               </span>
+            </div>
+            <div className="col-auto">
+              <ResendDocument
+                data={data}
+                showPdfViewer={showPdfViewer}
+                workOrderNo={invoiceNo}
+                pdfBuffer={pdfBuffer}
+              />
             </div>
           </div>
         </div>
@@ -433,8 +380,7 @@ export default () => {
               location="after"
               options={closeBtnSignature}
             />
-          </Popup>
-          
+          </Popup>          
         </div>
       </div>
 
