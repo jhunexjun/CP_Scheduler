@@ -1,12 +1,10 @@
-import { useState, useCallback, } from "react";
+import { /*createContext,*/ useState, useCallback, } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
 import { PDFViewer, pdf } from '@react-pdf/renderer';
 import workOrderDocumentContainer from './Prints/WorkOrderDocumentContainer';
-
-import PdfViewerComponent from '../../components/PdfViewerComponent';
 
 import JsBarcode from 'jsbarcode';
 
@@ -160,8 +158,6 @@ export default () => {
   }
 
   async function showWorkorderList() {
-    // setShowPdfViewer(false);
-    
     setPopupVisible(true);
     await fetchWorkorderList();
   }
@@ -257,7 +253,7 @@ export default () => {
     onClick: () => setEmailPopupVisible(false),
   }
 
-  const pdfBlob = async () => await pdf(workOrderDocumentContainer(data)).toBlob();
+  const pdfBuffer = async () => await pdf(workOrderDocumentContainer(data)).toBlob();
 
   return (
     <div className="content">
@@ -278,12 +274,12 @@ export default () => {
               <input type="text" id="inputInvoiceNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
             </div>
             <div className="col-auto">
-              <span onClick={ async () => await fetchWorkorder() } style={{cursor: 'pointer'}} title="Click to search an workorder.">
+              <span onClick={ async () => await fetchWorkorder() } style={{cursor: 'pointer'}} title="Click to search an invoice.">
                 <UilSearchAlt size="20" color="#61DAFB" />
               </span>
             </div>
             <div className="col-auto">
-              <span onClick={ async () => await showWorkorderList() } style={{cursor: 'pointer'}} title="Show the list of workorders." >
+              <span onClick={ async () => await showWorkorderList() } style={{cursor: 'pointer'}} title="Show the list of workOrders." >
                 <UilListUl size="20" color="#61DAFB" />
               </span>
             </div>
@@ -297,7 +293,7 @@ export default () => {
                 data={data}
                 showPdfViewer={showPdfViewer}
                 workOrderNo={invoiceNo}
-                pdfBlob={pdfBlob}
+                pdfBuffer={pdfBuffer}
               />
             </div>
           </div>
@@ -308,8 +304,7 @@ export default () => {
           {
             showPdfViewer
             ?
-              // <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>
-              <PdfViewerComponent blobDocument={ pdfBlob } />
+              <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>
             :
             null
           }

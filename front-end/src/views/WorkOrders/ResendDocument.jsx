@@ -35,7 +35,7 @@ const ResendDocument = (props) => {
     const formData = new FormData();
     formData.append('sessionId', cookies.get('sessionId'));
     formData.append('workOrderNo', props.workOrderNo);
-    formData.append('workOrderPdf', await props.pdfBuffer());
+    formData.append('workOrderPdf', await props.pdfBlob());
 
     await sendWorkOrderCb(formData);
   }
