@@ -8,7 +8,7 @@ Install the following
 1. node.js at least version v14.17.5.
 2. Any code editor like Visual Studio Code. But me I use Sublime 3.
 3. $ npm install pm2@latest -g
-4. 
+4. After npm installation, copy the pspdfkit/dist/pspdfkit-lib/ to PUBLIC/static/js folder. If the dir do not exists, create them.
 
 ## Optional Installtion
 Depends on what you use to run your front-end. You can use IIS. If you use IIS, use the web.config in order to run the react.js.

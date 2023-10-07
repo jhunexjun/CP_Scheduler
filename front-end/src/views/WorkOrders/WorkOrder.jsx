@@ -161,7 +161,7 @@ export default () => {
 
   async function showWorkorderList() {
     // setShowPdfViewer(false);
-    
+
     setPopupVisible(true);
     await fetchWorkorderList();
   }
@@ -173,7 +173,8 @@ export default () => {
   //     return null;
   // }
 
-  async function onSelectionChanged({ selectedRowsData }) {
+  function onSelectionChanged({ selectedRowsData }) {
+    setShowPdfViewer(false);
     const data = selectedRowsData[0];
 
     setSelectedWorkOrderNo(data && data.TKT_NO);
@@ -344,7 +345,7 @@ export default () => {
             <DataGrid
               dataSource={workOrders}
               columnAutoWidth={true}
-              onSelectionChanged={async (e) => await onSelectionChanged(e)}
+              onSelectionChanged={(e) => onSelectionChanged(e)}
               onCellDblClick={async (e) => await onCellDblClick(e)}>
                 <Column dataField="BILL_NAM" caption="Customer Name" />
                 <Column dataField="BILL_PHONE_1" caption="Phone" />
