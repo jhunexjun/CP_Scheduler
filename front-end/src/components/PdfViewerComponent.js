@@ -1,12 +1,12 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import { pdf } from '@react-pdf/renderer';
 
-export default function PdfViewerComponent(props) {
+export default memo(function PdfViewerComponent(props) {
   const containerRef = useRef(null);
 
   useEffect(() => {
     const container = containerRef.current;
-    let PSPDFKit;
+    let PSPDFKit, instantJSON;
 
     (async () => 
       await props.blobDocument()
@@ -26,12 +26,16 @@ export default function PdfViewerComponent(props) {
         }).then(instance => {
           // Make sure to revoke the object URL so the browser doesn't hold on to the blob object that's not needed any more.
           URL.revokeObjectURL(documentBlobObjectUrl);
+
+          // instantJSON = await instance.exportInstantJSON();
+          // console.log(instantJSON);
+          props.setPdfInstance(instance);
         });
       })();
     });
 
     return () => PSPDFKit && PSPDFKit.unload(container);
-  }, [props.blobDocument]);
+  }, []);
 
   return <div ref={containerRef} style={{ width: "100%", height: "100vh" }} />;
-}
+})

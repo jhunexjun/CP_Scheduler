@@ -15,6 +15,7 @@ import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import ResendDocument from './ResendDocument';
+import SaveAnnotation from './SaveAnnotation';
 
 // https://js.devexpress.com/Documentation/Guide/UI_Components/Popup/Getting_Started_with_Popup/
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
@@ -29,7 +30,7 @@ import DefaultData from './DefaultData';
 const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
 export default () => {
-  const [invoiceNo, setInvoiceNo] = useState('');
+  const [invoiceNo, setInvoiceNo] = useState(''); // invoiceNo = workorder no.
   const [data, setData] = useState(DefaultData);
   const [popupVisible, setPopupVisible] = useState(false);
   const [signPopVisible, setSignPopupVisible] = useState(false);
@@ -41,6 +42,8 @@ export default () => {
   const [signatureState, setSignatureState] = useState({trimmedDataURL: null});
   const [emailPopupVisible, setEmailPopupVisible] = useState(false);
   // const [showResendDocPopup, setShowResendDocPopup] = useState(false);
+
+  const [pdfInstance, setPdfInstance] = useState(null);
 
   const cookies = new Cookies();
 
@@ -166,13 +169,6 @@ export default () => {
     await fetchWorkorderList();
   }
 
-  // function showTheInvoice() {
-  //   if (showPdfViewer)
-  //     return (<PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>);
-  //   else
-  //     return null;
-  // }
-
   function onSelectionChanged({ selectedRowsData }) {
     setShowPdfViewer(false);
     const data = selectedRowsData[0];
@@ -279,12 +275,12 @@ export default () => {
               <input type="text" id="inputInvoiceNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
             </div>
             <div className="col-auto">
-              <span onClick={ async () => await fetchWorkorder() } style={{cursor: 'pointer'}} title="Click to search an workorder.">
+              <span onClick={ async () => await fetchWorkorder() } style={{cursor: 'pointer'}} title="Show a workorder">
                 <UilSearchAlt size="20" color="#61DAFB" />
               </span>
             </div>
             <div className="col-auto">
-              <span onClick={ async () => await showWorkorderList() } style={{cursor: 'pointer'}} title="Show the list of workorders." >
+              <span onClick={ async () => await showWorkorderList() } style={{cursor: 'pointer'}} title="Show the list of workorders" >
                 <UilListUl size="20" color="#61DAFB" />
               </span>
             </div>
@@ -301,6 +297,9 @@ export default () => {
                 pdfBlob={pdfBlob}
               />
             </div>
+            <div className="col-auto">
+              <SaveAnnotation showPdfViewer={showPdfViewer} pdfInstance={pdfInstance} workOrderNo={invoiceNo} />
+            </div>
           </div>
         </div>
       </div>
@@ -310,7 +309,10 @@ export default () => {
             showPdfViewer
             ?
               // <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>
-              <PdfViewerComponent blobDocument={ pdfBlob } />
+              <PdfViewerComponent
+                blobDocument={ pdfBlob }
+                setPdfInstance={setPdfInstance}
+              />
             :
             null
           }

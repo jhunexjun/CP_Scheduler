@@ -16,6 +16,7 @@ const smsByCustomerRoute = require('./smsByCustomerRoute');
 const notificationsRoute = require('./notificationsRoute');
 const workOrderRoute = require('./workOrderSignRoute');
 const sendWorkOrderPdfRoute = require('./sendWorkOrderPdfRoute');
+const pdfannotationRoute = require('./pdfannotationRoute');
 
 module.exports = function(app) {
   router.all('/schedule', schedulerRoute);    // http://localhost:8080/admin/scheduler
@@ -33,6 +34,7 @@ module.exports = function(app) {
   router.get('/notifications', notificationsRoute);
   router.all('/workorder', workOrderRoute);
   router.all('/sendworkorderpdf', sendWorkOrderPdfRoute);
+  router.all('/pdfannotation', pdfannotationRoute);
 
   return router;
 }
