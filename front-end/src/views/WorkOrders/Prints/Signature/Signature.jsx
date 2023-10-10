@@ -38,12 +38,12 @@ const Signature = (props) => {
           <View style={{flexDirection: 'row'}}>
             <Text style={{paddingRight: 70}}>Signature X: __________________________________________________</Text>
             <View style={styles.signature}>
-              <Image src={() => props.data.signature.signature} style={{width:'200px', height: '50px'}} />
+              <Image src={() => props.signature.signature} style={{width:'200px', height: '50px'}} />
             </View>
             <View>
               <Text style={styles.signDate}>Date X: _____________________</Text>
               <View style={styles.dateSigned}>
-                <Text>{formatDateMMddYYYY(props.data.signature.dateSigned)}</Text>
+                <Text>{formatDateMMddYYYY(props.signature.dateSigned)}</Text>
               </View>
             </View>
           </View>

@@ -15,11 +15,13 @@ const styles = StyleSheet.create({
 
 
 const TableRow = (props) => {
-	if (props.data.table[0].ITEM_NO === '')	// if it's the default value. We assume it's the default value.
+	// console.log('props: ', props);
+
+	if (props.table[0].ITEM_NO === '')	// if it's the default value. We assume it's the default value.
 		return null;
 
-	const rows = props.data.table.map((item, index) => {
-		if (props.data.table.length === index + 1)
+	const rows = props.table.map((item, index) => {
+		if (props.table.length === index + 1)
 			styles.tableStyle.borderBottom = 0.5;
 
 		let markup = <View style={styles.tableStyle} key={ index + 1 }>

@@ -2,6 +2,7 @@ import {
   Document,
   Page,
   StyleSheet,
+  BlobProvider
 } from "@react-pdf/renderer";
 
 import HeadersContent from './Header/HeadersContent';
@@ -22,17 +23,19 @@ const styles = StyleSheet.create({
 
 
 const workOrderDocumentContainer = (props) => {
+  // console.log('dfsdfs props: ', props);
+
   return (
-    <Document>
-      <Page size='LETTER' style={styles.page}>
-        <HeadersContent {...props} />
-        <TableIndex {...props} />
-        <WorkOrderNotes {...props} />
-        <PolicyIndex />
-        <Signature {...props} />
-      </Page>
-    </Document>
-  );
+          <Document>
+            <Page size='LETTER' style={styles.page}>
+              <HeadersContent {...props} />
+              <TableIndex {...props} />
+              <WorkOrderNotes {...props} />
+              <PolicyIndex />
+              <Signature {...props} />
+            </Page>
+          </Document>
+        )
 }
 
 export default workOrderDocumentContainer

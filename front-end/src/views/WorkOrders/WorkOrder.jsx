@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
-import { PDFViewer, pdf } from '@react-pdf/renderer';
+import { /*PDFViewer,*/ pdf } from '@react-pdf/renderer';
 import workOrderDocumentContainer from './Prints/WorkOrderDocumentContainer';
 
 import PdfViewerComponent from '../../components/PdfViewerComponent';
@@ -13,18 +13,17 @@ import JsBarcode from 'jsbarcode';
 // See it live, https://iconscout.com/unicons/free-line-icons
 import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
-import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
+// import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 import ResendDocument from './ResendDocument';
-import SaveAnnotation from './SaveAnnotation';
+// import SaveAnnotation from './SaveAnnotation';
+import SavePdfToFlatFile from './SavePdfToFlatFile'
+import Signature from './Signature';
 
 // https://js.devexpress.com/Documentation/Guide/UI_Components/Popup/Getting_Started_with_Popup/
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
 // import ScrollView from 'devextreme-react/scroll-view';
 import { DataGrid, Column, Selection, Paging, FilterRow, SearchPanel } from 'devextreme-react/data-grid';
 
-import SignatureCanvas from 'react-signature-canvas';
-
-import { uriEncode, notification, formatDateMMddYYYY } from '../../utils/util';
 import DefaultData from './DefaultData';
 
 const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
@@ -33,66 +32,35 @@ export default () => {
   const [invoiceNo, setInvoiceNo] = useState(''); // invoiceNo = workorder no.
   const [data, setData] = useState(DefaultData);
   const [popupVisible, setPopupVisible] = useState(false);
-  const [signPopVisible, setSignPopupVisible] = useState(false);
+  // const [signPopVisible, setSignPopupVisible] = useState(false);
   const navigate = useNavigate();
   const [workOrders, setWorkOrders] = useState([]);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [selectedWorkOrderNo, setSelectedWorkOrderNo] = useState(null);
-  const [sigPad, setSigPad] = useState({});
-  const [signatureState, setSignatureState] = useState({trimmedDataURL: null});
-  const [emailPopupVisible, setEmailPopupVisible] = useState(false);
-  // const [showResendDocPopup, setShowResendDocPopup] = useState(false);
+  // const [emailPopupVisible, setEmailPopupVisible] = useState(false);
+  // const [instantJSON, setInstantJSON] = useState(false);
 
-  const [pdfInstance, setPdfInstance] = useState(null);
+  const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
 
   const cookies = new Cookies();
 
-  const fetchWorkorderData = useCallback(async (invoiceNo, signatureState) => {
-    await fetch(`${adminUrl}/invoice?sessionId=${cookies.get('sessionId')}&invoiceNo=${invoiceNo}`)
+  const fetchWorkorderData = useCallback(async (invoiceNo) => {
+    await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}`)
       .then((res) => {
         return res.json()
       })
-      .then(async (invoice) => {
-        if (invoice.status === 'Error') {
+      .then(async (workorder) => {
+        if (workorder.status === 'Error') {
           navigate('/');
-        } else if (invoice.data.table.length <= 0) {
-          setData(DefaultData);
-        } else {
-          invoice.data.barcode.base64 = getImgBase64String(invoice.data.table[0].TKT_NO);
-          await fetchWorkorderSignature(invoice);
-        }
-      });
-  }, []);
-
-  const postSaveSignature = useCallback(async (signature) => {
-    const optionHeaders = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: uriEncode(signature),
-    };
-
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorder`, optionHeaders)
-      .then((res) => {
-        return res.json()
-      })
-      .then(async (res) => {
-        if (res.status === 'Error') {
-          notification(res.message, 'error');
-          return;
+          return
         }
 
-        setData((prevValue) => {
-          let newValue = { ...prevValue };
-          newValue.data.signature.signature = signature.signatureImg;
-          // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this and do not use new Date().
-          newValue.data.signature.dateSigned = formatDateMMddYYYY(new Date());
+        if (workorder.data.rawData !== null) {
+          workorder.data.rawData.barcode.base64 = getImgBase64String(workorder.data.rawData.table[0].TKT_NO);
+        }
 
-          return newValue;
-        });
-
-        notification('Signature has been saved', 'success');
-
-        setEmailPopupVisible(true);
+        setData(workorder.data);
+        setShowPdfViewer(true);
       });
   }, []);
 
@@ -106,34 +74,33 @@ export default () => {
       });
   }, []);
 
-  const fetchWorkorderSignature = useCallback(async (invoice) => {
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorder?sessionId=${cookies.get('sessionId')}&invoiceNo=${invoice.data.table[0].TKT_NO}`)
-      .then((res) => {
-        return res.json()
-      })
-      .then((res) => {
-        invoice.data.signature.signature = res != null && res.length > 0 ? res[0].signatureImg : null;
-        invoice.data.signature.dateSigned = res != null && res.length > 0 ? res[0].utcDateSigned : null
-        setData(invoice);
-        setShowPdfViewer(true);
-      });
-  }, []);
+  // const fetchWorkorderSignature = useCallback(async (invoice) => {
+  //   await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorder?sessionId=${cookies.get('sessionId')}&invoiceNo=${invoice.data.table[0].TKT_NO}`)
+  //     .then((res) => {
+  //       return res.json()
+  //     })
+  //     .then((res) => {
+  //       invoice.data.signature.signature = res != null && res.length > 0 ? res[0].signatureImg : null;
+  //       invoice.data.signature.dateSigned = res != null && res.length > 0 ? res[0].utcDateSigned : null
+  //       // setData(invoice);
+  //       // setShowPdfViewer(true);
+  //     });
+  // }, []);
 
-  const sendWorkOrderCb = useCallback(async (formData) => {
-    // Do not add content-type. Expressjs will complain.
-    const optionHeaders = {
-      method: 'POST',
-      body: formData,
-    };
+  // const getAnnotationCb = useCallback(async (workOrderNo) => {
+  //   await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/pdfannotation?sessionId=${cookies.get('sessionId')}&workOrderNo=${workOrderNo}`)
+  //     .then(async (res) =>
+  //       res.json()
+  //     ).then(resJson => {
+  //       console.log(resJson)
 
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sendworkorderpdf`, optionHeaders)
-      .then((res) => {
-        return res.json()
-      })
-      .then(async (res) => {
-        notification('Sending pdf has been successful.', 'success');
-      });
-  }, []);
+  //       if (resJson.data !== null && resJson.data.length > 0)
+  //         setInstantJSON(resJson.data[0].instantJSON)
+  //       else
+  //         setInstantJSON(null);
+  //       setShowPdfViewer(true);
+  //     })
+  // }, []);
 
   function getImgBase64String(value) {
     const barcodeNode = document.getElementById('barcode');
@@ -143,7 +110,7 @@ export default () => {
 
   async function fetchWorkorder() {
     setShowPdfViewer(false);
-    await fetchWorkorderData(invoiceNo, signatureState);
+    await fetchWorkorderData(invoiceNo);
   }
 
   const selectButtonOptions = {
@@ -185,76 +152,7 @@ export default () => {
     await fetchWorkorder();
   }
 
-  async function signWorkOrder() {
-    if (sigPad.isEmpty()) {
-      notification('Please sign document before saving.', 'error');
-      return;
-    }
-
-    setSignatureState({ trimmedDataURL: sigPad.getTrimmedCanvas().toDataURL('image/png') });
-    setSignPopupVisible(false);
-
-    const signature = { sessionId: cookies.get('sessionId'),
-                        workOrderNo: invoiceNo, // to rename invoice to workorder.
-                        signatureImg: sigPad.getTrimmedCanvas().toDataURL('image/png'),
-                      }
-
-    // const formData = new FormData();
-    // formData.append('workOrderPdf', await pdf(workOrderDocumentContainer(data)).toBlob());
-    // formData.append('sessionId', cookies.get('sessionId'));
-    // formData.append('signatureImg', sigPad.getTrimmedCanvas().toDataURL('image/png'));
-    // formData.append('invoiceNo', invoiceNo);
-
-    await postSaveSignature(signature);
-  }
-
-  const saveBtnSignature = {
-    text: 'Save',
-    onClick: signWorkOrder,
-  }
-
-  const closeBtnSignature = {
-    text: 'Close',
-    onClick: () => { setSignPopupVisible(false);
-                    sigPad.clear()
-                  },
-  }
-
-  function signaturePopup() {
-    if (!showPdfViewer) {
-      notification('Retrieve work order first.', 'error');
-      return;
-    }
-
-    if (data.data.signature.signature !== null) {
-      notification('Document already been signed.', 'error');
-      return;
-    }
-
-    setSignPopupVisible(true);
-  }
-
-  async function sendEmail() {
-    const formData = new FormData();
-    formData.append('sessionId', cookies.get('sessionId'));
-    formData.append('workOrderNo', invoiceNo);
-    formData.append('workOrderPdf', await pdf(workOrderDocumentContainer(data)).toBlob());
-
-    setEmailPopupVisible(false);
-    await sendWorkOrderCb(formData);
-  }
-
-  const yesBtn = {
-    text: 'Yes',
-    onClick: () => sendEmail(),
-  }
-
-  const noBtn = {
-    text: 'No',
-    onClick: () => setEmailPopupVisible(false),
-  }
-
-  const pdfBlob = async () => await pdf(workOrderDocumentContainer(data)).toBlob();
+  const pdfBlob = async () => await pdf(workOrderDocumentContainer(data.rawData)).toBlob();
 
   return (
     <div className="content">
@@ -269,10 +167,10 @@ export default () => {
         <div className="col">
           <div className="row g-3 align-items-center">
             <div className="col-auto">
-              <label htmlFor="inputInvoiceNo" className="col-form-label">Work order #</label>
+              <label htmlFor="inputWorkorderNo" className="col-form-label">Workorder #</label>
             </div>
             <div className="col-auto">
-              <input type="text" id="inputInvoiceNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
+              <input type="text" id="inputWorkorderNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
             </div>
             <div className="col-auto">
               <span onClick={ async () => await fetchWorkorder() } style={{cursor: 'pointer'}} title="Show a workorder">
@@ -285,9 +183,14 @@ export default () => {
               </span>
             </div>
             <div className="col-auto">
-              <span onClick={ () => signaturePopup() } style={{cursor: 'pointer'}} title="Sign" >
-                <UilEdit size="20" color="#61DAFB" />
-              </span>
+              <Signature
+                data={data}
+                setData={setData}
+                showPdfViewer={showPdfViewer}
+                setShowPdfViewer={setShowPdfViewer}
+                workOrderNo={invoiceNo}
+                pdfHtmlDpcument={pdfBlob}
+              />
             </div>
             <div className="col-auto">
               <ResendDocument
@@ -297,8 +200,13 @@ export default () => {
                 pdfBlob={pdfBlob}
               />
             </div>
+            {
+              // <div className="col-auto">
+              //   <SaveAnnotation showPdfViewer={showPdfViewer} psPdfKitInstance={psPdfKitInstance} workOrderNo={invoiceNo} />
+              // </div>
+            }
             <div className="col-auto">
-              <SaveAnnotation showPdfViewer={showPdfViewer} pdfInstance={pdfInstance} workOrderNo={invoiceNo} />
+              <SavePdfToFlatFile showPdfViewer={showPdfViewer} psPdfKitInstance={psPdfKitInstance} workOrderNo={invoiceNo} />
             </div>
           </div>
         </div>
@@ -309,10 +217,7 @@ export default () => {
             showPdfViewer
             ?
               // <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>
-              <PdfViewerComponent
-                blobDocument={ pdfBlob }
-                setPdfInstance={setPdfInstance}
-              />
+              <PdfViewerComponent workOrderNo={invoiceNo} blobDocument={ pdfBlob } data={data} setPsPdfKitInstance={setPsPdfKitInstance} />
             :
             null
           }
@@ -365,55 +270,7 @@ export default () => {
           </Popup>
         </div>
       </div>
-      <div className="row">
-        <div className="col">
-          <Popup
-            visible={signPopVisible}
-            width={400}
-            height={380}>
-            <SignatureCanvas
-              penColor='black'
-              canvasProps={{width: 380, height: 350, className: 'sigCanvas'}}
-              ref={ (ref) => setSigPad(ref) }
-            />
-            <ToolbarItem
-              widget="dxButton"
-              toolbar="bottom"
-              location="after"
-              options={saveBtnSignature}
-            />
-            <ToolbarItem
-              widget="dxButton"
-              toolbar="bottom"
-              location="after"
-              options={closeBtnSignature}
-            />
-          </Popup>          
-        </div>
-      </div>
 
-      <div className="row">
-        <div className="col">
-          <Popup
-            visible={emailPopupVisible}
-            width={350}
-            height={340}>
-              Do you want to send an e-mail the signed work order?
-              <ToolbarItem
-                widget="dxButton"
-                toolbar="bottom"
-                location="after"
-                options={yesBtn}
-              />
-              <ToolbarItem
-                widget="dxButton"
-                toolbar="bottom"
-                location="after"
-                options={noBtn}
-              />
-          </Popup>
-        </div>
-      </div>
     </div>
   )
 }

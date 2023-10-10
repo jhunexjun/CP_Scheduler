@@ -32,6 +32,9 @@ async function saveSignature(req) {
   if (!utils.isSet(req.body, 'signatureImg'))
     return { status: "Error" , message: "signatureImg body param is missing." };
 
+  if (req.file === null)
+    return { status: "Error" , message: "workorder pdf file is missing." };
+
   return await workOrderModel.saveSignature(req);
 }
 

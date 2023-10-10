@@ -1,7 +1,7 @@
 import { View, Image, StyleSheet } from '@react-pdf/renderer';
 
-// import logo from '../../../../assets/compuTant/img/total-offroad-more-transparent.png';
-import logo from '../../../../assets/compuTant/img/pos_highway_green.png';
+// import logo from '../../../../assets/compuTant/img/pos_highway_green.png';
+import logo from '../../../../assets/compuTant/img/POS Highway - CompuTant Logo Black.png';
 import HeaderAddrsFrom from './HeaderAddrsFrom';
 import BillingAndWorkOrderAddrs from './BillingAndWorkOrderAddrs';
 import VehicleInfo from './VehicleInfo';

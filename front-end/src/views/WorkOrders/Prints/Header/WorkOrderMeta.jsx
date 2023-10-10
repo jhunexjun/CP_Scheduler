@@ -34,31 +34,31 @@ const InvHeaderAddress = (props) => {
 			</View>
 			<View style={styles.common}>
 				<View style={styles.tktNoLabelContainer}>
-					<Text>{props.data.table[0].TKT_NO}</Text>
+					<Text>{props.table[0].TKT_NO}</Text>
 				</View>
-				<Image src={() => props.data.barcode.base64} style={{width:'100px', height: '20px'}} />
+				<Image src={() => props.barcode.base64} style={{width:'100px', height: '20px'}} />
 				<View style={{flexDirection: 'column'}}>
 					<View style={styles.workOrderMeta}>
 						<Text style={{marginTop: 10}}>Invoice Date:
-							<Text style={styles.textValue}> {moment(props.data.table[0].TKT_DAT).format('MM/DD/YYYY')}</Text>
+							<Text style={styles.textValue}> {moment(props.table[0].TKT_DAT).format('MM/DD/YYYY')}</Text>
 						</Text>
 						<Text>Due Date:
-							<Text style={styles.textValue}> {props.data.table[0].SHIP_DAT}</Text>
+							<Text style={styles.textValue}> {props.table[0].SHIP_DAT}</Text>
 						</Text>
 						<Text>Terms:
-							<Text style={styles.textValue}> {props.data.table[0].TERMS_COD}</Text>
+							<Text style={styles.textValue}> {props.table[0].TERMS_COD}</Text>
 						</Text>
 						<Text>Account:
-							<Text style={styles.textValue}> {props.data.table[0].CUST_NO}</Text>
+							<Text style={styles.textValue}> {props.table[0].CUST_NO}</Text>
 						</Text>
 						<Text>PO:
-							<Text style={styles.textValue}> {props.data.table[0].CUST_PO_NO}</Text>
+							<Text style={styles.textValue}> {props.table[0].CUST_PO_NO}</Text>
 						</Text>
 						<Text>Ship Method:
-							<Text style={styles.textValue}> {props.data.table[0].SHIP_VIA_COD}</Text>
+							<Text style={styles.textValue}> {props.table[0].SHIP_VIA_COD}</Text>
 						</Text>
 						<Text>Sales rep:
-							<Text style={styles.textValue}> {props.data.table[0].SLS_REP}</Text>
+							<Text style={styles.textValue}> {props.table[0].SLS_REP}</Text>
 						</Text>
 						<Text style={{marginBottom: 10}}>Ref:
 							<Text style={styles.textValue}> </Text>
