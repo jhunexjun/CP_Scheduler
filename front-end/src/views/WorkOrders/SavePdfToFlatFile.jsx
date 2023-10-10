@@ -39,6 +39,11 @@ export default memo((props) => {
       return;
     }
 
+    if (props.signatureState.trimmedDataURL === null ) {
+      notification('Saving is not allowed for unsigned document.', 'error');
+      return;
+    }
+
     const arrayBuffer = await props.psPdfKitInstance.exportPDF({ flatten: true });
     const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
     await saveFlatPdfFileCb(blob, props.workOrderNo);

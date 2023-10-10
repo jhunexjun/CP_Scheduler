@@ -56,8 +56,9 @@ const ResendDocument = (props) => {
       return;
     }
 
+    // if (props.data.pdfFile !== null) {
     // console.log('here.', props);
-    if (isNullOrWhiteSpace(props.data.data.signature.signature)) {
+    if (props.data.pdfFile == null) {
       notification('Cannot send unsigned document.', 'error');
       return;
     }

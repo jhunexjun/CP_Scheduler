@@ -75,7 +75,7 @@ function extractSessionId(string) {
 }
 
 function formatDateMMddYYYY(date) {
-	if (date === null)
+	if (date === null || date === '')
 		return null;
 
 	let d = new Date(date),

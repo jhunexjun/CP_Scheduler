@@ -79,7 +79,6 @@ export default (props) => {
       return;
     }
 
-    // setSignatureState({ trimmedDataURL: sigPad.getTrimmedCanvas().toDataURL('image/png') });
     setSignPopupVisible(false);
     props.setShowPdfViewer(false); // refresh the pdf viewer.
     props.setData((prevValue) => {
@@ -90,6 +89,8 @@ export default (props) => {
 
       return newValue;
     });
+
+    props.setSignatureState({ trimmedDataURL: sigPad.getTrimmedCanvas().toDataURL('image/png') });
 
     const formData = new FormData();
     formData.append('sessionId', cookies.get('sessionId'));
@@ -136,7 +137,7 @@ export default (props) => {
 
   return (
     <>
-      <span onClick={ () => signaturePopup() } style={{cursor: 'pointer'}} title="Sign" >
+      <span onClick={ () => signaturePopup() } style={{cursor: 'pointer'}} title="Sign document" >
         <UilEdit size="20" color="#61DAFB" />
       </span>
 

@@ -11,7 +11,6 @@ import WorkOrderNotes from './WorkOrderNotes/WorkOrderNotes';
 import PolicyIndex from './Policy/PolicyIndex';
 import Signature from './Signature/Signature';
 
-
 const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
@@ -23,10 +22,7 @@ const styles = StyleSheet.create({
 
 
 const workOrderDocumentContainer = (props) => {
-  // console.log('dfsdfs props: ', props);
-
-  return (
-          <Document>
+  return (<Document>
             <Page size='LETTER' style={styles.page}>
               <HeadersContent {...props} />
               <TableIndex {...props} />

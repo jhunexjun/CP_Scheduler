@@ -40,6 +40,8 @@ export default () => {
   // const [emailPopupVisible, setEmailPopupVisible] = useState(false);
   // const [instantJSON, setInstantJSON] = useState(false);
 
+  const [signatureState, setSignatureState] = useState({trimmedDataURL: null});
+
   const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
 
   const cookies = new Cookies();
@@ -190,6 +192,7 @@ export default () => {
                 setShowPdfViewer={setShowPdfViewer}
                 workOrderNo={invoiceNo}
                 pdfHtmlDpcument={pdfBlob}
+                setSignatureState={setSignatureState}
               />
             </div>
             <div className="col-auto">
@@ -206,7 +209,7 @@ export default () => {
               // </div>
             }
             <div className="col-auto">
-              <SavePdfToFlatFile showPdfViewer={showPdfViewer} psPdfKitInstance={psPdfKitInstance} workOrderNo={invoiceNo} />
+              <SavePdfToFlatFile signatureState={signatureState} showPdfViewer={showPdfViewer} psPdfKitInstance={psPdfKitInstance} workOrderNo={invoiceNo} />
             </div>
           </div>
         </div>

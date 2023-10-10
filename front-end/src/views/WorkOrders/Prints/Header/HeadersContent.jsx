@@ -9,39 +9,44 @@ import WorkOrderMeta from './WorkOrderMeta';
 
 
 const styles = StyleSheet.create({
-	common: {
-		marginRight: 5,
-	},
-	logo: {
-		width: 220,
-		height: 45,
-		marginBottom: 3,
-		marginRight: 3
-	},
-	addresses: {
-		flexDirection: 'row',
-	},
+  common: {
+    marginRight: 5,
+  },
+  logo: {
+    width: 220,
+    height: 45,
+    marginBottom: 3,
+    marginRight: 3
+  },
+  addresses: {
+    flexDirection: 'row',
+  },
 });
 
 
-const WorkOrderHeadersContent = (props) => (
-	<View style={{flexDirection: 'column'}}>
-		<View style={{flexDirection: 'row'}}>
-			<View style={[styles.addresses, styles.common]}>
-				<View style={{flexDirection: 'column'}}>
-					<View style={{flexDirection: 'column'}}>
-						<Image src={logo} style={styles.logo} />
-						<HeaderAddrsFrom />
-					</View>
+const WorkOrderHeadersContent = (props) => {
+  if (!props.hasOwnProperty('table'))
+    return null;
 
-					<BillingAndWorkOrderAddrs {...props} />
-				</View>
-			</View>
+  return (
+    <View style={{flexDirection: 'column'}}>
+      <View style={{flexDirection: 'row'}}>
+        <View style={[styles.addresses, styles.common]}>
+          <View style={{flexDirection: 'column'}}>
+            <View style={{flexDirection: 'column'}}>
+              <Image src={logo} style={styles.logo} />
+              <HeaderAddrsFrom />
+            </View>
 
-			<VehicleInfo {...props} />
-			<WorkOrderMeta {...props} />
-		</View>
-	</View>
-);
+            <BillingAndWorkOrderAddrs {...props} />
+          </View>
+        </View>
+
+        <VehicleInfo {...props} />
+        <WorkOrderMeta {...props} />
+      </View>
+    </View>
+  )
+}
 
 export default WorkOrderHeadersContent
