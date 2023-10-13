@@ -1,7 +1,5 @@
 import { useState, useCallback } from 'react'
 
-import { pdf } from '@react-pdf/renderer'
-
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
 
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
@@ -12,8 +10,7 @@ import Cookies from 'universal-cookie'
 
 export default (props) => {
   const [signPopVisible, setSignPopupVisible] = useState(false);
-  const [sigPad, setSigPad] = useState({});
-  // const [signatureState, setSignatureState] = useState({trimmedDataURL: null});
+  // const [sigPad, setSigPad] = useState({});
   const [emailPopupVisible, setEmailPopupVisible] = useState(false);
 
   const cookies = new Cookies();
@@ -39,8 +36,9 @@ export default (props) => {
       });
   }, []);
 
+  /* After signing call this to send through email. */
   const sendSignedWorkOrderCb = useCallback(async (formData) => {
-    // Do not add content-type. Expressjs will complain.
+    // Do not add content-type. Express.js will complain.
     const optionHeaders = {
       method: 'POST',
       body: formData,
@@ -55,17 +53,13 @@ export default (props) => {
       });
   }, []);
 
-  /* Note that when data.pdfFile is not null, means the document has already been signed.
-   * If the API server returns rawData, means the doc has not yet been signed.
-   */
   function signaturePopup() {
     if (!props.showPdfViewer) {
       notification('Retrieve work order first.', 'error');
       return;
     }
 
-    // if (data.rawData.signature.signature !== null) {
-    if (props.data.pdfFile !== null) {
+    if (props.data.documentIsSigned == 'Y') {
       notification('Document already been signed.', 'error');
       return;
     }
@@ -74,33 +68,41 @@ export default (props) => {
   }
 
   async function signWorkOrder() {
-    if (sigPad.isEmpty()) {
+    if (props.sigPad.isEmpty()) {
       notification('Please sign document before saving.', 'error');
       return;
     }
 
     setSignPopupVisible(false);
     props.setShowPdfViewer(false); // refresh the pdf viewer.
-    props.setData((prevValue) => {
-      let newValue = { ...prevValue };
-      // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this and do not use new Date().
-      newValue.rawData.signature.dateSigned = formatDateMMddYYYY(new Date());
-      newValue.rawData.signature.signature = sigPad.getTrimmedCanvas().toDataURL('image/png');
 
-      return newValue;
-    });
+    const x = await props.fetchWorkorderDataCb(props.workOrderNo, 'Y')
+      .then((newData) => {
+        // console.log('newData: ', newData);
 
-    props.setSignatureState({ trimmedDataURL: sigPad.getTrimmedCanvas().toDataURL('image/png') });
+        // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this and do not use new Date().
+        newData.rawData.signature.dateSigned = formatDateMMddYYYY(new Date());
+        newData.rawData.signature.signature = props.sigPad.getTrimmedCanvas().toDataURL('image/png');
 
-    const formData = new FormData();
-    formData.append('sessionId', cookies.get('sessionId'));
-    formData.append('workOrderNo', props.workOrderNo);
-    formData.append('workOrderPdf', await props.pdfHtmlDpcument())
-    formData.append('signatureImg', sigPad.getTrimmedCanvas().toDataURL('image/png'));
+        return newData;
+      });
+    // console.log('x: ', x);
 
-    props.setShowPdfViewer(true); // refresh the pdf viewer.
+    props.setDocumentIsSigned('Y');
 
-    await postSaveSignatureAsync(formData);
+    // const formData = new FormData();
+    // formData.append('sessionId', cookies.get('sessionId'));
+    // formData.append('workOrderNo', props.workOrderNo);
+    // // formData.append('workOrderPdf', await props.pdfHtmlDpcument());
+    // formData.append('jsonAnnotation', JSON.stringify(await props.psPdfKitInstance.exportInstantJSON()));
+    // formData.append('workOrderPdf', await props.psPdfKitInstance.exportPDF({ flatten: true }));
+    // formData.append('signatureImg', sigPad.getTrimmedCanvas().toDataURL('image/png'));
+
+    // props.setShowPdfViewer(true); // refresh the pdf viewer.
+
+    // await postSaveSignatureAsync(formData);
+
+    props.setSigPad({});
   }
 
   const saveBtnSignature = {
@@ -111,7 +113,8 @@ export default (props) => {
   const closeBtnSignature = {
     text: 'Close',
     onClick: () => { setSignPopupVisible(false);
-                      sigPad.clear()
+                      props.sigPad.clear();
+                      props.setSigPad({});
                     },
   }
 
@@ -148,7 +151,7 @@ export default (props) => {
         <SignatureCanvas
           penColor='black'
           canvasProps={{width: 380, height: 350, className: 'sigCanvas'}}
-          ref={ (ref) => setSigPad(ref) }
+          ref={ (ref) => props.setSigPad(ref) }
         />
         <ToolbarItem
           widget="dxButton"

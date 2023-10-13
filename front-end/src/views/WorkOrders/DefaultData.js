@@ -1,6 +1,9 @@
 export default {
                 data: {
-                  pdfFile: null,
+                  pdf: {
+                    base64: null,
+                    annotation: null,
+                  },
                   rawData: {
                     table: [
                       {

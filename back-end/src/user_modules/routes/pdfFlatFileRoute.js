@@ -1,11 +1,14 @@
 const pdfFlatFileModel = require('../models/pdfFlatFileModel')
 const util = require('../utils/util');
 
+let resData;
+
 module.exports = async (req, res) => {
   try {
     switch(req.method) {
     case 'POST':
-      await savePdfToFlatFile(req, res);
+      resData = await savePdfToFlatFileAsync(req, res);
+      res.json(resData);
       break;
     }
   } catch(e) {
@@ -13,11 +16,23 @@ module.exports = async (req, res) => {
   }
 }
 
-async function savePdfToFlatFile(req, res) {
-  const returnedValue = await pdfFlatFileModel.savePdfToFlatFile(req)
+async function savePdfToFlatFileAsync(req, res) {
+  if (!util.isSet(req.body, 'sessionId'))
+    return { status: 'Error', message: 'Payload sessionId is missing' };
 
-  if (returnedValue)  
-    res.json({ status: 'OK', message: 'PDF Successfully saved' })
+  if (!util.isSet(req.body, 'workOrderNo'))
+    return { status: 'Error', message: 'Payload workOrderNo is missing' };
+
+  if (!util.isSet(req.body, 'documentIsSigned'))
+    return { status: 'Error', message: 'Payload documentIsSigned is missing' };
+
+  if (!util.isSet(req.body, 'instantJsonAnnotation'))
+    return { status: 'Error', message: 'Payload instantJsonAnnotation is missing' };
+
+  const returnedValue = await pdfFlatFileModel.savePdfToFlatFileAsync(req)
+
+  if (returnedValue)
+    return { status: 'OK', message: 'PDF Successfully saved' }
   else
-    res.json({ status: 'Error', message: 'Something went wrong save pdf file' })
+    return { status: 'Error', message: 'Something went wrong saving pdf file' }
 }

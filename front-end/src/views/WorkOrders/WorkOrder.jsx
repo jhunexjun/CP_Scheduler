@@ -40,29 +40,34 @@ export default () => {
   // const [emailPopupVisible, setEmailPopupVisible] = useState(false);
   // const [instantJSON, setInstantJSON] = useState(false);
 
-  const [signatureState, setSignatureState] = useState({trimmedDataURL: null});
+  const [sigPad, setSigPad] = useState({});
+
+  const [documentIsSigned, setDocumentIsSigned] = useState(false);
 
   const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
 
   const cookies = new Cookies();
 
-  const fetchWorkorderData = useCallback(async (invoiceNo) => {
-    await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}`)
+  const fetchWorkorderDataCb = useCallback(async (invoiceNo, rawData = 'N') => {
+    return await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}&rawData=${rawData}`)
       .then((res) => {
         return res.json()
       })
-      .then(async (workorder) => {
-        if (workorder.status === 'Error') {
+      .then(async (response) => {
+        if (response.status === 'Error') {
           navigate('/');
           return
         }
 
-        if (workorder.data.rawData !== null) {
-          workorder.data.rawData.barcode.base64 = getImgBase64String(workorder.data.rawData.table[0].TKT_NO);
+        if (response.data.rawData !== null) {
+          response.data.rawData.barcode.base64 = getImgBase64String(response.data.rawData.table[0].TKT_NO);
         }
 
-        setData(workorder.data);
+        setData(response.data);
+        setDocumentIsSigned(response.data.documentIsSigned === 'Y');
         setShowPdfViewer(true);
+
+        return response.data;
       });
   }, []);
 
@@ -76,34 +81,6 @@ export default () => {
       });
   }, []);
 
-  // const fetchWorkorderSignature = useCallback(async (invoice) => {
-  //   await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorder?sessionId=${cookies.get('sessionId')}&invoiceNo=${invoice.data.table[0].TKT_NO}`)
-  //     .then((res) => {
-  //       return res.json()
-  //     })
-  //     .then((res) => {
-  //       invoice.data.signature.signature = res != null && res.length > 0 ? res[0].signatureImg : null;
-  //       invoice.data.signature.dateSigned = res != null && res.length > 0 ? res[0].utcDateSigned : null
-  //       // setData(invoice);
-  //       // setShowPdfViewer(true);
-  //     });
-  // }, []);
-
-  // const getAnnotationCb = useCallback(async (workOrderNo) => {
-  //   await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/pdfannotation?sessionId=${cookies.get('sessionId')}&workOrderNo=${workOrderNo}`)
-  //     .then(async (res) =>
-  //       res.json()
-  //     ).then(resJson => {
-  //       console.log(resJson)
-
-  //       if (resJson.data !== null && resJson.data.length > 0)
-  //         setInstantJSON(resJson.data[0].instantJSON)
-  //       else
-  //         setInstantJSON(null);
-  //       setShowPdfViewer(true);
-  //     })
-  // }, []);
-
   function getImgBase64String(value) {
     const barcodeNode = document.getElementById('barcode');
     JsBarcode(barcodeNode, value, {displayValue: false});
@@ -112,7 +89,7 @@ export default () => {
 
   async function fetchWorkorder() {
     setShowPdfViewer(false);
-    await fetchWorkorderData(invoiceNo);
+    await fetchWorkorderDataCb(invoiceNo);
   }
 
   const selectButtonOptions = {
@@ -192,7 +169,10 @@ export default () => {
                 setShowPdfViewer={setShowPdfViewer}
                 workOrderNo={invoiceNo}
                 pdfHtmlDpcument={pdfBlob}
-                setSignatureState={setSignatureState}
+                setDocumentIsSigned={setDocumentIsSigned}
+                psPdfKitInstance={psPdfKitInstance}
+                fetchWorkorderDataCb={fetchWorkorderDataCb}
+                setSigPad={setSigPad}
               />
             </div>
             <div className="col-auto">
@@ -209,7 +189,12 @@ export default () => {
               // </div>
             }
             <div className="col-auto">
-              <SavePdfToFlatFile signatureState={signatureState} showPdfViewer={showPdfViewer} psPdfKitInstance={psPdfKitInstance} workOrderNo={invoiceNo} />
+              <SavePdfToFlatFile 
+                showPdfViewer={showPdfViewer}
+                psPdfKitInstance={psPdfKitInstance}
+                workOrderNo={invoiceNo}
+                documentIsSigned={documentIsSigned}
+              />
             </div>
           </div>
         </div>
@@ -220,7 +205,12 @@ export default () => {
             showPdfViewer
             ?
               // <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>
-              <PdfViewerComponent workOrderNo={invoiceNo} blobDocument={ pdfBlob } data={data} setPsPdfKitInstance={setPsPdfKitInstance} />
+              <PdfViewerComponent
+                workOrderNo={invoiceNo}
+                blobDocument={ pdfBlob }
+                data={data}
+                setPsPdfKitInstance={setPsPdfKitInstance}
+              />
             :
             null
           }

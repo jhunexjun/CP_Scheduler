@@ -1,8 +1,7 @@
 import {
   Document,
   Page,
-  StyleSheet,
-  BlobProvider
+  StyleSheet
 } from "@react-pdf/renderer";
 
 import HeadersContent from './Header/HeadersContent';
