@@ -24,7 +24,6 @@ module.exports = async function(req, res) {
 
       res.json({ status: 'OK',
                     data: {
-                      //pdfFile: {
                       pdf: {
                         base64: base64Pdf,
                         annotation: result[0].annotation

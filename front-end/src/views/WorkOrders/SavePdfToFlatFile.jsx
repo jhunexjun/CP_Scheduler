@@ -21,57 +21,37 @@ export default memo((props) => {
       })
       .then(async (res) => {
         notification('Saving pdf has been successful.', 'success');
+        // props.setDocIsModified(false);
       });
   }, []);
-
-  /* const saveAnnotationCb = useCallback(async (instantJSON, workOrderNo) => {
-    const postBody = {
-      sessionId: cookies.get('sessionId'),
-      workOrderNo: workOrderNo,
-      instantJSON: instantJSON,
-    }
-
-    const optionHeaders = {
-      method: 'POST',
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(postBody),
-    };
-
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/pdfannotation`, optionHeaders)
-      .then((res) => {
-        return res.json()
-      })
-      .then(async (res) => {
-        notification('Saving annotation has been successful.', 'success');
-      });
-  }, []); */
-
 
   /* Async fx that creates pdf blob and sends to callback to be saved by API server.
    * Returns nothing.
    */
   async function savePdfAsync() {
     if (!props.showPdfViewer) {
-      notification('Please select pdf first.', 'error');
+      notification('No PDF found.', 'error');
       return;
     }
 
-    // const arrayBuffer = await props.psPdfKitInstance.exportPDF({ flatten: true });
-    const arrayBuffer = await props.psPdfKitInstance.exportPDF();
+    const arrayBuffer = await props.psPdfKitInstance.exportPDF({ flatten:  !props.sigPad.isEmpty() ? true : false });
     const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
 
     const formData = new FormData();
     formData.append('sessionId', cookies.get('sessionId'));
     formData.append('workOrderNo', props.workOrderNo);
-    formData.append('documentIsSigned', props.documentIsSigned ? 'Y' : 'N');  // Y or N.
+    formData.append('documentIsSigned', props.documentIsSigned ? 'Y' : 'N');
     formData.append('instantJsonAnnotation', JSON.stringify(await props.psPdfKitInstance.exportInstantJSON()));
     formData.append('workOrderPdf', blob);
+    formData.append('signatureImg', !props.sigPad.isEmpty() ? props.sigPad.getTrimmedCanvas().toDataURL('image/png') : '');
 
-    await saveFlatPdfFileAsync(formData);
+    props.setShowPdfViewer(false); // refresh the pdf viewer.
 
-    // await saveAnnotationCb( await props.psPdfKitInstance.exportInstantJSON(),
-    //                         props.workOrderNo
-    //                       );
+    await saveFlatPdfFileAsync(formData).then(async () => {
+      return await props.fetchWorkorderDataCb(props.workOrderNo, 'N');
+    }).then(async () => {
+      props.setShowPdfViewer(true); // refresh the pdf viewer.
+    });
   }
 
   return (

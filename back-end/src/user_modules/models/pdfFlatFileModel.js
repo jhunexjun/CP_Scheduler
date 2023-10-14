@@ -18,9 +18,10 @@ async function savePdfToFlatFileAsync(req) {
                   .input('workOrderNo', msSql.NVarChar, req.body.workOrderNo)
                   .input('documentIsSigned', msSql.NVarChar, req.body.documentIsSigned)
                   .input('jsonAnnotation', msSql.NText, req.body.instantJsonAnnotation)
+                  .input('signatureImg', msSql.Text, req.body.signatureImg)
                   .output('outputErrNo', msSql.Int)
                   .output('outputStatusMsg', msSql.NVarChar(500))
-                  .query('exec dbo.USER_SP_PDFSave @sessionId, @workOrderNo, @documentIsSigned, @jsonAnnotation, @outputErrNo OUTPUT, @outputStatusMsg OUTPUT')
+                  .query('exec dbo.USER_SP_PDFSave @sessionId, @workOrderNo, @documentIsSigned, @jsonAnnotation, @signatureImg, @outputErrNo OUTPUT, @outputStatusMsg OUTPUT')
               )
               .then(() => true
               ).catch(err => {

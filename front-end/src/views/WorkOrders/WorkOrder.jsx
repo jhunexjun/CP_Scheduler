@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
-import { /*PDFViewer,*/ pdf } from '@react-pdf/renderer';
+import { pdf } from '@react-pdf/renderer';
 import workOrderDocumentContainer from './Prints/WorkOrderDocumentContainer';
 
 import PdfViewerComponent from '../../components/PdfViewerComponent';
@@ -24,13 +24,14 @@ import { Popup, ToolbarItem } from 'devextreme-react/popup';
 // import ScrollView from 'devextreme-react/scroll-view';
 import { DataGrid, Column, Selection, Paging, FilterRow, SearchPanel } from 'devextreme-react/data-grid';
 
-import DefaultData from './DefaultData';
+// import DefaultData from './DefaultData';
 
 const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
 export default () => {
   const [invoiceNo, setInvoiceNo] = useState(''); // invoiceNo = workorder no.
-  const [data, setData] = useState(DefaultData);
+  // const [data, setData] = useState(DefaultData);
+  const [data, setData] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   // const [signPopVisible, setSignPopupVisible] = useState(false);
   const navigate = useNavigate();
@@ -40,15 +41,16 @@ export default () => {
   // const [emailPopupVisible, setEmailPopupVisible] = useState(false);
   // const [instantJSON, setInstantJSON] = useState(false);
 
+  // const [docIsModified, setDocIsModified] = useState(false);
   const [sigPad, setSigPad] = useState({});
-
   const [documentIsSigned, setDocumentIsSigned] = useState(false);
-
   const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
 
   const cookies = new Cookies();
 
   const fetchWorkorderDataCb = useCallback(async (invoiceNo, rawData = 'N') => {
+    setSigPad({});
+
     return await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}&rawData=${rawData}`)
       .then((res) => {
         return res.json()
@@ -168,19 +170,20 @@ export default () => {
                 showPdfViewer={showPdfViewer}
                 setShowPdfViewer={setShowPdfViewer}
                 workOrderNo={invoiceNo}
-                pdfHtmlDpcument={pdfBlob}
                 setDocumentIsSigned={setDocumentIsSigned}
                 psPdfKitInstance={psPdfKitInstance}
                 fetchWorkorderDataCb={fetchWorkorderDataCb}
+                sigPad={sigPad}
                 setSigPad={setSigPad}
+                //setDocIsModified={setDocIsModified}
               />
             </div>
             <div className="col-auto">
               <ResendDocument
-                data={data}
                 showPdfViewer={showPdfViewer}
                 workOrderNo={invoiceNo}
                 pdfBlob={pdfBlob}
+                documentIsSigned={documentIsSigned}
               />
             </div>
             {
@@ -191,9 +194,14 @@ export default () => {
             <div className="col-auto">
               <SavePdfToFlatFile 
                 showPdfViewer={showPdfViewer}
+                setShowPdfViewer={setShowPdfViewer}
                 psPdfKitInstance={psPdfKitInstance}
                 workOrderNo={invoiceNo}
                 documentIsSigned={documentIsSigned}
+                sigPad={sigPad}
+                fetchWorkorderDataCb={fetchWorkorderDataCb}
+                // docIsModified={docIsModified}
+                //setDocIsModified={setDocIsModified}
               />
             </div>
           </div>
@@ -204,7 +212,6 @@ export default () => {
           {
             showPdfViewer
             ?
-              // <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data)}</PDFViewer>
               <PdfViewerComponent
                 workOrderNo={invoiceNo}
                 blobDocument={ pdfBlob }

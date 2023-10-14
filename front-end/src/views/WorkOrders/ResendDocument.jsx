@@ -15,9 +15,18 @@ const ResendDocument = (props) => {
 
   const sendWorkOrderCb = useCallback(async (formData) => {
     // Do not add content-type. Expressjs will complain.
+    // const optionHeaders = {
+    //   method: 'POST',
+    //   content
+    //   body: formData,
+    // };
+
+    // HERE!!!
+
     const optionHeaders = {
       method: 'POST',
-      body: formData,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     };
 
     await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sendworkorderpdf`, optionHeaders)
@@ -35,7 +44,6 @@ const ResendDocument = (props) => {
     const formData = new FormData();
     formData.append('sessionId', cookies.get('sessionId'));
     formData.append('workOrderNo', props.workOrderNo);
-    formData.append('workOrderPdf', await props.pdfBlob());
 
     await sendWorkOrderCb(formData);
   }
@@ -52,13 +60,11 @@ const ResendDocument = (props) => {
 
   function showPopup() {
     if (!props.showPdfViewer) {
-      notification('Retrieve work order first.', 'error');
+      notification('No workorder selected.', 'error');
       return;
     }
 
-    // if (props.data.pdfFile !== null) {
-    // console.log('here.', props);
-    if (props.data.pdfFile == null) {
+    if (!props.documentIsSigned) {
       notification('Cannot send unsigned document.', 'error');
       return;
     }
@@ -68,7 +74,7 @@ const ResendDocument = (props) => {
 
   return (
     <>
-      <span onClick={showPopup} style={{cursor: 'pointer'}} title="Re-send document" >
+      <span onClick={showPopup} style={{cursor: 'pointer'}} title="Re-send PDF to clients." >
         <UilEnvelopeSend size="20" color="#61DAFB" />
       </span>
       <Popup

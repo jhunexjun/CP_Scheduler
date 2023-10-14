@@ -26,7 +26,7 @@ module.exports = async function(req, res) {
   }
 }
 
-/*
+/* We do not allow sending unsigned document.
  * Sends notification that the document has been signed.
  */
 async function sendPdf(req) {
@@ -48,11 +48,12 @@ async function sendPdf(req) {
     // html: "<b>Hello world?</b>", // html body
     attachments: [{
       filename: req.body.workOrderNo + '.pdf',
-      content: req.file.buffer,
+      // content: req.file.buffer,
+      content: await fsPromises.readFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.query.workOrderNo}.pdf`, 'base64')
     }]
   });
 
-  await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workOrderNo}.pdf`, req.file.buffer);
+  // await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workOrderNo}.pdf`, req.file.buffer);
 
   return { status: 'OK', message: `Email sent! Info message id: ${info.messageId}` }
 }

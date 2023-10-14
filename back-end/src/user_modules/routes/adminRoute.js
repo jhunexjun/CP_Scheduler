@@ -14,7 +14,7 @@ const smsRoute = require('./smsRoute');
 const sms2Route = require('./sms2Route');
 const smsByCustomerRoute = require('./smsByCustomerRoute');
 const notificationsRoute = require('./notificationsRoute');
-const workOrderSignRoute = require('./workOrderSignRoute');
+// const workOrderSignRoute = require('./workOrderSignRoute');
 const resendWorkOrderPdfRoute = require('./sendWorkOrderPdfRoute');
 // const pdfannotationRoute = require('./pdfannotationRoute');
 const pdfFlatFileRoute = require('./pdfFlatFileRoute');
@@ -33,7 +33,7 @@ module.exports = function(app) {
   router.all('/sms2', sms2Route); // sending SMS from Scheduler.
   router.get('/sms/customer', smsByCustomerRoute);    // get all SMS by a Customer.
   router.get('/notifications', notificationsRoute);
-  router.all('/workordersign', workOrderSignRoute);
+  // router.all('/workordersign', workOrderSignRoute);
   router.all('/sendworkorderpdf', resendWorkOrderPdfRoute);
   // router.all('/pdfannotation', pdfannotationRoute); // deprecated.
   router.all('/workorderpdfflatfile', pdfFlatFileRoute)

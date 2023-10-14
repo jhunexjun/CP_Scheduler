@@ -41,12 +41,12 @@ async function saveSignature(req) {
   return await workOrderModel.saveSignature(req);
 }
 
-async function getSignature(req) {
-  if (!utils.isSet(req.query, 'sessionId'))
-    return { status: "Error" , message: "sessionId query param is missing." };
+// async function getSignature(req) {
+//   if (!utils.isSet(req.query, 'sessionId'))
+//     return { status: "Error" , message: "sessionId query param is missing." };
 
-  if (!utils.isSet(req.query, 'invoiceNo'))
-    return { status: 'Error', message: 'invoiceNo query param is missing.' };
+//   if (!utils.isSet(req.query, 'invoiceNo'))
+//     return { status: 'Error', message: 'invoiceNo query param is missing.' };
 
-  return await workOrderModel.getInvoiceSignature(req);
-}
+//   return await workOrderModel.getInvoiceSignature(req);
+// }
