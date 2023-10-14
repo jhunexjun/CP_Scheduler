@@ -33,7 +33,7 @@ export default (props) => {
 
   function signaturePopup() {
     if (!props.showPdfViewer) {
-      notification('Retrieve work order first.', 'error');
+      notification('No PDF found.', 'error');
       return;
     }
 

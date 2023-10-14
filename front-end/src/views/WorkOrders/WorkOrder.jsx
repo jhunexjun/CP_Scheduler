@@ -14,6 +14,8 @@ import JsBarcode from 'jsbarcode';
 import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
 // import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
+
+import { isNullOrWhiteSpace, notification } from '../../utils/util';
 import ResendDocument from './ResendDocument';
 // import SaveAnnotation from './SaveAnnotation';
 import SavePdfToFlatFile from './SavePdfToFlatFile'
@@ -90,6 +92,11 @@ export default () => {
   }
 
   async function fetchWorkorder() {
+    if (isNullOrWhiteSpace(invoiceNo)) {
+      notification('No PDF found.', 'error');
+      return
+    }
+
     setShowPdfViewer(false);
     await fetchWorkorderDataCb(invoiceNo);
   }
@@ -256,7 +263,7 @@ export default () => {
               onCellDblClick={async (e) => await onCellDblClick(e)}>
                 <Column dataField="BILL_NAM" caption="Customer Name" />
                 <Column dataField="BILL_PHONE_1" caption="Phone" />
-                <Column dataField="TKT_NO" caption="Work order #" />
+                <Column dataField="TKT_NO" caption="Workorder #" />
                 <Column dataField="TKT_DAT" dataType="date" caption="Date" />
                 <Column dataField="USR_MAKE" caption="Car make" />
                 <Column dataField="USR_MODEL" caption="Car model" />
