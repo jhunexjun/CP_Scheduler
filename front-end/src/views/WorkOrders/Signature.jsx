@@ -64,7 +64,7 @@ export default (props) => {
       });
 
     props.setDocumentIsSigned('Y');
-    props.setSigPad({});
+    props.setSigPad(null);
   }
 
   const saveBtnSignature = {
@@ -76,7 +76,7 @@ export default (props) => {
     text: 'Close',
     onClick: () => { setSignPopupVisible(false);
                       props.sigPad.clear();
-                      props.setSigPad({});
+                      props.setSigPad(null);
                     },
   }
 

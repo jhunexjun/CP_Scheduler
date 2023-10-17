@@ -44,14 +44,17 @@ export default () => {
   // const [instantJSON, setInstantJSON] = useState(false);
 
   // const [docIsModified, setDocIsModified] = useState(false);
-  const [sigPad, setSigPad] = useState({});
+  const [sigPad, setSigPad] = useState(null);
   const [documentIsSigned, setDocumentIsSigned] = useState(false);
   const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
 
   const cookies = new Cookies();
 
   const fetchWorkorderDataCb = useCallback(async (invoiceNo, rawData = 'N') => {
-    setSigPad({});
+    if (sigPad != null)
+      sigPad.clear();
+
+    setSigPad(null);
 
     return await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}&rawData=${rawData}`)
       .then((res) => {

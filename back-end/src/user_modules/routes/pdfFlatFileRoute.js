@@ -14,6 +14,8 @@ module.exports = async (req, res) => {
       resData = await savePdfToFlatFileAsync(req, res);
       res.json(resData);
       break;
+    default:
+      res.json({ status: 'OK', message: 'Okay' });
     }
   } catch(e) {
     console.log(e);

@@ -45,7 +45,8 @@ export default memo(function PdfViewerComponent(props) {
           document: documentBlobObjectUrl, // The document to open.
           // document: `data:application/pdf;base64,${props.base64.pdfFile}`
           // Use the public directory URL as a base URL. PSPDFKit will download its library assets from here.
-          instantJSON: getannotations()
+          instantJSON: getannotations(),
+          licenseKey: process.env.REACT_APP_PSPDFKIT_LICENSE_KEY
         }).then(psPdfKitInstance => {
           // Make sure to revoke the object URL so the browser doesn't hold on to the blob object that's not needed any more.
           URL.revokeObjectURL(documentBlobObjectUrl);
