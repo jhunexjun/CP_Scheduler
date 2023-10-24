@@ -18,6 +18,6 @@ module.exports = function(app) {
 
 	app.use(cors());
 	app.use('/createsession', createSessionRoute);
-	app.use('/admin', upload.single('workOrderPdf'), checkSessionIdMw, adminRoute(app));
+	app.use('/admin', upload.single('workorderPdf'), checkSessionIdMw, adminRoute(app));	// workorderPdf should eq body param workorderPdf.
 	app.post('/sms', smsRoute);	// Twilio webhook.
 }

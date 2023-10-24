@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 module.exports = {
-  executeRequestAsync, executeOutputParams, isSet, formatDateMMddYYYYhhmmss, sendSms
+  executeRequestAsync, executeOutputParams, isSet, isNullOrWhiteSpace, formatDateMMddYYYYhhmmss, sendSms
 };
 
 async function executeRequestAsync(request) {
@@ -56,6 +56,13 @@ function isSet(object, property) {
     return false;
 
   if (object[property] !== undefined && object[property] !== "undefined" && object[property] !== null)
+    return true;
+  else
+    return false;
+}
+
+function isNullOrWhiteSpace(text) {
+  if (text === undefined || text === null || text === '' || text.trim() === '')
     return true;
   else
     return false;

@@ -17,7 +17,8 @@ const notificationsRoute = require('./notificationsRoute');
 // const workOrderSignRoute = require('./workOrderSignRoute');
 const resendWorkOrderPdfRoute = require('./sendWorkOrderPdfRoute');
 // const pdfannotationRoute = require('./pdfannotationRoute');
-const pdfFlatFileRoute = require('./pdfFlatFileRoute');
+const workorderPdfRoute = require('./workorderPdfRoute');
+const workorderNewQtyRoute = require('./workorderNewQtyRoute');
 
 module.exports = function(app) {
   router.all('/schedule', schedulerRoute);    // http://localhost:8080/admin/scheduler
@@ -36,7 +37,8 @@ module.exports = function(app) {
   // router.all('/workordersign', workOrderSignRoute);
   router.all('/sendworkorderpdf', resendWorkOrderPdfRoute);
   // router.all('/pdfannotation', pdfannotationRoute); // deprecated.
-  router.all('/workorderpdfflatfile', pdfFlatFileRoute)
+  router.all('/workorderpdf', workorderPdfRoute);
+  router.all('/workorder/newqty', workorderNewQtyRoute);
 
   return router;
 }

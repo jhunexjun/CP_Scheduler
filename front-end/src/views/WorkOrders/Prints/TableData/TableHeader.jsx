@@ -34,6 +34,9 @@ const TableHeader = () => (
 			<View style={{width: 50, textAlign: 'right'}}>
 				<Text>Sales Qty</Text>
 			</View>
+			<View style={{width: 50, textAlign: 'right'}}>
+				<Text>New Qty</Text>
+			</View>
 		</View>
 	</View>
 );

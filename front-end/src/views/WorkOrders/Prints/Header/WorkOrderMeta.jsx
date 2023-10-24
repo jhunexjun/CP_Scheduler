@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 
 
 const InvHeaderAddress = (props) => {
-  if (!props.hasOwnProperty('table'))
+  if (props.table !== undefined && props.table.length < 1)
     return null;
 
   return (

@@ -10,15 +10,15 @@ const workOrderModel = require('../models/workOrderModel');
  */
 module.exports = async function(req, res) {
   try {
-    if (req.query.rawData != null && req.query.rawData == 'Y') {
-      await sendRawDataAsync(req, res);
-      return;
-    }
+    // if (req.query.rawData != null && req.query.rawData == 'Y') {
+    //   await sendRawDataAsync(req, res);
+    //   return;
+    // }
 
-    const result = await workOrderModel.getPdfDocument(req.query.workOrderNo);
+    const pdf = await workOrderModel.getPdfDocument(req.query.workOrderNo);
 
-    // if result is > 0 means a PDF should have been saved somewhere in a DIR.
-    if (result.length > 0) {
+    // if pdf is > 0 means a PDF should have been saved somewhere in a DIR.
+    if (pdf.length > 0 && pdf[0].documentIsSigned === 'Y') {
       fs.accessSync(`${process.env.SIGNED_WORKORDERS_DIR}/${req.query.workOrderNo}.pdf`, fs.constants.R_OK | fs.constants.W_OK);
       const base64Pdf = await fsPromises.readFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.query.workOrderNo}.pdf`, 'base64');
 
@@ -26,19 +26,19 @@ module.exports = async function(req, res) {
                     data: {
                       pdf: {
                         base64: base64Pdf,
-                        annotation: result[0].annotation
+                        // annotation: result[0].annotation
                       },
                       rawData: null,
-                      documentIsSigned: result[0].documentIsSigned,
+                      documentIsSigned: 'Y',  // We assume this is signed because we get the item from an actual file.
+                                              // The result[0].documentIsSigned is just a recording bc workorder may have been
+                                              // saved from front but not yet as signed.
                     }
                   });
     } else {
       await sendRawDataAsync(req, res);
-      // return;
     }
   } catch(e) {
-    await sendRawDataAsync(req, res);
-    // return;
+    await sendRawDataAsync(req, res); // probably should not be sending the raw data whem it cannot access file.
   }
 }
 
@@ -55,12 +55,12 @@ async function sendRawDataAsync(req, res) {
 
     if (tableData[0].hasOwnProperty('errorNo')) {
       res.json({status: 'Error', message: tableData[0].errMsg});
-      return
+      return;
     }
 
     const workOrderNotes = await workOrderModel.getInvoiceNotes(req);
 
-    const result = await workOrderModel.getPdfDocument(req.query.workOrderNo);
+    // const result = await workOrderModel.getPdfDocument(req.query.workOrderNo);
 
     const x = {
                 table: tableData,
@@ -72,7 +72,7 @@ async function sendRawDataAsync(req, res) {
                   signature: '',
                   dateSigned: '',
                 },
-                annotations: result.length > 0 ? result[0].annotations : null
+                // annotations: result.length > 0 ? result[0].annotations : null
               }
 
     res.json({ status: 'OK', data: {pdf: null, rawData: x, documentIsSigned: 'N'} });

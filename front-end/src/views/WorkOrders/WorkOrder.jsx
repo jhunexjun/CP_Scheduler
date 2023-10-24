@@ -3,23 +3,27 @@ import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
-import { pdf } from '@react-pdf/renderer';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/Page/TextLayer.css';
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+
+import { PDFViewer, pdf } from '@react-pdf/renderer';
 import workOrderDocumentContainer from './Prints/WorkOrderDocumentContainer';
 
-import PdfViewerComponent from '../../components/PdfViewerComponent';
+// import PdfViewerComponent from '../../components/PdfViewerComponent';
 
 import JsBarcode from 'jsbarcode';
 
 // See it live, https://iconscout.com/unicons/free-line-icons
 import UilSearchAlt from '@iconscout/react-unicons/icons/uil-search-alt';
 import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
-// import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 
 import { isNullOrWhiteSpace, notification } from '../../utils/util';
 import ResendDocument from './ResendDocument';
 // import SaveAnnotation from './SaveAnnotation';
 import SavePdfToFlatFile from './SavePdfToFlatFile'
 import Signature from './Signature';
+import OrderList from './OrderList';
 
 // https://js.devexpress.com/Documentation/Guide/UI_Components/Popup/Getting_Started_with_Popup/
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
@@ -45,28 +49,34 @@ export default () => {
 
   // const [docIsModified, setDocIsModified] = useState(false);
   const [sigPad, setSigPad] = useState(null);
+  // Note: data.documentIsSigned is different which is from the server. Below is local only. Don't use interchangeably.
   const [documentIsSigned, setDocumentIsSigned] = useState(false);
-  const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
+  // const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
+  const [tableNewQtyJson, setTableNewQtyJson] = useState(null);
 
   const cookies = new Cookies();
 
-  const fetchWorkorderDataCb = useCallback(async (invoiceNo, rawData = 'N') => {
+  const [numPages, /*setNumPages*/] = useState(null);
+  pdfjs.GlobalWorkerOptions.workerSrc = '/static/js/pdfjs-dist/build/pdf.worker.min.js';
+
+  const fetchWorkorderDataCb = useCallback(async (invoiceNo) => {
     if (sigPad != null)
       sigPad.clear();
 
     setSigPad(null);
 
-    return await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}&rawData=${rawData}`)
+    // return await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}&rawData=${rawData}`)
+    return await fetch(`${adminUrl}/workorder?sessionId=${cookies.get('sessionId')}&workOrderNo=${invoiceNo}`)
       .then((res) => {
         return res.json()
       })
       .then(async (response) => {
         if (response.status === 'Error') {
           navigate('/');
-          return
+          return;
         }
 
-        if (response.data.rawData !== null) {
+        if (response.data.rawData !== null && response.data.rawData.table.length > 0) {
           response.data.rawData.barcode.base64 = getImgBase64String(response.data.rawData.table[0].TKT_NO);
         }
 
@@ -78,7 +88,7 @@ export default () => {
       });
   }, []);
 
-  const fetchWorkorderList = useCallback(async () => {
+  const fetchWorkorderListCb = useCallback(async () => {
     await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/invoiceslist?sessionId=${cookies.get('sessionId')}`)
       .then((res) => {
         return res.json()
@@ -124,7 +134,7 @@ export default () => {
     // setShowPdfViewer(false);
 
     setPopupVisible(true);
-    await fetchWorkorderList();
+    await fetchWorkorderListCb();
   }
 
   function onSelectionChanged({ selectedRowsData }) {
@@ -144,6 +154,14 @@ export default () => {
   }
 
   const pdfBlob = async () => await pdf(workOrderDocumentContainer(data.rawData)).toBlob();
+
+  // function onDocumentLoadSuccess(nextNumPages) {
+  //   setNumPages(nextNumPages ?? 0);
+  // }
+
+  const options = {
+    cMapUrl: '/cmaps/',
+  };
 
   return (
     <div className="content">
@@ -181,8 +199,8 @@ export default () => {
                 setShowPdfViewer={setShowPdfViewer}
                 workOrderNo={invoiceNo}
                 setDocumentIsSigned={setDocumentIsSigned}
-                psPdfKitInstance={psPdfKitInstance}
-                fetchWorkorderDataCb={fetchWorkorderDataCb}
+                // psPdfKitInstance={psPdfKitInstance}
+                // fetchWorkorderDataCb={fetchWorkorderDataCb}
                 sigPad={sigPad}
                 setSigPad={setSigPad}
                 //setDocIsModified={setDocIsModified}
@@ -196,22 +214,28 @@ export default () => {
                 documentIsSigned={documentIsSigned}
               />
             </div>
-            {
-              // <div className="col-auto">
-              //   <SaveAnnotation showPdfViewer={showPdfViewer} psPdfKitInstance={psPdfKitInstance} workOrderNo={invoiceNo} />
-              // </div>
-            }
             <div className="col-auto">
-              <SavePdfToFlatFile 
+              <SavePdfToFlatFile
+                data={data}
+                // setData={setData}
                 showPdfViewer={showPdfViewer}
                 setShowPdfViewer={setShowPdfViewer}
-                psPdfKitInstance={psPdfKitInstance}
-                workOrderNo={invoiceNo}
+                //psPdfKitInstance={psPdfKitInstance}
+                workorderNo={invoiceNo}
                 documentIsSigned={documentIsSigned}
                 sigPad={sigPad}
                 fetchWorkorderDataCb={fetchWorkorderDataCb}
-                // docIsModified={docIsModified}
-                //setDocIsModified={setDocIsModified}
+                pdfBlob={pdfBlob}
+                tableNewQtyJson={tableNewQtyJson}
+              />
+            </div>
+            <div className="col-auto">
+              <OrderList
+                data={data}
+                setData={setData}
+                showPdfViewer={showPdfViewer}
+                setShowPdfViewer={setShowPdfViewer}
+                setTableNewQtyJson={setTableNewQtyJson}
               />
             </div>
           </div>
@@ -222,12 +246,24 @@ export default () => {
           {
             showPdfViewer
             ?
-              <PdfViewerComponent
-                workOrderNo={invoiceNo}
-                blobDocument={ pdfBlob }
-                data={data}
-                setPsPdfKitInstance={setPsPdfKitInstance}
-              />
+              // <PdfViewerComponent
+              //   workOrderNo={invoiceNo}
+              //   blobDocument={ pdfBlob }
+              //   data={data}
+              //   setPsPdfKitInstance={setPsPdfKitInstance}
+              // />
+
+                data.documentIsSigned === 'Y'
+                ?
+                  <div className="d-flex justify-content-center overflow-auto vh-100 shadow bg-secondary">
+                    <Document file={`data:application/pdf;base64,${data.pdf.base64 ?? ''}`} options={options}>
+                      {Array.from(new Array(numPages), (el, index) => (
+                        <Page key={`page_${index + 1}`} pageNumber={index + 1} className="border mb-1" />
+                      ))}
+                    </Document>
+                  </div>
+                :
+                  <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data.rawData)}</PDFViewer>
             :
             null
           }

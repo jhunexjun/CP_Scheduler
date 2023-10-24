@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
 
 
 const WorkOrderNotes = (props) => {
-  if (!props.notes === undefined)
-    return null;
+  // if (props.notes === undefined)
+  //   return null;
 
   // const notes = props.table.map((item, index) => {
   const notes = props.notes.map((item, index) => {

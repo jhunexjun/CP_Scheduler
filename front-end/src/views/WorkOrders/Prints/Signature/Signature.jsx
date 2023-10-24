@@ -34,6 +34,9 @@ const styles = StyleSheet.create({
 
 
 const Signature = (props) => {
+  if (props.signature === undefined)
+    return null;
+
   return <View style={styles.footer} fixed>
           <View style={{flexDirection: 'row'}}>
             <Text style={{paddingRight: 70}}>Signature X: __________________________________________________</Text>

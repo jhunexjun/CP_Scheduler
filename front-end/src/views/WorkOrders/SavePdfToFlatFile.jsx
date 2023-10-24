@@ -15,7 +15,7 @@ export default memo((props) => {
       body: formData,
     };
 
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorderpdfflatfile`, optionHeaders)
+    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/workorderpdf`, optionHeaders)
       .then((res) => {
         return res.json()
       })
@@ -34,24 +34,31 @@ export default memo((props) => {
       return;
     }
 
-    const arrayBuffer = await props.psPdfKitInstance.exportPDF({ flatten:  !props.sigPad.isEmpty() ? true : false });
-    const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+    if (props.data.documentIsSigned === 'Y') {
+      notification('Cannot modify signed document.', 'error');
+      return;
+    }
+
+    // const arrayBuffer = await props.psPdfKitInstance.exportPDF({ flatten:  !props.sigPad.isEmpty() ? true : false });
+    // const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
 
     const formData = new FormData();
     formData.append('sessionId', cookies.get('sessionId'));
-    formData.append('workOrderNo', props.workOrderNo);
+    formData.append('workorderNo', props.workorderNo);
     formData.append('documentIsSigned', props.documentIsSigned ? 'Y' : 'N');
-    formData.append('instantJsonAnnotation', JSON.stringify(await props.psPdfKitInstance.exportInstantJSON()));
-    formData.append('workOrderPdf', blob);
-    formData.append('signatureImg', !props.sigPad.isEmpty() ? props.sigPad.getTrimmedCanvas().toDataURL('image/png') : '');
+    // formData.append('instantJsonAnnotation', JSON.stringify(await props.psPdfKitInstance.exportInstantJSON()));
+    // formData.append('workOrderPdf', blob);
+    formData.append('tableJson', props.tableNewQtyJson ?? '');
+    formData.append('workorderPdf', props.documentIsSigned ? await props.pdfBlob() : '');
+    formData.append('signatureImg', props.documentIsSigned ? props.sigPad.getTrimmedCanvas().toDataURL('image/png') : '');
 
     props.setShowPdfViewer(false); // refresh the pdf viewer.
 
+    // await saveFlatPdfFileAsync(formData).then(() => props.setShowPdfViewer(true));
+
     await saveFlatPdfFileAsync(formData).then(async () => {
-      return await props.fetchWorkorderDataCb(props.workOrderNo, 'N');
-    }).then(async () => {
-      props.setShowPdfViewer(true); // refresh the pdf viewer.
-    });
+      return await props.fetchWorkorderDataCb(props.workorderNo);
+    })
   }
 
   return (

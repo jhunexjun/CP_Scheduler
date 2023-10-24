@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { memo, useState, /*useCallback*/ } from 'react';
 
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
 
@@ -6,30 +6,30 @@ import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 
 import SignatureCanvas from 'react-signature-canvas';
 import { notification, formatDateMMddYYYY } from '../../utils/util'
-import Cookies from 'universal-cookie'
+// import Cookies from 'universal-cookie'
 
-export default (props) => {
+export default memo((props) => {
   const [signPopVisible, setSignPopupVisible] = useState(false);
   // const [sigPad, setSigPad] = useState({});
-  const [emailPopupVisible, setEmailPopupVisible] = useState(false);
+  // const [emailPopupVisible, setEmailPopupVisible] = useState(false);
 
-  const cookies = new Cookies();
+  // const cookies = new Cookies();
 
-  const sendSignedWorkOrderCb = useCallback(async (formData) => {
-    // Do not add content-type. Express.js will complain.
-    const optionHeaders = {
-      method: 'POST',
-      body: formData,
-    };
+  // const sendSignedWorkOrderCb = useCallback(async (formData) => {
+  //   // Do not add content-type. Express.js will complain.
+  //   const optionHeaders = {
+  //     method: 'POST',
+  //     body: formData,
+  //   };
 
-    await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sendworkorderpdf`, optionHeaders)
-      .then((res) => {
-        return res.json()
-      })
-      .then(async (res) => {
-        notification('Sending pdf has been successful.', 'success');
-      });
-  }, []);
+  //   await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/sendworkorderpdf`, optionHeaders)
+  //     .then((res) => {
+  //       return res.json()
+  //     })
+  //     .then(async (res) => {
+  //       notification('Sending pdf has been successful.', 'success');
+  //     });
+  // }, []);
 
   function signaturePopup() {
     if (!props.showPdfViewer) {
@@ -37,7 +37,7 @@ export default (props) => {
       return;
     }
 
-    if (props.data.documentIsSigned == 'Y') {
+    if (props.data.documentIsSigned === 'Y') {
       notification('This document has already been signed.', 'error');
       return;
     }
@@ -54,17 +54,29 @@ export default (props) => {
     setSignPopupVisible(false);
     props.setShowPdfViewer(false); // refresh the pdf viewer.
 
-    await props.fetchWorkorderDataCb(props.workOrderNo, 'Y')
-      .then((newData) => {
-        // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this and do not use new Date().
-        newData.rawData.signature.dateSigned = formatDateMMddYYYY(new Date());
-        newData.rawData.signature.signature = props.sigPad.getTrimmedCanvas().toDataURL('image/png');
+    // await props.fetchWorkorderDataCb(props.workOrderNo, 'Y')
+    //   .then((newData) => {
+    //     console.log('newData: ', newData);
 
-        return newData;
-      });
+    //     // Note: This might conflict bc of db uses UTC. If there's a strict difference, check this and do not use new Date().
+    //     newData.rawData.signature.dateSigned = formatDateMMddYYYY(new Date());
+    //     newData.rawData.signature.signature = props.sigPad.getTrimmedCanvas().toDataURL('image/png');
+
+    //     return newData;
+    //   });
+
+    props.setData(prevValue => {
+      let newValue = { ...prevValue };
+      // newValue.documentIsSigned = 'Y'; // this should only be set in SavePdfToFlatFile() fetch().
+      newValue.rawData.signature.dateSigned = formatDateMMddYYYY(new Date());
+      newValue.rawData.signature.signature = props.sigPad.getTrimmedCanvas().toDataURL('image/png');
+
+      return newValue;
+    });
 
     props.setDocumentIsSigned('Y');
     props.setSigPad(null);
+    props.setShowPdfViewer(true);
   }
 
   const saveBtnSignature = {
@@ -110,4 +122,4 @@ export default (props) => {
       </Popup>
     </>
   )
-}
+})

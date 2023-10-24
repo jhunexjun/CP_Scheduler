@@ -25,9 +25,6 @@ const styles = StyleSheet.create({
 
 
 const WorkOrderHeadersContent = (props) => {
-  if (!props.hasOwnProperty('table'))
-    return null;
-
   return (
     <View style={{flexDirection: 'column'}}>
       <View style={{flexDirection: 'row'}}>
