@@ -18,6 +18,7 @@ module.exports = async function(req, res) {
   }
 }
 
+// Not being used.
 async function workorderSetLineItemsAsync(req) {
   if (!util.isSet(req.body, 'items'))
     return { status: 'Error', message: 'Payload items is missing' };

@@ -71,8 +71,8 @@ async function saveWorkorderPdfAsync(req, res) {
  */
 async function sendPdf(req) {
   try {
-    if (!util.isSet(req.body, 'workOrderNo'))
-      return { status: "Error", message: "workOrderNo body param is missing."};
+    if (!util.isSet(req.body, 'workorderNo'))
+      return { status: "Error", message: "workorderNo body param is missing."};
 
     const slsRepEmail = await workOrdersModel.getSlsRepEmailByWorkOrderNo(req.body);
     const billEmailAdrs = await workOrdersModel.getBillEmailByWorkOrderNo(req.body);
@@ -85,10 +85,10 @@ async function sendPdf(req) {
           + (billEmailAdrs == null ? ';' : `;${billEmailAdrs}`)
           , // list of receivers, separated by semi-colon.
       subject: "Scheduler System: Document has been signed.", // Subject line
-      text: `This serves as a notification that work order ${req.body.workOrderNo} has been signed.`, // plain text body
+      text: `This serves as a notification that work order ${req.body.workorderNo} has been signed.`, // plain text body
       // html: "<b>Hello world?</b>", // html body
       attachments: [{
-        filename: req.body.workOrderNo + '.pdf',
+        filename: req.body.workorderNo + '.pdf',
         content: req.file.buffer,
       }]
     });

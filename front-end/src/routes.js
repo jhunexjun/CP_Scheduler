@@ -27,7 +27,7 @@
 
 import Appointments from "views/Appointments/Appointment";
 import Sms from 'views/Sms/Sms';
-import WorkOrder from 'views/WorkOrders/WorkOrder';
+import Workorder from 'views/Workorders/Workorder';
 
 let routes = [
   // {
@@ -98,7 +98,7 @@ let routes = [
     path: "/workorders",  // i.e. /admin/sms/<sessionId>
     name: "Work Orders",
     icon: "nc-icon nc-single-copy-04",
-    component: <WorkOrder />,
+    component: <Workorder />,
     layout: "/admin",
   },
   // {

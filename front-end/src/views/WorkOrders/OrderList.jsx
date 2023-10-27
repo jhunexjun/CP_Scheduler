@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
 import UilTable from '@iconscout/react-unicons/icons/uil-table';
-import { DataGrid, Column, Selection, Paging, /*FilterRow, SearchPanel*/ Editing } from 'devextreme-react/data-grid';
+import { DataGrid, Column, Selection, Paging, Editing, Scrolling } from 'devextreme-react/data-grid';
 import { notification, isSet } from '../../utils/util'
 
 export default (props) => {
@@ -95,18 +95,17 @@ export default (props) => {
           columnAutoWidth={true}
           onSelectionChanged={(e) => onSelectionChanged(e)}
           //onCellDblClick={(e) => onCellDblClick(e)}
+          height={250}
         >
-         	<Editing
-         		allowUpdating={true}
-         		mode='cell'
-         	/>
-            <Column dataField='DESCR' allowEditing={false} caption="Descr" />
-            <Column dataField='SalesQty' allowEditing={false} caption="Qty" />
-            <Column dataField='newQty' caption="New qty" />
-            <Selection mode="single" />
-            {/*<FilterRow visible={false} />
-            <SearchPanel visible={false} />*/}
-            <Paging defaultPageSize={10} defaultPageIndex={1} />
+        <Editing allowUpdating={true} mode='cell' />
+          <Column dataField='DESCR' allowEditing={false} caption="Descr" />
+          <Column dataField='SalesQty' allowEditing={false} caption="Qty" />
+          <Column dataField='newQty' caption="New qty" />
+          <Selection mode="single" />
+          {/*<FilterRow visible={false} />
+          <SearchPanel visible={false} />*/}
+          <Scrolling mode='standard' />
+          <Paging defaultPageSize={10} defaultPageIndex={1} />
         </DataGrid>
         <ToolbarItem
           widget="dxButton"

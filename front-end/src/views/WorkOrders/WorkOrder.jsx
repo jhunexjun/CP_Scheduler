@@ -20,7 +20,6 @@ import UilListUl from '@iconscout/react-unicons/icons/uil-list-ul';
 
 import { isNullOrWhiteSpace, notification } from '../../utils/util';
 import ResendDocument from './ResendDocument';
-// import SaveAnnotation from './SaveAnnotation';
 import SavePdfToFlatFile from './SavePdfToFlatFile'
 import Signature from './Signature';
 import OrderList from './OrderList';
@@ -39,13 +38,10 @@ export default () => {
   // const [data, setData] = useState(DefaultData);
   const [data, setData] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
-  // const [signPopVisible, setSignPopupVisible] = useState(false);
   const navigate = useNavigate();
   const [workOrders, setWorkOrders] = useState([]);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [selectedWorkOrderNo, setSelectedWorkOrderNo] = useState(null);
-  // const [emailPopupVisible, setEmailPopupVisible] = useState(false);
-  // const [instantJSON, setInstantJSON] = useState(false);
 
   // const [docIsModified, setDocIsModified] = useState(false);
   const [sigPad, setSigPad] = useState(null);
@@ -106,7 +102,7 @@ export default () => {
 
   async function fetchWorkorder() {
     if (isNullOrWhiteSpace(invoiceNo)) {
-      notification('No PDF found.', 'error');
+      notification('Enter workorder number.', 'error');
       return
     }
 
@@ -192,6 +188,14 @@ export default () => {
               </span>
             </div>
             <div className="col-auto">
+              <ResendDocument
+                showPdfViewer={showPdfViewer}
+                workOrderNo={invoiceNo}
+                pdfBlob={pdfBlob}
+                documentIsSigned={documentIsSigned}
+              />
+            </div>
+            <div className="col-auto">
               <Signature
                 data={data}
                 setData={setData}
@@ -207,11 +211,12 @@ export default () => {
               />
             </div>
             <div className="col-auto">
-              <ResendDocument
+              <OrderList
+                data={data}
+                setData={setData}
                 showPdfViewer={showPdfViewer}
-                workOrderNo={invoiceNo}
-                pdfBlob={pdfBlob}
-                documentIsSigned={documentIsSigned}
+                setShowPdfViewer={setShowPdfViewer}
+                setTableNewQtyJson={setTableNewQtyJson}
               />
             </div>
             <div className="col-auto">
@@ -227,15 +232,6 @@ export default () => {
                 fetchWorkorderDataCb={fetchWorkorderDataCb}
                 pdfBlob={pdfBlob}
                 tableNewQtyJson={tableNewQtyJson}
-              />
-            </div>
-            <div className="col-auto">
-              <OrderList
-                data={data}
-                setData={setData}
-                showPdfViewer={showPdfViewer}
-                setShowPdfViewer={setShowPdfViewer}
-                setTableNewQtyJson={setTableNewQtyJson}
               />
             </div>
           </div>

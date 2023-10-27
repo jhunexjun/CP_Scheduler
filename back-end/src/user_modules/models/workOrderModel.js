@@ -12,7 +12,7 @@ module.exports = {
   saveSignature, /*getInvoiceSignature,*/
   getPdfDocument,
   saveWorkorderPdfAsync,
-  workorderSetLineItemsAsync
+  // workorderSetLineItemsAsync
 }
 
 async function getInvoice(req) {
@@ -115,31 +115,31 @@ async function getPdfDocument(workorderNo) {
   }
 }
 
-async function workorderSetLineItemsAsync(reqBody) {
-  try {
-    return await msSqlConnect.getInstance().then(pool =>
-        pool.request()
-          .input('sessionId', msSql.NVarChar, reqBody.sessionId)
-          .input('workorderNo', msSql.NVarChar, reqBody.workorderNo)
-          .input('items', msSql.NText, reqBody.items)
-          .output('outputErrNo', msSql.Int)
-          .output('outputStatusMsg', msSql.NVarChar(500))
-          .query('exec dbo.USER_SP_setWorkorderLineItems @sessionId, @workorderNo, @items, @outputErrNo OUTPUT, @outputStatusMsg OUTPUT')
-      ).then(async (result) => {
-        if (result.output.outputErrNo == 0) {
-          await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workOrderNo}.pdf`, req.file.buffer);
+// async function workorderSetLineItemsAsync(reqBody) {
+//   try {
+//     return await msSqlConnect.getInstance().then(pool =>
+//         pool.request()
+//           .input('sessionId', msSql.NVarChar, reqBody.sessionId)
+//           .input('workorderNo', msSql.NVarChar, reqBody.workorderNo)
+//           .input('items', msSql.NText, reqBody.items)
+//           .output('outputErrNo', msSql.Int)
+//           .output('outputStatusMsg', msSql.NVarChar(500))
+//           .query('exec dbo.USER_SP_setWorkorderLineItems @sessionId, @workorderNo, @items, @outputErrNo OUTPUT, @outputStatusMsg OUTPUT')
+//       ).then(async (result) => {
+//         if (result.output.outputErrNo == 0) {
+//           await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workOrderNo}.pdf`, req.file.buffer);
 
-          return { status: 'OK', message: 'New Id created.', data: result.recordset[0].newId };
-        } else {
-          return { status: 'Error', message: result.output.outputStatusMsg }
-        }
-      }).catch(err => {
-        console.log(err);
-      });
-  } catch(e) {
-    throw e;
-  }
-}
+//           return { status: 'OK', message: 'New Id created.', data: result.recordset[0].newId };
+//         } else {
+//           return { status: 'Error', message: result.output.outputStatusMsg }
+//         }
+//       }).catch(err => {
+//         console.log(err);
+//       });
+//   } catch(e) {
+//     throw e;
+//   }
+// }
 
 async function saveWorkorderPdfAsync(req) {
   try {
