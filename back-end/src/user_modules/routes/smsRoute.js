@@ -1,6 +1,7 @@
 /*
  * Route for Twilio webhook.
  */
+const { randomUUID } = require('crypto'); // Added in: node v14.17.0
 
 const smsModel  = require('../models/smsModel');
 const utils = require('../utils/util');
@@ -14,33 +15,35 @@ module.exports = async function(req, res) {
   try {
     dotenv.config();
 
-    await smsModel.insertTwilioInbox(req);
+    const id = await smsModel.insertTwilioInbox(req);    
 
-    // const twiml = new MessagingResponse();
-    // twiml.message('The Robots are coming! Head for the hills!');
-    // res.type('text/xml').send(twiml.toString());
+    // const broadcastRecipients = await smsModel.getBroadcastRecipients(); // not being used.
 
-    // const broadcastRecipients = await smsModel.getBroadcastRecipients();
-
-    if (process.env.SMS_ARRIVE_SMS_NOTIF.toLowerCase() === 'true') {
+    if (process.env.SMS_ARRIVE_SMS_NOTIF.toLowerCase() == 'true') {
       const broadcastRecipients = process.env.SMS_ARRIVE_SMS_RECIPIENTS.split(';');
       const sms = `Scheduler notification: A new text message has arrived!`;
 
-      broadcastRecipients.forEach(async (item) => {
-        const messageSid = await utils.sendSms(item.mobileNo, sms);
+      broadcastRecipients.forEach(async (mobileNumber) => {
+        const messageSid = await utils.sendSms(mobileNumber, sms); // send it with Twilio.
+
         const data = {
-          recipient: item.mobileNo,
+          sessionId: randomUUID(),
+          recipient: mobileNumber,
           smsMessage: sms,
-          smsStatus: 'Sent',
+          // smsStatus: 'Sent',
         }
 
-        await smsModel.insertSms(data, messageSid, 'Sent');
+        await smsModel.insertSms2(data, messageSid, 'Sent', 'N'); // after sending the SMS, record it to database.
       });
     }
 
     // After broadcasting through SMS, send an email to notify if true.
-    if (process.env.SMS_ARRIVE_EMAIL_NOTIF.toLowerCase() === 'true')
+    if (process.env.SMS_ARRIVE_EMAIL_NOTIF.toLowerCase() == 'true')
       await sendEmail();
+
+    const twiml = new MessagingResponse();
+    twiml.message(`Successfully received SMS. id:${id}`);
+    res.type('text/xml').send(twiml.toString());
   } catch(e) {
     console.log(e);
   }

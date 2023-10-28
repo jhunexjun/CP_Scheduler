@@ -4,21 +4,52 @@ const smsSql = require('../sqlStatements/smsSql');
 const util = require('../utils/util');
 
 module.exports = {
-  insertSms, getSms, getAllSmsByCustomer, insertTwilioInbox, insertSmsNoSession, // getBroadcastRecipients
+  insertSms,
+  getSms,
+  getAllSmsByCustomer,
+  insertTwilioInbox,
+  insertSmsNoSession,
+  // getBroadcastRecipients,
+  insertSms2
 }
 
-async function insertSms(req, messageSid, smsStatus) {
+async function insertSms(req, messageSid, smsStatus, checkSessionId = 'Y') {
   try {
     const sql = smsSql.insertSms();
     return await msSqlConnect.getInstance().then(pool => {
         return pool.request()
-          .input('sessionId', msSql.NVarChar, req.query.sessionId)
+          .input('sessionId', msSql.NVarChar, req.query.sessionId ?? '')  // empty most probably checkSession should be N;
           .input('custNo', msSql.NVarChar, req.body.customerNo)
           .input('recipient', msSql.VarChar, req.body.recipient)
           .input('sms', msSql.NVarChar, req.body.smsMessage)
           .input('messageSid', msSql.NVarChar, messageSid)
           .input('dateTimeSent', msSql.DateTime, util.formatDateMMddYYYYhhmmss(new Date()))
           .input('status', msSql.NVarChar, smsStatus) // 'Sent', 'Outbox', etc.
+          .input('checkSessionId', msSql.NVarChar(1), checkSessionId)
+          .query(sql)
+      }).then(result => {
+        return result.recordset;
+      }).catch(err => {
+        console.log(err);
+      });
+  } catch(e) {
+    throw e;
+  }
+}
+
+async function insertSms2(data, messageSid, smsStatus, checkSessionId = 'N') {
+  try {
+    const sql = smsSql.insertSms();
+    return await msSqlConnect.getInstance().then(pool => {
+        return pool.request()
+          .input('sessionId', msSql.UniqueIdentifier, data.sessionId)
+          .input('custNo', msSql.NVarChar, '')
+          .input('recipient', msSql.VarChar, data.recipient)
+          .input('sms', msSql.NVarChar, data.smsMessage)
+          .input('messageSid', msSql.NVarChar, messageSid)
+          .input('dateTimeSent', msSql.DateTime, util.formatDateMMddYYYYhhmmss(new Date()))
+          .input('status', msSql.NVarChar, smsStatus) // 'Sent', 'Outbox', etc.
+          .input('checkSessionId', msSql.NVarChar(1), checkSessionId)
           .query(sql)
       }).then(result => {
         return result.recordset;
@@ -116,9 +147,7 @@ async function insertTwilioInbox(req) {
           .input('from', msSql.NVarChar, req.body.From)
           .input('apiVersion', msSql.NVarChar, req.body.ApiVersion)
           .query(sql)
-      }).then(result => {
-        return result.recordset;
-      }).catch(err => {
+      }).then(result => result.recordset).catch(err => {
         console.log(err);
       });
   } catch(e) {

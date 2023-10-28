@@ -9,7 +9,8 @@ function insertSms() {
             '@sms,' +
             '@messageSid,' +
             '@dateTimeSent,' +
-            '@status';
+            '@status,' +
+            '@checkSessionId';
 }
 
 function getSms() {
