@@ -37,6 +37,7 @@ async function insertSms(req, messageSid, smsStatus, checkSessionId = 'Y') {
   }
 }
 
+/*I created this one bc the 1st one is using req to populate. Integrate them in the future. */
 async function insertSms2(data, messageSid, smsStatus, checkSessionId = 'N') {
   try {
     const sql = smsSql.insertSms();
@@ -74,11 +75,11 @@ async function insertSmsNoSession(data, messageSid, smsStatus) {
           .input('dateTimeSent', msSql.DateTime, util.formatDateMMddYYYYhhmmss(new Date()))
           .input('status', msSql.NVarChar, data.smsStatus) // 'Sent', 'Outbox', etc.
           .query(sql)
-      }).then(result => {
-        return result.recordset;
-      }).catch(err => {
-        console.log(err);
-      });
+      }).then(result =>
+        result.recordset
+      ).catch(err =>
+        console.log(err)
+      );
   } catch(e) {
     throw e;
   }
