@@ -7,5 +7,5 @@ coverage
 
 # user-defined
 .env_production
-.env*
+.env
 files/workorders/
