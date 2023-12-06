@@ -113,3 +113,9 @@ developing the system. You may update the node_modules as well if that's the cas
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+
+# Upgrades
+
+1. The latest node.js version it can use is 16.13.0.
+2. In the development you can install node version manager aka nvm. Now I'm using , version 16.13.0. It's the last version that webpack can build. But the last one I used for long time was v14.9.1. if you want to use version higher than the aforementioned, try solving by applying from here: https://stackoverflow.com/questions/69692842/error-message-error0308010cdigital-envelope-routinesunsupported.
