@@ -179,12 +179,12 @@ export default () => {
             </div>
             <div className="col-auto">
               <span onClick={ async () => await fetchWorkorder() } style={{cursor: 'pointer'}} title="Show a workorder">
-                <UilSearchAlt size="20" color="#61DAFB" />
+                <UilSearchAlt size="20" color="#38A5E4" />
               </span>
             </div>
             <div className="col-auto">
               <span onClick={ async () => await showWorkorderList() } style={{cursor: 'pointer'}} title="Show the list of workorders" >
-                <UilListUl size="20" color="#61DAFB" />
+                <UilListUl size="20" color="#38A5E4" />
               </span>
             </div>
             <div className="col-auto">

@@ -13,7 +13,7 @@ const app = express(),
 //     res.sendFile(HTML_FILE)
 // })
 
-app.use(bodyParser());  // body parse has been separated from express default installation.
+app.use(bodyParser());  // JLM: body parse has been separated from express default installation.
 
 
 // User-defined;

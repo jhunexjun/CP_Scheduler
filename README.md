@@ -5,9 +5,9 @@ There's no built-in scheduler with Counterpoint so this was built on top of it. 
 ## Installation
 
 Install the following
-1. node.js at least version v14.17.5.
-2. Any code editor like Visual Studio Code. But me I use Sublime 3.
-3. $ npm install pm2@latest -g
+1. node.js at least version `14.17.5`. -- I now use `16.13.0`.
+2. Any code editor like Visual Studio Code. But me I use Sublime 3. It won't matter.
+3. `$ npm install pm2@latest -g`. 
 4. After npm installation, copy the pspdfkit/dist/pspdfkit-lib/ to PUBLIC/static/js folder. If the dir do not exists, create them.
 
 ## Optional Installtion
@@ -32,14 +32,14 @@ clear && npm run buildDev && npm start
 ```
 From front-end folder run
 ```bash
-clear && npm start
+$ clear && npm start
 ```
 
 ## Running production.
 From back-end folder run
 
 ```bash
-npm run buildProd
+$ npm run buildProd
 ```
 it will create compiled files to dist/ folder.
 Then using pm2 as process management, run if not yet installed.
@@ -48,7 +48,7 @@ Note: we do not use pm2 anymore. node-windows is better bc it creates windows se
 	Just put the node_modules along side with /dist folder.
 	Front-end don't needs the node_modules.
 ```bash
-npm install pm2@latest -g
+$ npm install pm2@latest -g
 ```
 If installed already.
 ```bash

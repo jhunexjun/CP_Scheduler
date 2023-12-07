@@ -63,7 +63,7 @@ export default memo((props) => {
 
   return (
     <span onClick={async () => { await savePdfAsync() }} style={{cursor: 'pointer'}} title="Save pdf" >
-      <UilNotes size="20" color="#61DAFB" />
+      <UilNotes size="20" color="#38A5E4" />
     </span>
   );
 })

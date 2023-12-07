@@ -27,7 +27,7 @@
 
 import Appointments from "views/Appointments/Appointment";
 import Sms from 'views/Sms/Sms';
-import Workorder from 'views/Workorders/Workorder';
+import Workorder from 'views/Workorders';
 
 let routes = [
   // {

@@ -75,7 +75,7 @@ const ResendDocument = (props) => {
   return (
     <>
       <span onClick={showPopup} style={{cursor: 'pointer'}} title="Re-send PDF to clients." >
-        <UilEnvelopeSend size="20" color="#61DAFB" />
+        <UilEnvelopeSend size="20" color="#38A5E4" />
       </span>
       <Popup
         visible={showResendDocPopup}

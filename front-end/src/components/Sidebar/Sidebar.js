@@ -23,16 +23,9 @@ import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
 
 // import logo from "logo.svg";
-// import logo from "../../assets/compuTant/img/total-offroad-more-transparent.png";
-// import logo from "../../assets/compuTant/img/POS_highway_square_logo.jpg";
-// import logo from "../../assets/compuTant/img/pos_highway_green.png";
-// import logo from "../../assets/compuTant/img/poshighway-logo2021-3.jpg";
-// import logo from "../../assets/compuTant/img/POS Highway - CompuTant Logo Green.png";
-import logo from "../../assets/compuTant/img/POS Highway - CompuTant Logo White.png";
+import logo from "../../assets/compuTant/img/poshighway-logo_black_green.jpg";
+// import logo from "../../assets/compuTant/img/POS Highway - CompuTant Logo White.png";
 // import logo from "../../assets/compuTant/img/POS Highway - CompuTant Logo Black.png";
-// import logo from "../../assets/compuTant/img/poshighway-logo2021-3.png";
-// import logo from "../../assets/compuTant/img/POS Highway New Logo[702].png";
-// import logo from "../../assets/compuTant/img/POS Highway New Logo.png";
 import './sidebar.css';
 
 var ps;

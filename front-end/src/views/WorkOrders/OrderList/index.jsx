@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { Popup, ToolbarItem } from 'devextreme-react/popup';
 import UilTable from '@iconscout/react-unicons/icons/uil-table';
-import { DataGrid, Column, Selection, Paging, Editing, Scrolling } from 'devextreme-react/data-grid';
-import { notification, isSet } from '../../utils/util'
+import { DataGrid, Column, Selection, Paging, Editing, Scrolling, Lookup } from 'devextreme-react/data-grid';
+import { notification, isSet } from '../../../utils/util'
+
+import { modifyReason } from './ModifyReasonData';
 
 export default (props) => {
 	const [popupVisible, setPopupVisible] = useState(false);
 
 	const dataGridRef = React.createRef();
 
-	// console.log('props.data: ', props.data);
+	// function onSelectionChanged(e) {
 
-	function onSelectionChanged(e) {
-
-	}
+	// }
 
 	// function onCellDblClick(e) {
 
@@ -41,7 +41,7 @@ export default (props) => {
     if (updatedDataGrid.length > 0) {
       const tableArray = [];
 
-      updatedDataGrid.forEach((current, index) => {
+      updatedDataGrid.forEach((current) => {
         if (current.newQty === null || current.newQty === undefined)
           return;
 
@@ -49,13 +49,12 @@ export default (props) => {
           itemNo: current.ITEM_NO,
           descr: current.DESCR,
           SalesQty: current.SalesQty,
-          newQty: current.newQty
+          newQty: current.newQty,
+          reasonId: current.reasonId
         }
 
         tableArray.push(newQtyTable);
       });
-
-      // console.log('tableArray: ', tableArray);
 
       props.setTableNewQtyJson(JSON.stringify(tableArray));
     }
@@ -79,12 +78,12 @@ export default (props) => {
 	return (
 		<>
       <span onClick={ () => onClickPopup() } style={{cursor: 'pointer'}} title='Modify order item qty.'>
-        <UilTable size="20" color="#61DAFB" />
+        <UilTable size="20" color="#38A5E4" />
       </span>
 
       <Popup
         visible={popupVisible}
-        width={400}
+        width={800}
         height={380}
         hideOnOutsideClick={true}
         showCloseButton={false}
@@ -93,20 +92,24 @@ export default (props) => {
         	ref={dataGridRef}
           dataSource={isSet(props.data.rawData, 'table') ? props.data.rawData.table : [] }
           columnAutoWidth={true}
-          onSelectionChanged={(e) => onSelectionChanged(e)}
+          // onSelectionChanged={(e) => onSelectionChanged(e)}
           //onCellDblClick={(e) => onCellDblClick(e)}
           height={250}
         >
-        <Editing allowUpdating={true} mode='cell' />
+          <Editing allowUpdating={true} mode='cell' />
+          <Paging defaultPageSize={10} defaultPageIndex={1} />
+          <Scrolling mode='standard' />
+          <Selection mode="single" />
+
           <Column dataField='DESCR' allowEditing={false} caption="Descr" />
           <Column dataField='SalesQty' allowEditing={false} caption="Qty" />
           <Column dataField='newQty' caption="New qty" />
-          <Selection mode="single" />
-          {/*<FilterRow visible={false} />
-          <SearchPanel visible={false} />*/}
-          <Scrolling mode='standard' />
-          <Paging defaultPageSize={10} defaultPageIndex={1} />
+
+          <Column dataField="reasonId" caption="Reason" width={125}>
+            <Lookup dataSource={modifyReason} valueExpr="id" displayExpr="descr" />
+          </Column>
         </DataGrid>
+
         <ToolbarItem
           widget="dxButton"
           toolbar="bottom"

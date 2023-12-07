@@ -95,7 +95,7 @@ export default memo((props) => {
   return (
     <>
       <span onClick={ () => signaturePopup() } style={{cursor: 'pointer'}} title="Sign document" >
-        <UilEdit size="20" color="#61DAFB" />
+        <UilEdit size="20" color="#38A5E4" />
       </span>
 
       <Popup
