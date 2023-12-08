@@ -45,6 +45,18 @@ const Workorder = (props) => {
     const tableNewQty = [];
 
     updatedDataGrid.every((current) => {
+      if (isNaN(current.newQty)) {
+        allowSave = false;
+        notification('New qty must contains number only.', 'error');
+        return false;
+      }
+
+      if (parseFloat(current.newQty) < 0) {
+        allowSave = false;
+        notification('New qty must be greater than zero.', 'error');
+        return false;
+      }
+
       // Disregard same qty but allow saving.
       if (parseFloat(current.SalesQty) === parseFloat(current.newQty)) {
         props.setData(prevData => {
@@ -113,7 +125,7 @@ const Workorder = (props) => {
 
   const resetBtn = {
     text: 'Reset',
-    onClick: async () => await props.fetchWorkorder()
+    onClick: async () => await props.fetchWorkorder() // Resets from the server.
   }
 
 	const closeBtn = {

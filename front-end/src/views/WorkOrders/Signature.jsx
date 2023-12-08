@@ -99,6 +99,7 @@ export default memo((props) => {
       </span>
 
       <Popup
+        title="Signature"
         visible={signPopVisible}
         width={400}
         height={380}>

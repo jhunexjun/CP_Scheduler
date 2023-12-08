@@ -82,7 +82,10 @@ async function getSlsRepEmailByWorkOrderNo(reqBody) {
           .query('select EMAIL_ADRS_1 from SY_USR where USR_ID = (select SLS_REP from PS_DOC_HDR where TKT_NO = @workOrderNo)')
       }).then(result => {
         // result.recordset:  [ { EMAIL_ADRS_1: null } ]
-        return result.recordset[0].EMAIL_ADRS_1;
+        if (result.recordset.length > 0)
+          return result.recordset[0].EMAIL_ADRS_1;
+        else
+          return null;
       }).catch(err => {
         console.log(err);
       });

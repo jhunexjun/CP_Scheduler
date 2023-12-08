@@ -79,6 +79,9 @@ export default () => {
         setDocumentIsSigned(response.data.documentIsSigned === 'Y');
         setShowPdfViewer(true);
 
+        if (response.data.documentIsSigned !== 'Y')
+          initializeModifiedQty(response.data.rawData.table);
+
         return response.data;
       });
   }, []);
@@ -107,6 +110,26 @@ export default () => {
 
     setShowPdfViewer(false);
     await fetchWorkorderDataCb(invoiceNo);
+  }
+
+  // We need to initialize modified qty fetched from the server if not and you Save, data is lost.
+  function initializeModifiedQty(table) {
+    const tableNewQty = [];
+
+    table?.every((current) => {
+      let newQtyTable = {
+        itemNo: current.ITEM_NO,
+        descr: current.DESCR,
+        SalesQty: current.SalesQty,
+        newQty: current.newQty,
+        reasonId: current.reasonId
+      }
+
+      tableNewQty.push(newQtyTable);
+      return true;
+    });
+
+    setTableNewQtyJson(JSON.stringify(tableNewQty));
   }
 
   const selectButtonOptions = {
