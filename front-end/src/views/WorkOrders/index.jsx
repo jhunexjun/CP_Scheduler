@@ -112,7 +112,7 @@ export default () => {
     await fetchWorkorderDataCb(invoiceNo);
   }
 
-  // We need to initialize modified qty fetched from the server if not and you Save, data is lost.
+  // We need to initialize modified qty fetched from the server, if not, when Saved, data is lost.
   function initializeModifiedQty(table) {
     const tableNewQty = [];
 

@@ -221,7 +221,7 @@ export default () => {
 
   function signaturePopup() {
     if (!showPdfViewer) {
-      notification('Retrieve work order first.', 'error');
+      notification('Retrieve workorder first.', 'error');
       return;
     }
 
@@ -268,7 +268,7 @@ export default () => {
         <div className="col">
           <div className="row g-3 align-items-center">
             <div className="col-auto">
-              <label htmlFor="inputInvoiceNo" className="col-form-label">Work order #</label>
+              <label htmlFor="inputInvoiceNo" className="col-form-label">Workorder #</label>
             </div>
             <div className="col-auto">
               <input type="text" id="inputInvoiceNo" className="form-control" value={invoiceNo} onChange={(e) => setInvoiceNo(e.target.value)} />
@@ -343,7 +343,7 @@ export default () => {
               onCellDblClick={async (e) => await onCellDblClick(e)}>
                 <Column dataField="BILL_NAM" caption="Customer Name" />
                 <Column dataField="BILL_PHONE_1" caption="Phone" />
-                <Column dataField="TKT_NO" caption="Work order #" />
+                <Column dataField="TKT_NO" caption="Workorder #" />
                 <Column dataField="TKT_DAT" dataType="date" caption="Date" />
                 <Column dataField="USR_MAKE" caption="Car make" />
                 <Column dataField="USR_MODEL" caption="Car model" />
@@ -390,7 +390,7 @@ export default () => {
             visible={emailPopupVisible}
             width={350}
             height={340}>
-              Do you want to send an e-mail the signed work order?
+              Do you want to send an e-mail the signed workorder?
               <ToolbarItem
                 widget="dxButton"
                 toolbar="bottom"

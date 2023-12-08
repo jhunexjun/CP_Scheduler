@@ -1,4 +1,4 @@
-/* Note: JLM: Being used by Appointment and Work Orders. So be careful in modifying. */
+/* Note: JLM: Being used by Appointment and Workorders. So be careful in modifying. */
 
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 

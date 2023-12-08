@@ -96,7 +96,7 @@ let routes = [
   },
   {
     path: "/workorders",  // i.e. /admin/sms/<sessionId>
-    name: "Work Orders",
+    name: "Workorders",
     icon: "nc-icon nc-single-copy-04",
     component: <Workorder />,
     layout: "/admin",

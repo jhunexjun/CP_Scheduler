@@ -250,7 +250,7 @@ const Sched = ({
 
 		form.option('items', [
 			{
-				label: { text: 'Work order #', },
+				label: { text: 'Workorder #', },
 				editorType: 'dxSelectBox',
 				dataField: 'invoiceNo',
 				isRequired: true,
@@ -298,7 +298,7 @@ const Sched = ({
 				},
 			},
 			{
-				label: { text: 'Work order details', },
+				label: { text: 'Workorder details', },
 				name: 'workOrderDetails',
 				editorType: 'dxTextArea',
 				colSpan: 2,
@@ -310,7 +310,7 @@ const Sched = ({
 			},
 			{
 				label: { text: 'Subject' },
-				name: 'subject',	// 'name' is being used by Work Order # onValueChanged() form.updateData('subject', (invoice && invoice.serviceType) || '');
+				name: 'subject',	// 'name' is being used by Workorder # onValueChanged() form.updateData('subject', (invoice && invoice.serviceType) || '');
 				dataField: 'text',
 				editorType: 'dxTextBox',
 				colSpan: 2,

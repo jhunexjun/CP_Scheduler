@@ -44,7 +44,7 @@ async function sendPdf(req) {
         + (billEmailAdrs == null ? ';' : `;${billEmailAdrs}`)
         , // list of receivers, separated by semi-colon.
     subject: "Scheduler System: Document has been signed.", // Subject line
-    text: `This serves as a notification that work order ${req.body.workOrderNo} has been signed.`, // plain text body
+    text: `This serves as a notification that workorder ${req.body.workOrderNo} has been signed.`, // plain text body
     // html: "<b>Hello world?</b>", // html body
     attachments: [{
       filename: req.body.workOrderNo + '.pdf',
