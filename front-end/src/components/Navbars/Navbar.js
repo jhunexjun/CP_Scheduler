@@ -140,13 +140,13 @@ function Header(props) {
       });
   }, []);
 
-  useEffect(() => {
-    let notificationsTimer = fetchNotificationsTimer();
+  // useEffect(() => {
+  //   let notificationsTimer = fetchNotificationsTimer();
 
-    return () => {
-      clearInterval(notificationsTimer);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(notificationsTimer);
+  //   };
+  // }, []);
 
   function fetchNotificationsTimer() {
     return setInterval(async () => {

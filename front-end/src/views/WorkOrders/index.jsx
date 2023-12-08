@@ -35,7 +35,6 @@ const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
 export default () => {
   const [invoiceNo, setInvoiceNo] = useState(''); // invoiceNo = workorder no.
-  // const [data, setData] = useState(DefaultData);
   const [data, setData] = useState({});
   const [popupVisible, setPopupVisible] = useState(false);
   const navigate = useNavigate();
@@ -217,6 +216,7 @@ export default () => {
                 showPdfViewer={showPdfViewer}
                 setShowPdfViewer={setShowPdfViewer}
                 setTableNewQtyJson={setTableNewQtyJson}
+                fetchWorkorder={fetchWorkorder}
               />
             </div>
             <div className="col-auto">

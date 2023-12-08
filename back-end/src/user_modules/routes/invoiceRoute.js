@@ -26,7 +26,6 @@ module.exports = async function(req, res) {
                     data: {
                       pdf: {
                         base64: base64Pdf,
-                        // annotation: result[0].annotation
                       },
                       rawData: null,
                       documentIsSigned: 'Y',  // We assume this is signed because we get the item from an actual file.
@@ -59,9 +58,6 @@ async function sendRawDataAsync(req, res) {
     }
 
     const workOrderNotes = await workOrderModel.getInvoiceNotes(req);
-
-    // const result = await workOrderModel.getPdfDocument(req.query.workOrderNo);
-
     const x = {
                 table: tableData,
                 notes: workOrderNotes,
@@ -72,7 +68,6 @@ async function sendRawDataAsync(req, res) {
                   signature: '',
                   dateSigned: '',
                 },
-                // annotations: result.length > 0 ? result[0].annotations : null
               }
 
     res.json({ status: 'OK', data: {pdf: null, rawData: x, documentIsSigned: 'N'} });

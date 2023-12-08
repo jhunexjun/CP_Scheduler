@@ -177,9 +177,17 @@ async function saveWorkorderPdfAsync(req) {
                     table.columns.add('itemNo', msSql.VarChar(20), { nullable: false });
                     table.columns.add('descr', msSql.VarChar(30), { nullable: false });
                     table.columns.add('qty', msSql.Decimal(15, 4), { nullable: true });
+                    table.columns.add('reasonId', msSql.SmallInt(2), { nullable: true });
 
-                    for (let x = 0; x < tableJsonObj.length; x++)
-                      table.rows.add(req.body.workorderNo, x, tableJsonObj[x].itemNo, tableJsonObj[x].descr, tableJsonObj[x].newQty ?? null);
+                    for (let x = 0; x < tableJsonObj.length; x++) {
+                      table.rows.add(req.body.workorderNo,
+                                      x,
+                                      tableJsonObj[x].itemNo,
+                                      tableJsonObj[x].descr,
+                                      tableJsonObj[x].newQty,
+                                      tableJsonObj[x].reasonId
+                                    ?? null);
+                    }
 
                     const request = new msSql.Request();
                     await request.bulk(table);

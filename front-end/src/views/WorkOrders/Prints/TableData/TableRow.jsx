@@ -29,6 +29,15 @@ const TableRow = (props) => {
     return foundReason ? foundReason.descr : '';
   }
 
+  function showReason(item) {
+    if (getReason(item) === '')
+      return;
+
+    return (<Text style={{color: 'red'}}>
+            { ' [' + getReason(item) + ']' }
+           </Text>)
+  }
+
   const rows = props.table.map((item, index) => {
     if (props.table.length === index + 1)
       styles.tableStyle.borderBottom = 0.5;
@@ -47,7 +56,10 @@ const TableRow = (props) => {
           <View style={styles.tableHeaders}>
             <Text style={[{width: 30}, styles.text2]}>{ index + 1 }</Text>
             <Text style={[{width: 80}, styles.text2]}>{ item.ITEM_NO }</Text>
-            <Text style={[{width: 300}, styles.text2]}>{ item.DESCR + ' [' + getReason(item) + ']' }</Text>
+            <Text style={[{width: 300}, styles.text2]}>
+              { item.DESCR }
+              { showReason(item) }
+            </Text>
             <Text style={[{width: 50, textAlign: 'right'}, styles.text2]}>{ (item.ITEM_TYP === 'S') ? item.hours.toFixed(2) : '' }</Text>
             <Text style={[{width: 50, textAlign: 'right'}]}>{ item.SalesQty }</Text>
             <Text style={[{width: 50, textAlign: 'right'}, styles.text2]}>{ item.newQty }</Text>
