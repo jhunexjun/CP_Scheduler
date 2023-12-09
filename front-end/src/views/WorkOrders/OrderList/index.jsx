@@ -38,6 +38,7 @@ const Workorder = (props) => {
 		props.setShowPdfViewer(false);
 
 		const updatedDataGrid = dataGridRef.current.instance.getDataSource().items();
+    // const updatedDataGrid = props.data.rawData.table;
 
     if (updatedDataGrid.length === 0)
       return;
@@ -81,11 +82,10 @@ const Workorder = (props) => {
         if (current.reasonId !== 0) {
           allowSave = false;
           notification('Please enter qty in every reason', 'error');
+          props.setShowPdfViewer(true);
           return false;
         }
       }
-
-      console.log('current.newQty: ', current);
 
       if ((current.newQty !== null && current.newQty !== undefined)
           && !isSet(current, 'reasonId')) {
@@ -154,7 +154,7 @@ const Workorder = (props) => {
           //onCellDblClick={(e) => onCellDblClick(e)}
           height={250}
         >
-          <Editing allowUpdating={true} mode='cell' />
+          <Editing allowUpdating={true} mode="batch" /*mode='cell'*/ />
           <Paging defaultPageSize={10} defaultPageIndex={1} />
           <Scrolling mode='standard' />
           <Selection mode="single" />

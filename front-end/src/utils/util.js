@@ -127,14 +127,14 @@ function formatDateMMddYYYYhhmm(date) {
 }
 
 function notification(message, type) {
-		notify({
-			message: message,
-			position: {
-				my: 'center middle',
-				at: 'center middle',
-			},
-		}, type, 3000);
-	}
+	notify({
+		message: message,
+		position: {
+			my: 'center middle',
+			at: 'center middle',
+		},
+	}, type, 3000);
+}
 
 
 export { getRandomColor, uriEncode, isSet, isSetScalar, extractSessionId, formatDateMMddYYYY, formatDateMMddYYYYhhmm, isNullOrWhiteSpace, notification, }

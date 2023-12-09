@@ -10,8 +10,6 @@ import 'react-pdf/dist/Page/AnnotationLayer.css';
 import { PDFViewer, pdf } from '@react-pdf/renderer';
 import workOrderDocumentContainer from './Prints/WorkOrderDocumentContainer';
 
-// import PdfViewerComponent from '../../components/PdfViewerComponent';
-
 import JsBarcode from 'jsbarcode';
 
 // See it live, https://iconscout.com/unicons/free-line-icons
@@ -29,24 +27,20 @@ import { Popup, ToolbarItem } from 'devextreme-react/popup';
 // import ScrollView from 'devextreme-react/scroll-view';
 import { DataGrid, Column, Selection, Paging, FilterRow, SearchPanel } from 'devextreme-react/data-grid';
 
-// import DefaultData from './DefaultData';
-
 const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
 export default () => {
   const [invoiceNo, setInvoiceNo] = useState(''); // invoiceNo = workorder no.
   const [data, setData] = useState({});
-  const [popupVisible, setPopupVisible] = useState(false);
+  const [showWorkorders, setShowWorkorders] = useState(false);
   const navigate = useNavigate();
   const [workOrders, setWorkOrders] = useState([]);
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [selectedWorkOrderNo, setSelectedWorkOrderNo] = useState(null);
 
-  // const [docIsModified, setDocIsModified] = useState(false);
   const [sigPad, setSigPad] = useState(null);
   // Note: data.documentIsSigned is different which is from the server. Below is local only. Don't use interchangeably.
   const [documentIsSigned, setDocumentIsSigned] = useState(false);
-  // const [psPdfKitInstance, setPsPdfKitInstance] = useState(null);
   const [tableNewQtyJson, setTableNewQtyJson] = useState(null);
 
   const cookies = new Cookies();
@@ -139,19 +133,17 @@ export default () => {
 
   const closeButtonOptions = {
     text: 'Close',
-    onClick: () => { setPopupVisible(false) },
+    onClick: () => { setShowWorkorders(false) },
   }
 
   async function hideAndSelect() {
     setInvoiceNo(selectedWorkOrderNo);
-    setPopupVisible(false);
+    setShowWorkorders(false);
     await fetchWorkorder();
   }
 
   async function showWorkorderList() {
-    // setShowPdfViewer(false);
-
-    setPopupVisible(true);
+    setShowWorkorders(true);
     await fetchWorkorderListCb();
   }
 
@@ -166,16 +158,12 @@ export default () => {
   async function onCellDblClick(e) {
     setSelectedWorkOrderNo(e.values[2]);
     setInvoiceNo(e.values[2]);
-    setPopupVisible(false);
+    setShowWorkorders(false);
     setShowPdfViewer(false);
     await fetchWorkorder();
   }
 
   const pdfBlob = async () => await pdf(workOrderDocumentContainer(data.rawData)).toBlob();
-
-  // function onDocumentLoadSuccess(nextNumPages) {
-  //   setNumPages(nextNumPages ?? 0);
-  // }
 
   const options = {
     cMapUrl: '/cmaps/',
@@ -225,11 +213,8 @@ export default () => {
                 setShowPdfViewer={setShowPdfViewer}
                 workOrderNo={invoiceNo}
                 setDocumentIsSigned={setDocumentIsSigned}
-                // psPdfKitInstance={psPdfKitInstance}
-                // fetchWorkorderDataCb={fetchWorkorderDataCb}
                 sigPad={sigPad}
                 setSigPad={setSigPad}
-                //setDocIsModified={setDocIsModified}
               />
             </div>
             <div className="col-auto">
@@ -245,10 +230,8 @@ export default () => {
             <div className="col-auto">
               <SavePdfToFlatFile
                 data={data}
-                // setData={setData}
                 showPdfViewer={showPdfViewer}
                 setShowPdfViewer={setShowPdfViewer}
-                //psPdfKitInstance={psPdfKitInstance}
                 workorderNo={invoiceNo}
                 documentIsSigned={documentIsSigned}
                 sigPad={sigPad}
@@ -265,24 +248,17 @@ export default () => {
           {
             showPdfViewer
             ?
-              // <PdfViewerComponent
-              //   workOrderNo={invoiceNo}
-              //   blobDocument={ pdfBlob }
-              //   data={data}
-              //   setPsPdfKitInstance={setPsPdfKitInstance}
-              // />
-
-                data.documentIsSigned === 'Y'
-                ?
-                  <div className="d-flex justify-content-center overflow-auto vh-100 shadow bg-secondary">
-                    <Document file={`data:application/pdf;base64,${data.pdf.base64 ?? ''}`} options={options}>
-                      {Array.from(new Array(numPages), (el, index) => (
-                        <Page key={`page_${index + 1}`} pageNumber={index + 1} className="border mb-1" />
-                      ))}
-                    </Document>
-                  </div>
-                :
-                  <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data.rawData)}</PDFViewer>
+              data.documentIsSigned === 'Y'
+              ?
+                <div className="d-flex justify-content-center overflow-auto vh-100 shadow bg-secondary">
+                  <Document file={`data:application/pdf;base64,${data.pdf.base64 ?? ''}`} options={options}>
+                    {Array.from(new Array(numPages), (el, index) => (
+                      <Page key={`page_${index + 1}`} pageNumber={index + 1} className="border mb-1" />
+                    ))}
+                  </Document>
+                </div>
+              :
+                <PDFViewer width={'100%'} height={700}>{workOrderDocumentContainer(data.rawData)}</PDFViewer>
             :
             null
           }
@@ -291,14 +267,12 @@ export default () => {
       <div className="row">
         <div className="col">
           <Popup
-            visible={popupVisible}
-            //onHiding={this.hideInfo}
+            visible={showWorkorders}
             dragEnabled={false}
             hideOnOutsideClick={true}
             showCloseButton={false}
             showTitle={true}
-            // title="Select"
-            // container=".dx-viewport"
+            title="Workorders"
             container=".content"
             width={900}
             height={640}>
