@@ -135,7 +135,7 @@ const Workorder = (props) => {
 
 	return (
 		<>
-      <span onClick={ () => onClickPopup() } style={{cursor: 'pointer'}} title='Modify order item qty.'>
+      <span onClick={ () => onClickPopup() } style={{cursor: 'pointer'}} title='Modify qty ordered.'>
         <UilTable size="20" color="#38A5E4" />
       </span>
 
