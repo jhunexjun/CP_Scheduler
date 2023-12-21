@@ -180,6 +180,9 @@ async function saveWorkorderPdfAsync(req) {
                     table.columns.add('reasonId', msSql.SmallInt(2), { nullable: true });
 
                     for (let x = 0; x < tableJsonObj.length; x++) {
+                      if (tableJsonObj[x].reasonId === null)
+                        continue;
+
                       table.rows.add(req.body.workorderNo,
                                       x,
                                       tableJsonObj[x].itemNo,

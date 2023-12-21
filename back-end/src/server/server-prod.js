@@ -19,8 +19,8 @@ app.use(bodyParser());  // JLM: body parse has been separated from express defau
 // User-defined;
 app.use('/public/img', express.static(path.join(__dirname, '../', '/public')))
 
-const tediousConnection = require('../user_modules/dbConnections/tediousConnect')
-tediousConnection.getInstance();
+// const tediousConnection = require('../user_modules/dbConnections/tediousConnect')
+// tediousConnection.getInstance();
 
 const msSqlConnection = require('../user_modules/dbConnections/msSqlConnect')
 msSqlConnection.getInstance();

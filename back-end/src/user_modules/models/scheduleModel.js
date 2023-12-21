@@ -1,11 +1,10 @@
-const Request = require('tedious').Request;
-const TYPES = require('tedious').TYPES;
-const utils = require('../utils/util');
-
 const msSql = require('mssql');
 const msSqlConnect = require('../dbConnections/msSqlConnect');
-
 const schedulerSql = require('../sqlStatements/schedulerSql');
+
+// const Request = require('tedious').Request;
+// const TYPES = require('tedious').TYPES;
+const utils = require('../utils/util');
 
 module.exports = {
   getSchedule,
@@ -131,35 +130,48 @@ async function updateSchedule(req) {
       sql += ", subject = @subject";
     if (utils.isSet(req.body, "description"))
       sql += ", description = @description";
+
     if (utils.isSet(req.body, "allDay") && (req.body.allDay === 'true'))
       sql += ", allDay = 'Y'";
     else if (utils.isSet(req.body, "allDay") && (req.body.allDay === 'false'))
       sql += ", allDay = 'N'";
+
     if (utils.isSet(req.body, 'recurrenceRule'))
       sql += ", recurrenceRule = @recurrenceRule";
 
     sql += " where id = @id /*and sessionId = @sessionId*/";
 
-    let request = new Request(sql, (err, rowCount) => {
-      if (err)
+
+    await msSqlConnect.getInstance().then(pool => {
+        let poolRequest = pool.request();
+
+        if (utils.isSet(req.body, "subject"))
+          poolRequest.input('subject', msSql.NVarChar, req.body.subject)
+          // request.addParameter('subject', TYPES.NVarChar, req.body.subject);
+        if (utils.isSet(req.body, "utcDateFrom"))
+          poolRequest.input('utcDateFrom', msSql.DateTime, req.body.utcDateFrom)
+          // request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
+        if (utils.isSet(req.body, "utcDateTo"))
+          poolRequest.input('utcDateTo', msSql.DateTime, req.body.utcDateTo)
+          // request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
+        if (utils.isSet(req.body, "description"))
+          poolRequest.input('description', msSql.NVarChar, req.body.description)
+          // request.addParameter('description', TYPES.NVarChar, req.body.description);
+        if (utils.isSet(req.body, 'recurrenceRule'))
+          poolRequest.input('recurrenceRule', msSql.NVarChar, req.body.recurrenceRule)
+          // request.addParameter('recurrenceRule', TYPES.NVarChar, req.body.recurrenceRule);
+
+
+        // request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
+        // request.addParameter('id', TYPES.Int, parseInt(req.body.id));
+
+        poolRequest.input('invoiceNo', msSql.NVarChar, req.body.invoiceNo)
+        poolRequest.input('id', msSql.Int, parseInt(req.body.id))
+
+        return poolRequest.query(sql)
+      }).catch(err => {
         console.log(err);
-    });
-
-    if (utils.isSet(req.body, "subject"))
-      request.addParameter('subject', TYPES.NVarChar, req.body.subject);
-    if (utils.isSet(req.body, "utcDateFrom"))
-      request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
-    if (utils.isSet(req.body, "utcDateTo"))
-      request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
-    if (utils.isSet(req.body, "description"))
-      request.addParameter('description', TYPES.NVarChar, req.body.description);
-    if (utils.isSet(req.body, 'recurrenceRule'))
-      request.addParameter('recurrenceRule', TYPES.NVarChar, req.body.recurrenceRule);
-
-
-    request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
-    request.addParameter('id', TYPES.Int, parseInt(req.body.id));
-    await utils.executeRequestAsync(request); // We just assume running sql was successful bc it's not capturing the rows affected.
+      });
 
     await updateSchedsCustomers(req);
 
@@ -167,6 +179,61 @@ async function updateSchedule(req) {
   } catch(e) {
     throw e;
   }
+
+  ///////////////////////////////
+  // try {
+    // if (utils.isSet(req.body, "utcDateFrom") && utils.isSet(req.body, "utcDateTo")) {
+    //   let retVal = datesAreValid(req.body);
+    //   if (retVal.status == "Error")
+    //     return retVal;
+    // }
+
+    // let sql = "update USR_schedules set invoiceNo = @invoiceNo, utcUpdateDate = getutcdate()";
+
+    // if (utils.isSet(req.body, "utcDateFrom"))
+    //   sql += ", utcDateFrom = @utcDateFrom";
+    // if (utils.isSet(req.body, "utcDateTo"))
+    //   sql += ", utcDateTo = @utcDateTo";
+    // if (utils.isSet(req.body, "subject"))
+    //   sql += ", subject = @subject";
+    // if (utils.isSet(req.body, "description"))
+    //   sql += ", description = @description";
+    // if (utils.isSet(req.body, "allDay") && (req.body.allDay === 'true'))
+    //   sql += ", allDay = 'Y'";
+    // else if (utils.isSet(req.body, "allDay") && (req.body.allDay === 'false'))
+    //   sql += ", allDay = 'N'";
+    // if (utils.isSet(req.body, 'recurrenceRule'))
+    //   sql += ", recurrenceRule = @recurrenceRule";
+
+    // sql += " where id = @id /*and sessionId = @sessionId*/";
+
+    // let request = new Request(sql, (err, rowCount) => {
+    //   if (err)
+    //     console.log(err);
+    // });
+
+    // if (utils.isSet(req.body, "subject"))
+    //   request.addParameter('subject', TYPES.NVarChar, req.body.subject);
+    // if (utils.isSet(req.body, "utcDateFrom"))
+    //   request.addParameter('utcDateFrom', TYPES.DateTime, req.body.utcDateFrom);
+    // if (utils.isSet(req.body, "utcDateTo"))
+    //   request.addParameter('utcDateTo', TYPES.DateTime, req.body.utcDateTo);
+    // if (utils.isSet(req.body, "description"))
+    //   request.addParameter('description', TYPES.NVarChar, req.body.description);
+    // if (utils.isSet(req.body, 'recurrenceRule'))
+    //   request.addParameter('recurrenceRule', TYPES.NVarChar, req.body.recurrenceRule);
+
+
+    // request.addParameter('invoiceNo', TYPES.NVarChar, req.body.invoiceNo);
+    // request.addParameter('id', TYPES.Int, parseInt(req.body.id));
+    // await utils.executeRequestAsync(request); // We just assume running sql was successful bc it's not capturing the rows affected.
+
+    // await updateSchedsCustomers(req);
+
+    // return { status: "OK" , message: "Schedule was updated successfully" };
+  // } catch(e) {
+  //   throw e;
+  // }
 }
 
 async function updateSchedsCustomers(req) {
@@ -174,22 +241,45 @@ async function updateSchedsCustomers(req) {
     if (!utils.isSet(req.body, 'technicianIds'))
       return { status: "Error" , message: "Technician id is missing. " };
 
-    const sql = `delete USR_schedules_technicians where schedId = @schedId`;
-    let request = new Request(sql, (err, rowCount) => {
-      if (err)
+    // const sql = `delete USR_schedules_technicians where schedId = @schedId`;
+
+    return await msSqlConnect.getInstance().then(pool => {
+        return pool.request()
+          .input('schedId', msSql.Int, parseInt(req.body.id))
+          .query(`delete USR_schedules_technicians where schedId = @schedId`)
+      }).then(async () => {
+        const newArray = req.body.technicianIds.replace("'", "").split(",");
+        req.body.technicianIds = newArray;
+
+        await insertIntoSchedTechnicians(req);
+      }).catch(err => {
         console.log(err);
-    });
-    request.addParameter('schedId', TYPES.Int, parseInt(req.body.id));
-
-    await utils.executeRequestAsync(request);
-
-    const newArray = req.body.technicianIds.replace("'", "").split(",");
-    req.body.technicianIds = newArray;
-
-    await insertIntoSchedTechnicians(req);
+      });
   } catch(e) {
     throw e;
   }
+  ////////////////////////////////////////////////////
+
+  // try {
+  //   if (!utils.isSet(req.body, 'technicianIds'))
+  //     return { status: "Error" , message: "Technician id is missing. " };
+
+  //   const sql = `delete USR_schedules_technicians where schedId = @schedId`;
+  //   let request = new Request(sql, (err, rowCount) => {
+  //     if (err)
+  //       console.log(err);
+  //   });
+  //   request.addParameter('schedId', TYPES.Int, parseInt(req.body.id));
+
+  //   await utils.executeRequestAsync(request);
+
+  //   const newArray = req.body.technicianIds.replace("'", "").split(",");
+  //   req.body.technicianIds = newArray;
+
+  //   await insertIntoSchedTechnicians(req);
+  // } catch(e) {
+  //   throw e;
+  // }
 }
 
 async function insertIntoSchedTechnicians(req) {
@@ -213,16 +303,31 @@ async function insertIntoSchedTechnicians(req) {
 
 async function deleteSchedule(req) {
   try {
-    let sql = schedulerSql.deleteSchedule();
-    let request = new Request(sql, (err) => {
-      if (err)
+    return await msSqlConnect.getInstance().then(pool =>
+        pool.request()
+          .input('id', msSql.Int, parseInt(req.body.id))
+          .query(schedulerSql.deleteSchedule())
+      ).then(() => {
+        return { status: "OK" , message: "A schedule was deleted successfully" };
+      }).catch(err => {
         console.log(err);
-    });
-    request.addParameter('id', TYPES.Int, parseInt(req.body.id));
-
-    await utils.executeRequestAsync(request);
-    return { status: "OK" , message: "A schedule was deleted successfully" };
+      });
   } catch(e) {
     throw e;
   }
+
+  /////////////////////////////////////////////////
+  // try {
+  //   let sql = schedulerSql.deleteSchedule();
+  //   let request = new Request(sql, (err) => {
+  //     if (err)
+  //       console.log(err);
+  //   });
+  //   request.addParameter('id', TYPES.Int, parseInt(req.body.id));
+
+  //   await utils.executeRequestAsync(request);
+  //   return { status: "OK" , message: "A schedule was deleted successfully" };
+  // } catch(e) {
+  //   throw e;
+  // }
 }

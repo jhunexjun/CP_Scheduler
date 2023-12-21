@@ -13,6 +13,8 @@ module.exports = async function(req, res) {
 
 		const technicians = await technicianModel.getTechnicians(req);
 
+		// console.log('technicians: ', technicians);
+
 		if (technicians[0].hasOwnProperty('errorNo'))
 			res.json({ status: "Error", message: technicians[0].errMsg, data: [] });
 		else

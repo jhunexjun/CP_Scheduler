@@ -136,7 +136,7 @@ function Appointment() {
   function appendTechnicians(technicians) {
     const initTechnicians = [];
 
-    for(let x = 0; x < technicians.data.length; x++) {
+    for(let x = 0; x < technicians?.data?.length; x++) {
       let obj = {
         id: technicians.data[x].id.toString(),
         text: technicians.data[x].text,

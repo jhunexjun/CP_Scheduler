@@ -1,53 +1,53 @@
-const dbConnection = require('../dbConnections/tediousConnect');
+// const dbConnection = require('../dbConnections/tediousConnect');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
 module.exports = {
-  executeRequestAsync, executeOutputParams, isSet, isNullOrWhiteSpace, formatDateMMddYYYYhhmmss, sendSms
+  /*executeRequestAsync, executeOutputParams,*/ isSet, isNullOrWhiteSpace, formatDateMMddYYYYhhmmss, sendSms
 };
 
-async function executeRequestAsync(request) {
-  return new Promise(async (resolve, reject) => {
-    let  result = [];
+// async function executeRequestAsync(request) {
+//   return new Promise(async (resolve, reject) => {
+//     let  result = [];
 
-    request.on('row', (columns) => {
-      let entry = {};
-      columns.forEach((column) => {
-        entry[column.metadata.colName] = column.value;
-      })
+//     request.on('row', (columns) => {
+//       let entry = {};
+//       columns.forEach((column) => {
+//         entry[column.metadata.colName] = column.value;
+//       })
 
-      result.push(entry);
-    });
+//       result.push(entry);
+//     });
 
-    request.on('error', (error) => reject(error));
+//     request.on('error', (error) => reject(error));
 
-    request.on('requestCompleted', () => resolve(result));
+//     request.on('requestCompleted', () => resolve(result));
 
-    let dbCon = await dbConnection.getInstance();
+//     let dbCon = await dbConnection.getInstance();
 
-    dbCon.execSql(request);
-  });
-}
+//     dbCon.execSql(request);
+//   });
+// }
 
-function executeOutputParams(dbConnection, request){
-  return new Promise((resolve, reject) => {
-    let  result = [];
-    let entry = {};
+// function executeOutputParams(dbConnection, request){
+//   return new Promise((resolve, reject) => {
+//     let  result = [];
+//     let entry = {};
 
-    request.on('returnValue', (paramName, value, metadata) => {
-      console.log(paramName + '=', value);
-      entry[paramName] = value;
-    });
-    result.push(entry);
+//     request.on('returnValue', (paramName, value, metadata) => {
+//       console.log(paramName + '=', value);
+//       entry[paramName] = value;
+//     });
+//     result.push(entry);
 
-    request.on('error', (error) => reject(error));
+//     request.on('error', (error) => reject(error));
 
-    request.on('requestCompleted', () => resolve(result));
+//     request.on('requestCompleted', () => resolve(result));
 
-    dbConnection.execSql(request)
-  });
-}
+//     dbConnection.execSql(request)
+//   });
+// }
 
 function isSet(object, property) {
   if (object === undefined || object === null)

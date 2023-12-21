@@ -130,6 +130,14 @@ function Header(props) {
     }
   }, [location]);
 
+  useEffect(() => {
+    let notificationsTimer = fetchNotificationsTimer();
+
+    return () => {
+      clearInterval(notificationsTimer);
+    };
+  }, []);
+
   const fetchNotifications = useCallback(async () => {
     await fetch(`${process.env.REACT_APP_API_DOMAIN}/admin/notifications?sessionId=${cookies.get('sessionId')}`)
       .then((res) => {
@@ -139,14 +147,6 @@ function Header(props) {
         setNotifications(res.data);
       });
   }, []);
-
-  // useEffect(() => {
-  //   let notificationsTimer = fetchNotificationsTimer();
-
-  //   return () => {
-  //     clearInterval(notificationsTimer);
-  //   };
-  // }, []);
 
   function fetchNotificationsTimer() {
     return setInterval(async () => {

@@ -53,6 +53,7 @@ async function saveWorkorderPdfAsync(req, res) {
       try {
         await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workorderNo}.pdf`, req.file.buffer);
       } catch(e) {
+        console.log('e: ', e);
         return { status: 'Error', message: 'Something went wrong saving pdf file' }
       }
 
@@ -61,9 +62,10 @@ async function saveWorkorderPdfAsync(req, res) {
     }
 
     return { status: 'OK', message: message }
-  }
-  else
+  } else {
+    console.log('pdfSaved: ', pdfSaved);
     return { status: 'Error', message: 'Something went wrong saving pdf file' }
+  }
 }
 
 /*

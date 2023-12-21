@@ -40,8 +40,10 @@ const Workorder = (props) => {
 		const updatedDataGrid = dataGridRef.current.instance.getDataSource().items();
     // const updatedDataGrid = props.data.rawData.table;
 
-    if (updatedDataGrid.length === 0)
+    if (updatedDataGrid.length === 0) {
+      notification('No input qty found.', 'error');
       return;
+    }
 
     const tableNewQty = [];
 
@@ -59,15 +61,19 @@ const Workorder = (props) => {
       }
 
       // Disregard same qty but allow saving.
-      if (parseFloat(current.SalesQty) === parseFloat(current.newQty)) {
+      if (parseFloat(current.SalesQty) == parseFloat(current.newQty)) {
         props.setData(prevData => {
           let newData = { ...prevData }
           newData.rawData.table[0].newQty = null;
+          newData.rawData.table[0].reasonId = null;
 
           return newData;
         });
 
-        return false;
+        // let's overwrite since nothing real change.
+        current.newQty = null;
+        current.reasonId = null; 
+        // return false;
       }
 
       // Do not allow bigger than sales qty.
@@ -77,24 +83,36 @@ const Workorder = (props) => {
         return false;
       }
 
-      if ((current.newQty === null || current.newQty === undefined)
-          && isSet(current, 'reasonId')) {
-        if (current.reasonId !== 0) {
+      // if ((current.newQty === null || current.newQty === undefined)
+      if (isNaN(current.newQty) && current.reasonId != 0) {
+        // if (current.reasonId !== 0) {
           allowSave = false;
           notification('Please enter qty in every reason', 'error');
           props.setShowPdfViewer(true);
           return false;
-        }
+        // }
       }
 
-      if ((current.newQty !== null && current.newQty !== undefined)
-          && !isSet(current, 'reasonId')) {
+      // if (!isNaN(current.newQty && !isSet(current, 'reasonId')) {
+      //   allowSave = false;
+      //   notification('Please enter reason in every modified qty', 'error');
+      //   return false;
+      // }
+      //////////////////////////
+      if (!isNaN(current.newQty) && current.reasonId == 0) {
         allowSave = false;
-        notification('Please enter reason in every modified qty.', 'error');
+        notification('(1) Please enter reason in every modified qty', 'error');
+        props.setShowPdfViewer(true);
         return false;
       }
 
-      
+      if ((parseFloat(current.newQty) < parseFloat(current.SalesQty))
+            && (current.reasonId == 0)) {
+        allowSave = false;
+        notification('(2) Please enter reason in every modified qty', 'error');
+        props.setShowPdfViewer(true);
+        return false;
+      }
 
       let newQtyTable = {
         itemNo: current.ITEM_NO,
