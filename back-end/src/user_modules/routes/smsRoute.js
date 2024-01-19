@@ -3,6 +3,7 @@
  */
 const { randomUUID } = require('crypto'); // Added in: node v14.17.0
 
+const customersModel = require('../models/customersModel');
 const smsModel  = require('../models/smsModel');
 const utils = require('../utils/util');
 const dotenv = require('dotenv');
@@ -15,13 +16,20 @@ module.exports = async function(req, res) {
   try {
     dotenv.config();
 
-    const id = await smsModel.insertTwilioInbox(req);    
+    const id = await smsModel.insertTwilioInbox(req);
 
     // const broadcastRecipients = await smsModel.getBroadcastRecipients(); // not being used.
 
     if (process.env.SMS_ARRIVE_SMS_NOTIF.toLowerCase() == 'true') {
       const broadcastRecipients = process.env.SMS_ARRIVE_SMS_RECIPIENTS.split(';');
-      const sms = `Scheduler notification: A new text message has arrived!`;
+      let sms = `Scheduler notification: A new text message has arrived`;
+
+      const customer = await customersModel.getCustomerByMobileNo(req);
+      if (customer.length > 0) {
+        sms += ` from ${customer.NAM}.`;
+      } else {
+        sms += `!`;
+      }
 
       broadcastRecipients.forEach(async (mobileNumber) => {
         const messageSid = await utils.sendSms(mobileNumber, sms); // send it with Twilio.

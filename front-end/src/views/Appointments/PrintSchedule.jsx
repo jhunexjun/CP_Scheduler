@@ -7,11 +7,11 @@ import { PDFViewer } from '@react-pdf/renderer';
 import scheduleDocumentContainer from './Print/scheduleDocumentContainer';
 
 const PrintSchedule = (props) => {
-	let { popupVisible, setShowPrintPopup } = props;
+	let { popupVisible, setShowPrintPopup, startTimer } = props;
 
 	const closeButtonOptions = {
 		text: 'Close',
-		onClick: () => setShowPrintPopup(false),
+		onClick: () => { startTimer(); setShowPrintPopup(false); },
 	}
 
 	return (

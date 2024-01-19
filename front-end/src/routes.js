@@ -28,6 +28,8 @@
 import Appointments from "views/Appointments/Appointment";
 import Sms from 'views/Sms/Sms';
 import Workorder from 'views/Workorders';
+import Reports from 'views/Reports';
+import EmployeeTimeEntry from "views/Reports/EmployeeTimeEntry";
 
 let routes = [
   // {
@@ -85,6 +87,7 @@ let routes = [
     name: "Appointments",
     icon: "nc-icon nc-calendar-60",
     component: <Appointments />,
+    category: 'main',
     layout: "/admin",
   },
   {
@@ -92,6 +95,7 @@ let routes = [
     name: "SMS",
     icon: "nc-icon nc-mobile",
     component: <Sms />,
+    category: 'main',
     layout: "/admin",
   },
   {
@@ -99,6 +103,23 @@ let routes = [
     name: "Workorders",
     icon: "nc-icon nc-single-copy-04",
     component: <Workorder />,
+    category: 'main',
+    layout: "/admin",
+  },
+  {
+    path: "/reports",
+    name: "Reports",
+    icon: "nc-icon nc-single-copy-04",
+    component: <Reports />,
+    category: 'main',
+    layout: "/admin",
+  },
+  {
+    path: "/reports/employee-time-entry",
+    name: "Employee Time Entry",
+    icon: "nc-icon nc-single-copy-04",
+    component: <EmployeeTimeEntry />,
+    category: 'sub',
     layout: "/admin",
   },
   // {

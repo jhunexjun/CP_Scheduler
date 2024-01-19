@@ -33,7 +33,7 @@ const Sched = (props) => {
 
 		// }
 
-		return selectedView.toUpperCase() + ` SCHEDULE`;
+		return selectedView?.toUpperCase() + ` SCHEDULE`;
 	}
 
 

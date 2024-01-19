@@ -76,11 +76,10 @@ function Appointment() {
       .then((res) => {
         return res.json()
       })
-      .then((workOrders) => {
-        if (workOrders.status !== 'Error' ) {
-          appendWorkOrders(workOrders);
+      .then((fetchedWorkorders) => {
+        if (fetchedWorkorders.status !== 'Error' ) {
+          appendWorkOrders(fetchedWorkorders);
         } else {
-          // console.log(workOrders);
           navigate('/');
         }
       });
@@ -97,7 +96,6 @@ function Appointment() {
           navigate('/');
         }
       });
-
   } ,[]);
 
   useEffect(() => {
@@ -173,8 +171,8 @@ function Appointment() {
     setSelectBoxTechnicians(initTechnicians);
   }
 
-  function appendWorkOrders(workOrders) {
-    const initWorkOrders2 = workOrders.data.reduce((prevValue, curValue) => {
+  function appendWorkOrders(fetchedWorkorders) {
+    const initWorkOrders2 = fetchedWorkorders.data.reduce((prevValue, curValue) => {
       const { id } = curValue;
 
       if (id !== null) {
@@ -197,6 +195,7 @@ function Appointment() {
                                           (curValue.billNam === null) ? '' : curValue.billNam,
                                           ' ~ ',
                                           curValue.plateNo ?? ''),
+                scheduled: curValue.scheduled
               };
           prevValue.push(x);
         } else {
@@ -208,20 +207,6 @@ function Appointment() {
     }, []);
 
     setWorkOrders(initWorkOrders2);
-
-    // for(let x = 0; x < workOrders.data.length; x++) {
-    //  const tmp = {
-    //          id: workOrders.data[x].id.toString(),
-    //          text: workOrders.data[x].text,
-    //          text2: workOrders.data[x].id.concat(' - ', (workOrders.data[x].billNam === null) ? '' : workOrders.data[x].billNam),
-    //          // docId: workOrders.data[x].docId,
-    //          custNo: workOrders.data[x].custNo,
-    //          billNam: workOrders.data[x].billNam,
-    //        }
-    //  initWorkOrders.push(tmp);
-    // }
-    // setWorkOrders(initWorkOrders);
-    // console.log("workOrders: ", workOrders);
   }
 
   function appendScheds(scheds) {
@@ -257,9 +242,9 @@ function Appointment() {
     setCountdown(refreshInMinutes * 60);
   }
 
-  function techniciansOnValueChanged(e) {
-    filterTechnicianByTechnicianId(e.value.id);
-  }
+  // function techniciansOnValueChanged(e) {
+  //   filterTechnicianByTechnicianId(e.value.id);
+  // }
 
   function filterTechnicianByTechnicianId(technicianId) {
     let techs = [...selectBoxTechnicians];
@@ -296,7 +281,7 @@ function Appointment() {
                   searchTimeout={200}
                   minSearchLength={0}
                   showDataBeforeSearch={false}
-                  onValueChanged={(e) => techniciansOnValueChanged(e)}
+                  onValueChanged={(e) => filterTechnicianByTechnicianId(e.value.id)}
                   placeholder="Select technicians"
                   defaultValue={selectBoxTechnicians[0]}
                 />
@@ -305,7 +290,7 @@ function Appointment() {
                 <Button icon="print"
                   type="success"
                   text="Print"
-                  onClick={() => setShowPrintPopup(true)}
+                  onClick={ () => { stopTimer(); setShowPrintPopup(true); } }
                 />
               </div>
               <div className="pl-4 p-2">
@@ -318,31 +303,36 @@ function Appointment() {
           </Col>
         </Row>
         <Row>
-          <Col md="12">
+          <Col md="10">
             <Card>
               <CardBody>
                 <Scheduler scheduleData={scheduleData}
                   technicians={_technicians}
-                  workOrders={workOrders}
+                  workorders={workOrders}
                   stopTimer={stopTimer}
                   startTimer={startTimer}
                   techniciansMaster={selectBoxTechnicians}
                   setScheduleData={setScheduleData}
                   setSelectedView={setSelectedView}
                   setCurrentSchedulerDate={setCurrentSchedulerDate}
+                  // filterWorkorders={filterWorkorders}
+                  // setWorkOrders={setWorkOrders}
                 />
               </CardBody>
             </Card>
           </Col>
         </Row>
-        <div>
-          <PrintSchedule popupVisible={showPrintPopup}
-            setShowPrintPopup={setShowPrintPopup}
-            selectedView={selectedView}
-            scheduleData={scheduleData}
-            currentSchedulerDate={currentSchedulerDate}
-          />
-        </div>
+        <Row>
+          <Col>
+            <PrintSchedule popupVisible={showPrintPopup}
+              setShowPrintPopup={setShowPrintPopup}
+              selectedView={selectedView}
+              scheduleData={scheduleData}
+              currentSchedulerDate={currentSchedulerDate}
+              startTimer={startTimer}
+            />
+          </Col>
+        </Row>
       </div>
     </>
   );

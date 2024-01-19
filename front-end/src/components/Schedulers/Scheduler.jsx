@@ -1,4 +1,4 @@
-import { memo, useContext } from 'react';
+import { memo, useContext, useState, useEffect, useCallback } from 'react';
 
 import Scheduler, { Resource, View } from 'devextreme-react/scheduler';
 import Query from 'devextreme/data/query';
@@ -10,17 +10,23 @@ import { uriEncode, isSet } from '../../utils/util';
 
 import { SystemUserContext } from '../../Context/SystemUserContext';
 
+import { schedFilter } from './schedulerData';
+
+import Item from './Item';
+
 
 const Sched = ({
 				scheduleData,
 				technicians,
-				workOrders,
+				workorders,
 				stopTimer,
 				startTimer,
 				techniciansMaster,
 				setScheduleData,
 				setSelectedView,
 				setCurrentSchedulerDate,
+				// filterWorkorders
+				// setWorkOrders
 			}) => {
 	const groups = ['technicianIds'];
 
@@ -232,7 +238,7 @@ const Sched = ({
 
 
 	function getWorkOrderById(id) {
-		return Query(workOrders).filter(['id', id]).toArray()[0];
+		return Query(workorders).filter(['id', id]).toArray()[0];
 	}
 
 	function dateIsValid(dateString) {
@@ -242,6 +248,20 @@ const Sched = ({
 			return true;
 	}
 
+	// function getWorkordersByScheduled(filter) {
+	// 	return Query(workorders).filter(['scheduled', 'Y']).toArray();
+	// }
+
+	// const filterWorkorder = useCallback(filter => {
+  //   // console.log('filter: ', filter);
+
+  //   // let wo = [...workorders];
+  //   // wo.splice(0, 1);
+  //   // setWorkOrders(wo);
+  // }, [workorders])
+
+
+
 	function onAppointmentFormOpening(e) {
 		stopTimer();
 
@@ -249,15 +269,34 @@ const Sched = ({
 		const { form } = e;
 
 		form.option('items', [
+			// {
+			// 	label: { text: 'Filter by' },
+			// 	editorType: 'dxSelectBox',
+			// 	colSpan: 2,
+			// 	editorOptions: {
+			// 		width: '100%',
+			// 		items: schedFilter,
+			// 		displayExpr: 'text',
+			// 		valueExpr: 'text',
+			// 		value: schedFilter[0].text,
+			// 		onValueChanged(args) {
+			// 			// filterWorkorder(args);
+			// 			let wo = getWorkordersByScheduled(args);
+			// 			console.log('wo: ', wo);
+			// 			form.updateData('workorderNoForm', wo);
+			// 		}
+			// 	},
+			// },
 			{
 				label: { text: 'Workorder #', },
+				name: 'workorderNoForm',
 				editorType: 'dxSelectBox',
 				dataField: 'invoiceNo',
 				isRequired: true,
 				colSpan: 2,
 				editorOptions: {
 					width: '100%',
-					items: workOrders,
+					items: workorders,
 					displayExpr: 'text2',
 					valueExpr: 'id',
 					searchEnabled: true,
@@ -317,6 +356,7 @@ const Sched = ({
 				isRequired: true,
 			},
 			{
+				label: { text: 'Tasks' },
 				dataField: 'description',
 				editorType: 'dxTextArea',
 				colSpan: 2,
@@ -361,11 +401,31 @@ const Sched = ({
 			},
 		]);
 
-		// e.popup.option('container', undefined);
-		// e.popup.option('width', '150vw');
+		const workorderNoForm = form.getEditor('workorderNoForm');
+		workorderNoForm.option('onOpened', (e) => {
+			console.log('e: ', e);
+			// e.component.option('itemRender', Item);
+		});
 
-		// e.popup.option('showTitle', true);
-		// e.popup.option('title', e.appointmentData.text ? e.appointmentData.text : 'Create a new appointment');
+    const startDate = form.getEditor('startDate');
+    startDate.option('onOpened', (e) => {
+			console.log('e: ', e);
+      e.component._strategy._timeView._minuteBox.option('step', 5);
+    });
+    const endDate = form.getEditor('endDate');
+    endDate.option('onOpened', (e) => {
+    	e.component._strategy._timeView._minuteBox.option('step', 5);
+    });
+
+		// e.popup.option('container', undefined);
+
+		e.popup.option('showTitle', true);
+		e.popup.option('title', e.appointmentData.text ? e.appointmentData.text : 'Create a new appointment');
+		
+		requestAnimationFrame(() => {
+		  e.popup.option("width", 950);
+		  e.popup.option("height", 700);
+		});
 
 		e.popup.option('onHiding', function() {	// with args.
 			startTimer();
@@ -385,7 +445,7 @@ const Sched = ({
 
 	return (
 		<>
-			<Scheduler height={635}
+			<Scheduler height="74vh"
 				dataSource={scheduleData}
 				// dataCellComponent={DataCell}
 				// resourceCellComponent={ResourceCell}

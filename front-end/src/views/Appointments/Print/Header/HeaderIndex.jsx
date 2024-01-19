@@ -63,7 +63,7 @@ const SchedulePrintIndex = (props) => {
 
 
 
-	return (<View style={{flexDirection: 'row'}}>
+	return (<View style={{flexDirection: 'row'}} wrap={false}>
 		<View style={{flexDirection: 'row', width: 400}}>
 			<Image src={logo} style={styles.logo} />
 			<HeaderAddrsFrom />

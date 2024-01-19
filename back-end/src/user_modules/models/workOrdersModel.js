@@ -40,8 +40,6 @@ async function getWorkOrders(req) {
           .input('sessionId', msSql.VarChar, req.query.sessionId)
           .query(schedulerSql.getWorkOrders())
       }).then(result => {
-        // return result.recordset[0].BILL_EMAIL_ADRS_1;
-
         if (result.recordset.length <= 0)
           return [];
 
@@ -62,6 +60,7 @@ async function getWorkOrders(req) {
                   noteDate: item.NOTE_DAT,
                   noteUser: item.USR_ID,
                   serviceType: item.USR_SERVICE_TYP,
+                  scheduled: item.scheduled
                 }
           objInvoicesArray.push(objCust);
         })

@@ -89,6 +89,9 @@ function Sidebar(props) {
       <div className="sidebar-wrapper" ref={sidebar}>
         <Nav>
           {props.routes.map((prop, key) => {
+            if (prop.category === 'sub')
+              return;
+
             return (
               <li
                 className={

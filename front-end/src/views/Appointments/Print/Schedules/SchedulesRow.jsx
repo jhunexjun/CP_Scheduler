@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 const SchedulesRow = (props) => {
 	const { selectedView, scheduleData, currentSchedulerDate } = props;
 
-	let reduced = scheduleData.reduce((prevValue, curValue) => {
+	let reduced = scheduleData?.reduce((prevValue, curValue) => {
 		const { startDate } = curValue;
 
 		let sDate, eDate;	// date ranges.
@@ -48,7 +48,7 @@ const SchedulesRow = (props) => {
 	if (reduced === null)
 		return (<></>);
 
-	const rows = reduced.map((item, index) => {
+	const rows = reduced?.map((item, index) => {
 		if (reduced.length === index + 1)
 			styles.dataStyles.borderBottom = 0.5;
 

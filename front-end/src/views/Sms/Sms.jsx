@@ -1,5 +1,9 @@
+/* Notes:
+ * 12/26/2023 HST: Francis: No need to restrict duplicate mobile numbers in Counterpoint.
+ */
+
 import { useCallback, useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import Cookies from 'universal-cookie';
 
@@ -36,7 +40,7 @@ function Sms() {
 
 	const [dataSourceOptions, setDataSourceOptions] = useState(null);
 
-	const navigate = useNavigate();
+	// const navigate = useNavigate();
 
 	const cookies = new Cookies();
 

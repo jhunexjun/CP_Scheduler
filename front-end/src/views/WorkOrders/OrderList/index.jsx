@@ -33,6 +33,18 @@ const Workorder = (props) => {
 		setPopupVisible(true);
 	}
 
+  function sanitize(item) {
+    if (item.newQty === '') item.newQty = null;
+
+    if (item.newQty === undefined) item.newQty = null
+
+    if (item.reasonId === null) item.reasonId = 0;
+
+    if (item.reasonId === undefined) item.reasonId = 0;
+
+    return item;
+  }
+
 	function saveBtnAction() {
     let allowSave = true;
 		props.setShowPdfViewer(false);
@@ -48,9 +60,19 @@ const Workorder = (props) => {
     const tableNewQty = [];
 
     updatedDataGrid.every((current) => {
-      if (isNaN(current.newQty)) {
+      current = sanitize(current);
+
+      if (current.newQty === null && current.reasonId > 0) { // null and >0
         allowSave = false;
-        notification('New qty must contains number only.', 'error');
+        notification('Please enter qty in every reason.', 'error');
+        props.setShowPdfViewer(true);
+        return false;
+      }
+
+      if (current.newQty !== null && current.reasonId === 0) {  // 0,1,2,3 and 0
+        allowSave = false;
+        notification('Please enter reason in every modified qty', 'error');
+        props.setShowPdfViewer(true);
         return false;
       }
 
@@ -61,7 +83,7 @@ const Workorder = (props) => {
       }
 
       // Disregard same qty but allow saving.
-      if (parseFloat(current.SalesQty) == parseFloat(current.newQty)) {
+      if (parseFloat(current.SalesQty) === parseFloat(current.newQty)) {
         props.setData(prevData => {
           let newData = { ...prevData }
           newData.rawData.table[0].newQty = null;
@@ -72,7 +94,7 @@ const Workorder = (props) => {
 
         // let's overwrite since nothing real change.
         current.newQty = null;
-        current.reasonId = null; 
+        current.reasonId = null;
         // return false;
       }
 
@@ -83,33 +105,10 @@ const Workorder = (props) => {
         return false;
       }
 
-      // if ((current.newQty === null || current.newQty === undefined)
-      if (isNaN(current.newQty) && current.reasonId != 0) {
-        // if (current.reasonId !== 0) {
-          allowSave = false;
-          notification('Please enter qty in every reason', 'error');
-          props.setShowPdfViewer(true);
-          return false;
-        // }
-      }
-
-      // if (!isNaN(current.newQty && !isSet(current, 'reasonId')) {
-      //   allowSave = false;
-      //   notification('Please enter reason in every modified qty', 'error');
-      //   return false;
-      // }
-      //////////////////////////
-      if (!isNaN(current.newQty) && current.reasonId == 0) {
-        allowSave = false;
-        notification('(1) Please enter reason in every modified qty', 'error');
-        props.setShowPdfViewer(true);
-        return false;
-      }
-
       if ((parseFloat(current.newQty) < parseFloat(current.SalesQty))
             && (current.reasonId == 0)) {
         allowSave = false;
-        notification('(2) Please enter reason in every modified qty', 'error');
+        notification('(3) Please enter reason in every modified qty', 'error');
         props.setShowPdfViewer(true);
         return false;
       }
