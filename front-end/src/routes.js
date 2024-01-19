@@ -27,7 +27,7 @@
 
 import Appointments from "views/Appointments/Appointment";
 import Sms from 'views/Sms/Sms';
-import Workorder from 'views/Workorders';
+import Workorder from 'views/Reports/Workorders';
 import Reports from 'views/Reports';
 import EmployeeTimeEntry from "views/Reports/EmployeeTimeEntry";
 
@@ -99,11 +99,11 @@ let routes = [
     layout: "/admin",
   },
   {
-    path: "/workorders",  // i.e. /admin/sms/<sessionId>
+    path: "/reports/workorders",  // i.e. /admin/sms/<sessionId>
     name: "Workorders",
     icon: "nc-icon nc-single-copy-04",
     component: <Workorder />,
-    category: 'main',
+    category: 'sub',
     layout: "/admin",
   },
   {

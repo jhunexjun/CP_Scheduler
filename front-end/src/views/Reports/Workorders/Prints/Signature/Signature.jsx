@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image } from '@react-pdf/renderer';
 
-import { formatDateMMddYYYY } from '../../../../utils/util';
+import { formatDateMMddYYYY } from '../../../../../utils/util';
 
 const styles = StyleSheet.create({
   footer: {

@@ -5,7 +5,7 @@ import { Popup, ToolbarItem } from 'devextreme-react/popup';
 import UilEdit from '@iconscout/react-unicons/icons/uil-edit';
 
 import SignatureCanvas from 'react-signature-canvas';
-import { notification, formatDateMMddYYYY } from '../../utils/util'
+import { notification, formatDateMMddYYYY } from '../../../utils/util'
 // import Cookies from 'universal-cookie'
 
 export default memo((props) => {

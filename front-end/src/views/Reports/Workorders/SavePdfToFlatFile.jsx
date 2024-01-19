@@ -4,7 +4,7 @@ import Cookies from 'universal-cookie';
 
 import UilNotes from '@iconscout/react-unicons/icons/uil-notes';
 
-import { notification } from '../../utils/util';
+import { notification } from '../../../utils/util';
 
 export default memo((props) => {
   const cookies = new Cookies();

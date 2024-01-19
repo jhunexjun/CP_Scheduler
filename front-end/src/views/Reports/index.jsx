@@ -14,17 +14,20 @@ export default () => {
           <Breadcrumb>
             <BreadcrumbItem active>Home</BreadcrumbItem>
           </Breadcrumb>
-          <Card>
-            <CardBody style={{height: '80Vh'}}>
-              <div className="div-box d-flex justify-content-center align-items-center p-3">
-                <div>
-                  <Link to="/admin/reports/employee-time-entry" style={{textDecoration: 'none'}}> 
-                    Employee <br />Time Entry
-                  </Link>
-                </div>
+          <div className="d-flex align-items-center p-3 gap-3">
+            <Link to="/admin/reports/employee-time-entry" style={{textDecoration: 'none'}}>
+              <div className="div-box text-center d-flex justify-content-center align-items-center flex-column gap-2">
+                <i className="nc-icon nc-badge"></i>
+                <span>Employee <br />Time Entry</span>                
               </div>
-            </CardBody>
-          </Card>
+            </Link>
+            <Link to="/admin/reports/workorders" style={{textDecoration: 'none'}}>
+              <div className="div-box text-center d-flex justify-content-center align-items-center flex-column gap-2">
+                <i className="nc-icon nc-single-copy-04"></i>
+                <span>Workorders</span>                
+              </div>
+            </Link>
+          </div>
         </Col>
       </Row>
     </div>

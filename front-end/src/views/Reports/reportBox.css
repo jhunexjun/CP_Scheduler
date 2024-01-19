@@ -1,5 +1,19 @@
 .div-box {
   width: 120px;
   height: 120px;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  /* box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px; */
+  border-radius: 12px;
+  box-shadow: 0 6px 10px -4px rgba(0,0,0,.15);
+  background-color: #fff;
+  color: #252422;
+  margin-bottom: 20px;
+  position: relative;
+  border: 0 none;
+  transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
+}
+.div-box a {
+  color: #66615b;
+}
+.div-box i.nc-icon {
+  font-size: x-large;
 }

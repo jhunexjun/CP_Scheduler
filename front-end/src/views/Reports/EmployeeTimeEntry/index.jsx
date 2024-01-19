@@ -14,9 +14,9 @@ import Datetime from 'react-datetime';  // Don't forget: mport "react-datetime/c
 
 import { PDFViewer } from '@react-pdf/renderer';
 
-import scheduleDocumentContainer from '../Appointments/Print/scheduleDocumentContainer';
+import scheduleDocumentContainer from '../../Appointments/Print/scheduleDocumentContainer';
 
-import { isNullOrWhiteSpace } from '../../utils/util';
+import { isNullOrWhiteSpace } from '../../../utils/util';
 
 const EmployeeTimeEntry = () => {
   const cookies = new Cookies();
@@ -114,7 +114,7 @@ const EmployeeTimeEntry = () => {
       </Row>
       <Row>
         <Col>
-          <div className="d-flex mb-2">
+          <div className="d-flex justify-content-end mb-2">
             <Datetime timeFormat={false} onChange={value => setDateFrom(moment(value).format('L'))} initialValue={dateFrom} />
             <Datetime timeFormat={false} onChange={value => setDateFrom(moment(value).format('L'))} initialValue={dateTo} />
             <Button icon="print" type="success" text="OK" className="ms-1" onClick={ () => setShowPrint(true) } />

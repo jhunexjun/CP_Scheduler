@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
-import { formatDateMMddYYYY, isNullOrWhiteSpace } from '../../../../utils/util';
+import { formatDateMMddYYYY, isNullOrWhiteSpace } from '../../../../../utils/util';
 
 const styles = StyleSheet.create({
   notesContainer: {
