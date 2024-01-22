@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Cookies from 'universal-cookie';
 
-import { Row, Col, BreadcrumbItem } from "reactstrap";
+import { Row, Col, Breadcrumb, BreadcrumbItem, Card, CardBody } from "reactstrap";
 
-import { Breadcrumb, Card, CardBody } from 'reactstrap';
+import SelectBox from 'devextreme-react/select-box';
 
 import { Button } from 'devextreme-react/button';
 
@@ -14,18 +14,30 @@ import Datetime from 'react-datetime';  // Don't forget: mport "react-datetime/c
 
 import { PDFViewer } from '@react-pdf/renderer';
 
-import scheduleDocumentContainer from '../../Appointments/Print/scheduleDocumentContainer';
+// import scheduleDocumentContainer from '../../Appointments/Print/scheduleDocumentContainer';
+import Print from './Print';
 
-import { isNullOrWhiteSpace } from '../../../utils/util';
+import { isNullOrWhiteSpace, isSet } from '../../../utils/util';
 
 const EmployeeTimeEntry = () => {
   const cookies = new Cookies();
 
-  const [dateFrom, setDateFrom] = useState(new Date());
-  const [dateTo, setDateTo] = useState(new Date());
+  const selectedTech = {
+    id: 'ALL',
+    text: 'All',
+    color: '#56ca85',
+    avatar: 'coach-man.png',
+    age: 0,
+    phone1: "",
+  };
+
+  const [utcDateFrom, setUtcDateFrom] = useState(moment(new Date()).format('L'));
+  const [utcDateTo, setUtcDateTo] = useState(moment(new Date()).format('L'));
   const [scheduleData, setScheduleData] = useState([]);
   const [showPrint, setShowPrint] = useState(false);
   const [techId] = useState('ALL');
+  const [_technicians, setTechnicians] = useState([selectedTech]);
+  const [selectBoxTechnicians, setSelectBoxTechnicians] = useState([selectedTech]); // this serves as a master cp.
   const adminUrl = process.env.REACT_APP_API_DOMAIN + '/admin';
 
   const navigate = useNavigate();
@@ -37,23 +49,19 @@ const EmployeeTimeEntry = () => {
       return;
     }
 
-    // await fetch(`${adminUrl}/technicians?sessionId=${cookies.get('sessionId')}`)
-    //   .then((res) => {
-    //     return res.json()
-    //   })
-    //   .then((technicians) => {
-    //     if (!technicians.hasOwnProperty("error")) {
-    //       // appendTechnicians(technicians);
-    //     } else {
-    //       navigate('/');
-    //     }
-    //   });
+    await fetch(`${adminUrl}/technicians?sessionId=${cookies.get('sessionId')}`)
+      .then((res) => res.json())
+      .then((technicians) => {
+        if (!technicians.hasOwnProperty("error")) {
+          appendTechnicians(technicians);
+        } else {
+          navigate('/');
+        }
+      });
 
     // await fetch(`${adminUrl}/workorders?sessionId=${cookies.get('sessionId')}`)
-    //   .then((res) => {
-    //     return res.json()
-    //   })
-    //   .then((fetchedWorkorders) => {
+    //   .then((res) => res.json())
+    //   .then(fetchedWorkorders => {
     //     if (fetchedWorkorders.status !== 'Error' ) {
     //       appendWorkOrders(fetchedWorkorders);
     //     } else {
@@ -61,19 +69,108 @@ const EmployeeTimeEntry = () => {
     //     }
     //   });
 
-      await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianId=${techId}`)
-      .then((res) => res.json())
-      .then(scheds => {
-        if (!scheds.hasOwnProperty("error")) {
-          appendScheds(scheds);
-        } else {
-          console.log('fetch schedules: ', scheds);
-          // navigate('/');
-        }
-      });
+    console.log('date', moment(new Date()).format('L'));
+    console.log('utc date', moment.utc(new Date()).format('L'));
+    setUtcDateTo(async (val) => {
+      const x = moment(val).format('L').toString() + ' 23:59:59';
+      await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianId=${techId}&dateRange=custom&utcDateFrom=${utcDateFrom}&utcDateTo=${x}`)
+        .then((res) => res.json())
+        .then(scheds => {
+          if (!scheds.data.hasOwnProperty("error")) {
+            appendScheds(scheds);
+          } else {
+            console.log('fetch schedules: ', scheds);
+            // navigate('/');
+          }
+        });
+
+      return x;
+    });
+
+
   } ,[]);
 
+  function appendTechnicians(techs) {
+    const initTechs = [];
+
+    for(let x = 0; x < techs?.data?.length; x++) {
+      let obj = {
+        id: techs.data[x].id.toString(),
+        text: techs.data[x].text,
+        color: '#56ca85',
+        avatar: techs.data[x].avatar !== '' ? techs.data[x].avatar : 'coach-man.png',
+        age: null,
+        phone1: isSet(techs.data[x], "phone1") ?  techs.data[x].phone1.toString() : "",
+      }
+
+      initTechs.push(obj);
+    }
+
+    setTechnicians(initTechs);
+    appendTechniciansForSelectBox(techs)
+  }
+
+  function appendTechniciansForSelectBox(technicians) {
+    const initTechnicians = [];
+    initTechnicians.push(selectBoxTechnicians[0]);
+
+    for(let x = 0; x < technicians.data.length; x++) {
+      let obj = {
+        id: technicians.data[x].id.toString(),
+        text: technicians.data[x].text,
+        color: '#56ca85',
+        avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'coach-man.png',
+        age: null,
+        phone1: isSet(technicians.data[x], "phone1") ?  technicians.data[x].phone1.toString() : "",
+      }
+
+      initTechnicians.push(obj);
+    }
+
+    setSelectBoxTechnicians(initTechnicians);
+  }
+
+  // function appendWorkOrders(fetchedWorkorders) {
+  //   const initWorkOrders2 = fetchedWorkorders.data.reduce((prevValue, curValue) => {
+  //     const { id } = curValue;
+
+  //     if (id !== null) {
+  //       let obj = prevValue.find(o => o.id === id);
+
+  //       if (obj === undefined) {
+  //         let x = {   id: curValue.id,
+  //               text: curValue.text,
+  //               text2: curValue.id.concat(' ~ ', moment(new Date(curValue.docDate)).format('MM/DD/YYYY'), ' ~ ',
+  //                   (curValue.billNam === null) ? '' : curValue.billNam,
+  //                   ' (#', curValue.billPhone1 ?? '',') ',
+  //                   ' ~ ',
+  //                   curValue.plateNo ?? ''),
+  //               custNo: curValue.custNo,
+  //               billNam: curValue.billNam,
+  //               noteDate: curValue.noteDate,
+  //               noteUser: curValue.noteUser,
+  //               serviceType: curValue.serviceType,
+  //               text3: curValue.id.concat(' ~ ',
+  //                                         (curValue.billNam === null) ? '' : curValue.billNam,
+  //                                         ' ~ ',
+  //                                         curValue.plateNo ?? ''),
+  //               scheduled: curValue.scheduled
+  //             };
+  //         prevValue.push(x);
+  //       } else {
+  //         obj.text += "\n" + curValue.text;
+  //       }
+  //     }
+
+  //     return prevValue;
+  //   }, []);
+
+  //   setWorkOrders(initWorkOrders2);
+  // }
+
   function appendScheds(scheds) {
+    console.log('scheds: ', scheds);
+
     const initScheduleData = [];
 
     for(let x = 0; x < scheds.data.length; x++) {
@@ -100,6 +197,12 @@ const EmployeeTimeEntry = () => {
     setScheduleData(initScheduleData);
   }
 
+  const printClicked = () => {
+    setShowPrint(false);
+    fetchData();
+    setShowPrint(true); // here not re-dosplaying.
+  }
+
   return (
     <div className="content">
       <Row>
@@ -114,10 +217,24 @@ const EmployeeTimeEntry = () => {
       </Row>
       <Row>
         <Col>
-          <div className="d-flex justify-content-end mb-2">
-            <Datetime timeFormat={false} onChange={value => setDateFrom(moment(value).format('L'))} initialValue={dateFrom} />
-            <Datetime timeFormat={false} onChange={value => setDateFrom(moment(value).format('L'))} initialValue={dateTo} />
-            <Button icon="print" type="success" text="OK" className="ms-1" onClick={ () => setShowPrint(true) } />
+          <div className="d-flex justify-content-start mb-2">
+            <Datetime timeFormat={false} onChange={value => setUtcDateFrom(moment.utc(value).format('L'))} initialValue={new Date()} />
+            <Datetime timeFormat={false} onChange={value => setUtcDateTo(moment.utc(value).format('L'))} initialValue={new Date()} />
+            <SelectBox
+              dataSource={selectBoxTechnicians}
+              displayExpr="text"
+              searchEnabled={true}
+              searchMode="contains"
+              searchExpr="text"
+              searchTimeout={200}
+              minSearchLength={0}
+              showDataBeforeSearch={false}
+              // onValueChanged={(e) => filterTechnicianByTechnicianId(e.value.id)}
+              onValueChanged={() => setShowPrint(false)}
+              placeholder="Select technicians"
+              defaultValue={selectBoxTechnicians[0]}
+            />
+            <Button icon="print" type="success" text="OK" className="ms-1" onClick={ () => printClicked() } />
           </div>
         </Col>
       </Row>
@@ -129,7 +246,13 @@ const EmployeeTimeEntry = () => {
             <Card>
               <CardBody>
                 <div style={{height: '72vh'}}>
-                  <PDFViewer width={'100%'} height={'100%'}>{scheduleDocumentContainer(null)}</PDFViewer>
+                  <Print
+                    // setShowPrintPopup={setShowPrintPopup}
+                    selectedView={'Day'}
+                    scheduleData={scheduleData}
+                    currentSchedulerDate={new Date()}
+                    // startTimer={startTimer}
+                  />
                 </div>
               </CardBody>
             </Card>

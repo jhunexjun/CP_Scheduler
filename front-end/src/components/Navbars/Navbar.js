@@ -151,7 +151,8 @@ function Header(props) {
   function fetchNotificationsTimer() {
     return setInterval(async () => {
       await fetchNotifications();
-    }, 8000);
+    // }, 8000);
+    }, 60000);
   }
 
   return (

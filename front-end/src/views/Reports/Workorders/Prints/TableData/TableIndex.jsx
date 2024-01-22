@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { View, StyleSheet } from '@react-pdf/renderer';
 import TableHeader from './TableHeader';
 import TableRow from './TableRow';
 

@@ -5,7 +5,7 @@ import {
 } from "@react-pdf/renderer";
 
 import HeaderIndex from './Header/HeaderIndex';
-import Schedules from './Schedules';
+import Schedules from './Appointments';
 
 const styles = StyleSheet.create({
 	page: {

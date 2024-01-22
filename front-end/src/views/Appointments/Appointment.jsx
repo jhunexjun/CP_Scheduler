@@ -15,7 +15,7 @@ import moment from 'moment';
 
 import 'devextreme/dist/css/dx.light.css';
 
-import './appointment.css';
+// import './appointment.css';
 
 import { isSet, isSetScalar, isNullOrWhiteSpace } from '../../utils/util';
 
@@ -73,9 +73,7 @@ function Appointment() {
       });
 
     await fetch(`${adminUrl}/workorders?sessionId=${cookies.get('sessionId')}`)
-      .then((res) => {
-        return res.json()
-      })
+      .then((res) => res.json())
       .then((fetchedWorkorders) => {
         if (fetchedWorkorders.status !== 'Error' ) {
           appendWorkOrders(fetchedWorkorders);
@@ -84,12 +82,10 @@ function Appointment() {
         }
       });
 
-      await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianId=${selectedTechnicianId}`)
-      .then((res) => {
-        return res.json()
-      })
+      await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianId=${selectedTechnicianId}&dateRange=All`)
+      .then((res) => res.json())
       .then((scheds) => {
-        if (!scheds.hasOwnProperty("error")) {
+        if (!scheds.data.hasOwnProperty("error")) {
           appendScheds(scheds);
         } else {
           // console.log('fetch schedules: ', scheds);

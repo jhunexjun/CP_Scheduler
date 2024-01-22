@@ -6,7 +6,7 @@ import { Popup, ToolbarItem } from 'devextreme-react/popup';
 
 import UilEnvelopeSend from '@iconscout/react-unicons/icons/uil-envelope-send';
 
-import { notification, isNullOrWhiteSpace, uriEncode } from '../../../utils/util';
+import { notification } from '../../../utils/util';
 
 const ResendDocument = (props) => {
   const [showResendDocPopup, setShowResendDocPopup] = useState(false);

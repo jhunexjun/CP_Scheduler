@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from '@react-pdf/renderer';
 
-import SchedulesRow from './SchedulesRow';
+import SchedulesRow from './AppointmentRow';
 
 const styles = StyleSheet.create({
 	marginTop: 17,
@@ -41,11 +41,13 @@ const Sched = (props) => {
 		<Text style={{marginBottom: 7, fontSize: 15}}>{ reportName() }</Text>
 		<View style={styles.tableStyle}>
 			<View style={styles.headerRow}>
-				<Text style={[{width: 20}, styles.commonDataStyles]}>#</Text>
-				<Text style={[{width: 110}, styles.commonDataStyles]}>FROM</Text>
-				<Text style={[{width: 110}, styles.commonDataStyles]}>TO</Text>
+				<Text style={[{width: 17}, styles.commonDataStyles]}>#</Text>
+				<Text style={[{width: 55}, styles.commonDataStyles]}>DATE</Text>
+				<Text style={[{width: 45}, styles.commonDataStyles]}>START</Text>
+				<Text style={[{width: 50}, styles.commonDataStyles]}>END</Text>
+				<Text style={[{width: 35}, styles.commonDataStyles]}>HRS</Text>
 				<Text style={[{width: 200}, styles.commonDataStyles]}>SUBJECT</Text>
-				<Text style={[{width: 230}, styles.commonDataStyles]}>TECHNICIANS</Text>
+				<Text style={[{width: 180}, styles.commonDataStyles]}>TECHNICIANS</Text>
 				<Text style={[{width: 72}, styles.commonDataStyles]}>CREATED BY</Text>
 			</View>
 			<SchedulesRow {...props} />

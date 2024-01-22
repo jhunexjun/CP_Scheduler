@@ -13,7 +13,7 @@ import ArrayStore from 'devextreme/data/array_store';
 
 import { uriEncode, isSet, notification } from '../../utils/util';
 import './styles.css';
-import { searchMobileNoByInboxId } from './util';
+// import { searchMobileNoByInboxId } from './util';
 
 import { Row, Col, Card, CardBody, Button } from 'reactstrap';
 
@@ -76,7 +76,7 @@ function Sms() {
 	}, []);
 
 	useEffect(() => {
-		fetchCustomers();		
+		fetchCustomers();
 		setListSearchValue(custNo);
 
 		// let customersTimer = fetchCustomersTimer();
@@ -90,19 +90,19 @@ function Sms() {
 	// }, [currentCustomer]);
 	}, []);
 
-	useEffect(() => {
-		let customersTimer = fetchCustomersTimer();
+	// useEffect(() => {
+	// 	let customersTimer = fetchCustomersTimer();
 
-		return () => {
-			clearInterval(customersTimer);
-		};
-	}, []);
+	// 	return () => {
+	// 		clearInterval(customersTimer);
+	// 	};
+	// }, []);
 
-	function fetchCustomersTimer() {
-		return setInterval(async () => {
-			await fetchCustomers();
-		}, 8000);
-	}
+	// function fetchCustomersTimer() {
+	// 	return setInterval(async () => {
+	// 		await fetchCustomers();
+	// 	}, 8000);
+	// }
 
 	const fetchSmsBySelectedCustTimer = (currentCustomer) => {
 		if (currentCustomer === undefined || currentCustomer === null)
@@ -214,9 +214,9 @@ function Sms() {
 		<div className="content">
 			<Row>
 				<Col md="12">
-					<Card>
+					<Card id="sms-card">
 						<CardBody>
-							<div className="d-flex flex-row" style={{height: '685px'}}>
+							<div className="d-flex align-items-strech flex-row gap-2" style={{height: '81.5vh'}}>
 								<div className="w-25">
 									<List
 										selectionMode="single"
@@ -242,14 +242,14 @@ function Sms() {
 												</div>
 												<div>
 													<span>
-														<span className="mr-2">{ currentCustomer ? (<i className={`nc-icon nc-istanbul`}></i>) : `` }</span>
-														<span>{ currentCustomer?.ADRS_1 }</span>
+														<span className="mr-2">{ currentCustomer ? (<i className={`nc-icon nc-istanbul`}></i>): null }</span>
+														<span>{` ` + currentCustomer?.ADRS_1 }</span>
 													</span>
 												</div>
 											</div>
 											<div><hr className="cmpt-hr" /></div>
 											<div>
-												<MDBTypography listUnStyled style={{overflowY: 'auto', height: '430px'}}>
+												<MDBTypography listUnStyled style={{overflowY: 'auto', height: '49.5vh'}}>
 													{conversationTemplate(convoByCustomer)}
 												</MDBTypography>
 											</div>

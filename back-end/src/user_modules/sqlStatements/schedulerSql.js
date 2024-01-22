@@ -1,5 +1,6 @@
 module.exports = {
-	getSchedule,
+	getAppointmentsByDateRange,
+	getAppointments,
 	addSchedule,
 	deleteSchedule,
 	getMembersById,
@@ -7,8 +8,12 @@ module.exports = {
 	getWorkOrders,
 }
 
-function getSchedule() {
+function getAppointmentsByDateRange() {
 	// return "exec dbo.USER_SP_schedulesGet @sessionId, @technicianId, @robot";
+	return "exec dbo.USER_SP_schedulesGetByDateRange @sessionId, @technicianId, @utcDateFrom, @utcDateTo";
+}
+
+function getAppointments() {	// All appointments
 	return "exec dbo.USER_SP_schedulesGet @sessionId, @technicianId";
 }
 

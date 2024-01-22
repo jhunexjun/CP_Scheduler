@@ -7,54 +7,78 @@ const schedulerSql = require('../sqlStatements/schedulerSql');
 const utils = require('../utils/util');
 
 module.exports = {
-  getSchedule,
+  getScheduleAsync,
   addSchedule,
   updateSchedule,
   deleteSchedule,
 }
 
-async function getSchedule(req) {
+async function getScheduleAsync(req) {
   try {
-    const sql = schedulerSql.getSchedule();
-    return await msSqlConnect.getInstance().then(pool => {
-        return pool.request()
-          .input('sessionId', msSql.VarChar, req.query.sessionId)
-          .input('technicianId', msSql.VarChar, req.query.technicianId)
-          .query(sql)
-      }).then(result => {
-        if (result.recordset.length <= 0 || result.recordset[0].hasOwnProperty('errorNo')) {
-          return result.recordset;
-        } else {
-          let schedsGroupedById = result.recordset.reduce((prevValue, currentValue) => {
-            const { id } = currentValue;
-            let obj = prevValue.find(o => o.id === id);
+    let sql = ''; let ret;
+    if (req.query.dateRange === 'custom') {
+      sql = schedulerSql.getAppointmentsByDateRange();
 
-            if (obj === undefined) {
-              let x = { id: id,
-                    subject: currentValue.subject,
-                    utcDateFrom: currentValue.utcDateFrom,
-                    utcDateTo: currentValue.utcDateTo,
-                    description: currentValue.description,
-                    technicianIds: (currentValue.technicianId == null) ? [] : [currentValue.technicianId],
-                    invoiceNo: currentValue.invoiceNo,  // invoice no. is mandatory.
-                    allDay: currentValue.allDay,
-                    recurrenceRule: currentValue.recurrenceRule,
-                    createdBy: currentValue.createdBy,
-                  };
-              prevValue.push(x);
-            } else {
-              obj.technicianIds.push(currentValue.technicianId);
-            }
+      // console.log('req.query: ', req.query);
 
-            return prevValue;
-          }, []);
+      ret = msSqlConnect.getInstance().then(pool => {
+              return pool.request()
+                .input('sessionId', msSql.VarChar, req.query.sessionId)
+                .input('technicianId', msSql.VarChar, req.query.technicianId)
+                .input('utcDateFrom', msSql.DateTime, req.query.utcDateFrom)
+                .input('utcDateTo', msSql.DateTime, req.query.utcDateTo)
+                .query(sql)
+            });
+    } else if (req.query.dateRange.toLowerCase() === 'all') {
+      sql = schedulerSql.getAppointments();
 
-          return schedsGroupedById;
-        }
+      ret = msSqlConnect.getInstance().then(pool => {
+              return pool.request()
+                .input('sessionId', msSql.VarChar, req.query.sessionId)
+                .input('technicianId', msSql.VarChar, req.query.technicianId)
+                .query(sql)
+            });
+    } else {
+      return { status: 'Error', message: "dateRange param only accepts 'custom' and 'all'."}
+    }
 
-      }).catch(err => {
-        console.log(err);
-      });
+    return await ret.then(result => {
+      // console.log('recordset: ', result.recordset);
+
+      if (result.recordset.length <= 0 || result.recordset[0].hasOwnProperty('errorNo')) {
+        return { status: 'OK', data: result.recordset }
+        // return result.recordset;
+      } else {
+        let schedsGroupedById = result.recordset.reduce((prevValue, currentValue) => {
+          const { id } = currentValue;
+          let obj = prevValue.find(o => o.id === id);
+
+          if (obj === undefined) {
+            let x = { id: id,
+                  subject: currentValue.subject,
+                  utcDateFrom: currentValue.utcDateFrom,
+                  utcDateTo: currentValue.utcDateTo,
+                  description: currentValue.description,
+                  technicianIds: (currentValue.technicianId == null) ? [] : [currentValue.technicianId],
+                  invoiceNo: currentValue.invoiceNo,  // invoice no. is mandatory.
+                  allDay: currentValue.allDay,
+                  recurrenceRule: currentValue.recurrenceRule,
+                  createdBy: currentValue.createdBy,
+                };
+            prevValue.push(x);
+          } else {
+            obj.technicianIds.push(currentValue.technicianId);
+          }
+
+          return prevValue;
+        }, []);
+
+        return { status: 'OK', data: schedsGroupedById }
+        // return schedsGroupedById;
+      }
+    }).catch(err => {
+      console.log(err);
+    });
   } catch(e) {
     throw e;
   }

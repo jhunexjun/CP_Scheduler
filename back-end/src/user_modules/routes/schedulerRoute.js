@@ -12,18 +12,36 @@ module.exports = async function(req, res) {
 
 		switch(req.method) {
 			case 'GET':
-				const scheds = await getSchedules(req);
+				let errMsg = ' param is missing';
 
-				if (scheds.length <= 0) {
-					res.json({ status: "OK", data: [] });
-				} else {
-					if (scheds[0].hasOwnProperty('errorNo'))
-						resData = { status: "Error", message: scheds[0].errMsg, data: [] };
+				if (req.query.dateRange === undefined || req.query.dateRange === null) {
+					res.json({status: 'Error', message: 'dateRange' + errMsg});
+					return;
+				}
+
+				if (req.query.dateRange === 'custom') {
+					if (req.query.utcDateFrom === undefined || req.query.utcDateFrom === null) {
+						res.json({ status: 'Error', message: 'utcDateFrom' + errMsg });
+						return;
+					}
+					if (req.query.utcDateTo === undefined || req.query.utcDateTo === null) {
+						res.json({ status: 'Error', message: 'utcDateTo' + errMsg });
+						return;
+					}
+				}
+
+				const scheds = await scheduleModel.getScheduleAsync(req);
+
+				// if (scheds.length <= 0) {
+				// 	res.json({ status: "OK", data: [] });
+				// } else {
+					if (scheds.data.length > 0 && scheds.data[0].hasOwnProperty('errorNo'))
+						resData = { status: "Error", message: scheds.data[0].errMsg, data: [] };
 					else
-						resData = { status: "OK", message: "Okay", data: scheds }
+						resData = { status: "OK", data: scheds.data }
 
 					res.json(resData);
-				}
+				// }
 				break;
 			case 'POST':
 				resData = await addSchedule(req);
@@ -45,9 +63,9 @@ module.exports = async function(req, res) {
 	}
 };
 
-async function getSchedules(req) {
-	return scheduleModel.getSchedule(req);
-}
+// async function getSchedules(req) {
+// 	return scheduleModel.getSchedule(req);
+// }
 
 function validParams(params) {
 	if (!utils.isSet(params, 'invoiceNo'))

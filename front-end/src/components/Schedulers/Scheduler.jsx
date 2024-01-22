@@ -12,6 +12,9 @@ import { SystemUserContext } from '../../Context/SystemUserContext';
 
 import { schedFilter } from './schedulerData';
 
+import './custom.css';
+
+import Field from "./Field";
 import Item from './Item';
 
 
@@ -248,9 +251,9 @@ const Sched = ({
 			return true;
 	}
 
-	// function getWorkordersByScheduled(filter) {
-	// 	return Query(workorders).filter(['scheduled', 'Y']).toArray();
-	// }
+	function getWorkordersByScheduled(filter) {
+		return Query(workorders).filter(['scheduled', 'Y']).toArray();
+	}
 
 	// const filterWorkorder = useCallback(filter => {
   //   // console.log('filter: ', filter);
@@ -259,6 +262,10 @@ const Sched = ({
   //   // wo.splice(0, 1);
   //   // setWorkOrders(wo);
   // }, [workorders])
+
+	function name(params) {
+
+	}
 
 
 
@@ -269,24 +276,27 @@ const Sched = ({
 		const { form } = e;
 
 		form.option('items', [
-			// {
-			// 	label: { text: 'Filter by' },
-			// 	editorType: 'dxSelectBox',
-			// 	colSpan: 2,
-			// 	editorOptions: {
-			// 		width: '100%',
-			// 		items: schedFilter,
-			// 		displayExpr: 'text',
-			// 		valueExpr: 'text',
-			// 		value: schedFilter[0].text,
-			// 		onValueChanged(args) {
-			// 			// filterWorkorder(args);
-			// 			let wo = getWorkordersByScheduled(args);
-			// 			console.log('wo: ', wo);
-			// 			form.updateData('workorderNoForm', wo);
-			// 		}
-			// 	},
-			// },
+			{
+				label: { text: 'Filter by' },
+				editorType: 'dxSelectBox',
+				colSpan: 2,
+				editorOptions: {
+					width: '100%',
+					items: schedFilter,
+					displayExpr: 'text',
+					valueExpr: 'text',
+					value: schedFilter[0].text,
+					// fieldRender: Field,
+					itemTemplate: Item,
+					// itemRender: Item,
+					onValueChanged(args) {
+						// filterWorkorder(args);
+						let wo = getWorkordersByScheduled(args);
+						console.log('wo: ', wo);
+						form.updateData('workorderNoForm', wo);
+					}
+				},
+			},
 			{
 				label: { text: 'Workorder #', },
 				name: 'workorderNoForm',
@@ -401,27 +411,45 @@ const Sched = ({
 			},
 		]);
 
-		const workorderNoForm = form.getEditor('workorderNoForm');
-		workorderNoForm.option('onOpened', (e) => {
-			console.log('e: ', e);
-			// e.component.option('itemRender', Item);
+		// const workorderNoForm = form.getEditor('workorderNoForm');
+		// workorderNoForm.option('onOpened', (e) => {
+		// 	console.log('e: ', e);
+		// 	// e.component.option('itemRender', Item);
+		// });
+
+		// The following is private API of scheduler time.
+		// Intends to override. Instead of 00, 01, 02... it becomes 00, 05, 10.. or 00, 55, 50...
+    const startDate = form.getEditor('startDate');
+		startDate.option('onOpened', (e) => {
+			const minuteBox = e.component._strategy._timeView._minuteBox;
+			minuteBox.option('step', 5);
+			const defaultHandler = minuteBox.option('onValueChanged');
+			minuteBox.option('onValueChanged', (args) => {
+				if (args.value === -1) {
+					args.value = 55;
+				}
+				defaultHandler(args);
+			});
 		});
 
-    const startDate = form.getEditor('startDate');
-    startDate.option('onOpened', (e) => {
-			console.log('e: ', e);
-      e.component._strategy._timeView._minuteBox.option('step', 5);
-    });
-    const endDate = form.getEditor('endDate');
+	  const endDate = form.getEditor('endDate');
     endDate.option('onOpened', (e) => {
-    	e.component._strategy._timeView._minuteBox.option('step', 5);
+    	const minuteBox = e.component._strategy._timeView._minuteBox;
+			minuteBox.option('step', 5);
+			const defaultHandler = minuteBox.option('onValueChanged');
+			minuteBox.option('onValueChanged', (args) => {
+				if (args.value === -1) {
+					args.value = 55;
+				}
+				defaultHandler(args);
+			});
     });
 
 		// e.popup.option('container', undefined);
 
 		e.popup.option('showTitle', true);
 		e.popup.option('title', e.appointmentData.text ? e.appointmentData.text : 'Create a new appointment');
-		
+
 		requestAnimationFrame(() => {
 		  e.popup.option("width", 950);
 		  e.popup.option("height", 700);
@@ -433,6 +461,8 @@ const Sched = ({
 	}
 
 	const handlePropertyChange = (e) => {
+		// console.log('e: ', e);
+
 		if (e.name === 'currentView') {
 			setSelectedView(e.value);
 		}
