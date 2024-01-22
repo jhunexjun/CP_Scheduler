@@ -259,6 +259,42 @@ function Appointment() {
     setTechnicians(techs);
   }
 
+  function getSDate() {
+		if (selectedView.toLowerCase() === 'day') {
+			return moment(currentSchedulerDate).format('MM/DD/YYYY');
+		} else if (selectedView.toLowerCase() === 'week') {
+			const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
+			return moment(currentSchedulerDate).subtract(dayNumOfWeek, 'days').format('MM/DD/YYYY');
+		} else if (selectedView.toLowerCase() === 'month') {
+			return moment().startOf('month').format('MM/DD/YYYY');
+		} else if (selectedView.toLowerCase() === 'custom') {
+			// // This relies on the sorting on desc order.
+			// return moment(scheduleData[scheduleData.length - 1].startDate).format('MM/DD/YYYY');
+      return 'Unknown';
+		} else {
+			return 'Unknown';
+		}
+	}
+
+  function getEDate() {
+		if (selectedView.toLowerCase() === 'day') {
+			return moment(currentSchedulerDate).format('MM/DD/YYYY');
+		} else if (selectedView.toLowerCase() === 'week') {
+			const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
+
+			// return moment(currentSchedulerDate).add((6 - dayNumOfWeek) + dayNumOfWeek, 'days').format('MM/DD/YYYY');
+			return moment(currentSchedulerDate).add((6 - dayNumOfWeek), 'days').format('MM/DD/YYYY');
+		} else if (selectedView.toLowerCase() === 'month') {
+			return moment().endOf('month').format('MM/DD/YYYY');
+		} else if (selectedView.toLowerCase() === 'custom') {
+			// // This relies on the sorting on desc order.
+			// return moment(scheduleData[scheduleData.length - 1].startDate).format('MM/DD/YYYY');
+      return 'Unknown';
+		} else {
+			return 'Unknown';
+		}
+	}
+
   return (
     <>
       <div className="content">
@@ -320,9 +356,12 @@ function Appointment() {
         </Row>
         <Row>
           <Col>
-            <PrintSchedule popupVisible={showPrintPopup}
+            <PrintSchedule
+              popupVisible={showPrintPopup}
               setShowPrintPopup={setShowPrintPopup}
               selectedView={selectedView}
+              dateFrom={getSDate()}
+              dateTo={getEDate()}
               scheduleData={scheduleData}
               currentSchedulerDate={currentSchedulerDate}
               startTimer={startTimer}

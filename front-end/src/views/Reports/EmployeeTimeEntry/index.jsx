@@ -31,7 +31,7 @@ const EmployeeTimeEntry = () => {
     phone1: "",
   };
 
-  const [utcDateFrom, setUtcDateFrom] = useState(moment(new Date()).format('L'));
+  const [utcDateFrom, setUtcDateFrom] = useState(moment(new Date()).format('L')); // not actually a utc
   const [utcDateTo, setUtcDateTo] = useState(moment(new Date()).format('L'));
   const [scheduleData, setScheduleData] = useState([]);
   const [showPrint, setShowPrint] = useState(false);
@@ -42,7 +42,7 @@ const EmployeeTimeEntry = () => {
 
   const navigate = useNavigate();
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (utcDatFrom, utcDatTo) => {
     let cookie = cookies.get('sessionId');
     if (isNullOrWhiteSpace(cookie)) {
       navigate('/');
@@ -69,25 +69,21 @@ const EmployeeTimeEntry = () => {
     //     }
     //   });
 
-    console.log('date', moment(new Date()).format('L'));
-    console.log('utc date', moment.utc(new Date()).format('L'));
-    setUtcDateTo(async (val) => {
-      const x = moment(val).format('L').toString() + ' 23:59:59';
-      await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianId=${techId}&dateRange=custom&utcDateFrom=${utcDateFrom}&utcDateTo=${x}`)
-        .then((res) => res.json())
-        .then(scheds => {
-          if (!scheds.data.hasOwnProperty("error")) {
-            appendScheds(scheds);
-          } else {
-            console.log('fetch schedules: ', scheds);
-            // navigate('/');
-          }
-        });
+    // console.log('date', moment(new Date()).format('L'));
+    // console.log('utc date', moment.utc(new Date()).format('L'));
 
-      return x;
-    });
-
-
+    const utc_DatFrom = moment(utcDatFrom).format('L').toString();
+    const utc_DatTo = moment(utcDatTo).format('L').toString() + ' 23:59:59';
+    await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianId=${techId}&dateRange=custom&utcDateFrom=${utc_DatFrom}&utcDateTo=${utc_DatTo}`)
+      .then((res) => res.json())
+      .then(scheds => {
+        if (!scheds.data.hasOwnProperty("error")) {
+          appendScheds(scheds);
+        } else {
+          console.log('fetched schedules: ', scheds);
+          // navigate('/');
+        }
+      });
   } ,[]);
 
   function appendTechnicians(techs) {
@@ -169,8 +165,6 @@ const EmployeeTimeEntry = () => {
   // }
 
   function appendScheds(scheds) {
-    console.log('scheds: ', scheds);
-
     const initScheduleData = [];
 
     for(let x = 0; x < scheds.data.length; x++) {
@@ -180,28 +174,29 @@ const EmployeeTimeEntry = () => {
       const newArray = string.split(',');
 
       const tmp = {
-              id: scheds.data[x].id,
-              startDate: scheds.data[x].utcDateFrom,
-              endDate: scheds.data[x].utcDateTo,
-              text: scheds.data[x].subject,
-              description: scheds.data[x].description,
-              technicianIds: newArray,  // let's try first 1 technician.
-              invoiceNo: scheds.data[x].invoiceNo === null ? '' : scheds.data[x].invoiceNo,
-              allDay: scheds.data[x].allDay === 'Y' ? true : false,
-              recurrenceRule: scheds.data[x].recurrenceRule,
-              createdBy: scheds.data[x].createdBy,
-            }
+        id: scheds.data[x].id,
+        startDate: scheds.data[x].utcDateFrom,
+        endDate: scheds.data[x].utcDateTo,
+        text: scheds.data[x].subject,
+        description: scheds.data[x].description,
+        technicianIds: newArray,  // let's try first 1 technician.
+        invoiceNo: scheds.data[x].invoiceNo === null ? '' : scheds.data[x].invoiceNo,
+        allDay: scheds.data[x].allDay === 'Y' ? true : false,
+        recurrenceRule: scheds.data[x].recurrenceRule,
+        createdBy: scheds.data[x].createdBy,
+      }
       initScheduleData.push(tmp);
     }
 
     setScheduleData(initScheduleData);
+    setShowPrint(true);
   }
 
-  const printClicked = () => {
+  const printClicked = async () => {
     setShowPrint(false);
-    fetchData();
-    setShowPrint(true); // here not re-dosplaying.
+    fetchData(utcDateFrom, utcDateTo);
   }
+
 
   return (
     <div className="content">
@@ -218,8 +213,8 @@ const EmployeeTimeEntry = () => {
       <Row>
         <Col>
           <div className="d-flex justify-content-start mb-2">
-            <Datetime timeFormat={false} onChange={value => setUtcDateFrom(moment.utc(value).format('L'))} initialValue={new Date()} />
-            <Datetime timeFormat={false} onChange={value => setUtcDateTo(moment.utc(value).format('L'))} initialValue={new Date()} />
+            <Datetime timeFormat={false} onChange={value => { setShowPrint(false); setUtcDateFrom(moment(value).format('L')) }} initialValue={new Date()} />
+            <Datetime timeFormat={false} onChange={value => { setShowPrint(false); setUtcDateTo(moment(value).format('L')) }} initialValue={new Date()} />
             <SelectBox
               dataSource={selectBoxTechnicians}
               displayExpr="text"
@@ -234,7 +229,7 @@ const EmployeeTimeEntry = () => {
               placeholder="Select technicians"
               defaultValue={selectBoxTechnicians[0]}
             />
-            <Button icon="print" type="success" text="OK" className="ms-1" onClick={ () => printClicked() } />
+            <Button icon="print" type="success" text="OK" className="ms-1" onClick={printClicked} />
           </div>
         </Col>
       </Row>
@@ -248,9 +243,11 @@ const EmployeeTimeEntry = () => {
                 <div style={{height: '72vh'}}>
                   <Print
                     // setShowPrintPopup={setShowPrintPopup}
-                    selectedView={'Day'}
+                    selectedView={'custom'}
+                    dateFrom={utcDateFrom}
+                    dateTo={utcDateTo}
                     scheduleData={scheduleData}
-                    currentSchedulerDate={new Date()}
+                    currentSchedulerDate={new Date()} // since its custom, you can put any date here.
                     // startTimer={startTimer}
                   />
                 </div>

@@ -231,9 +231,9 @@ function Sms() {
 									/>
 								</div>
 								<div className="w-50 ml-4 cmpt-customer-and-text">
-									<div className="d-flex flex-column p-2">
-										<div className="d-flex flex-column p-2">
-											<div className="mb-2" style={{minHeight: '67px'}}>
+									{/* <div className="d-flex flex-column p-2 align-items-strech"> */}
+										<div className="d-flex flex-column p-2 align-items-strech">
+											<div className="mb-2" /* style={{minHeight: '67px'}} */>
 												<div className="cmpt-customer-no">Customer no.: { currentCustomer?.CUST_NO }</div>
 												<div className="d-flex flex-row">
 													<div className="cmpt-customer-name mr-auto">{currentCustomer?.NAM}</div>
@@ -243,12 +243,12 @@ function Sms() {
 												<div>
 													<span>
 														<span className="mr-2">{ currentCustomer ? (<i className={`nc-icon nc-istanbul`}></i>): null }</span>
-														<span>{` ` + currentCustomer?.ADRS_1 }</span>
+														<span>{currentCustomer?.ADRS_1 }</span>
 													</span>
 												</div>
 											</div>
 											<div><hr className="cmpt-hr" /></div>
-											<div>
+											<div className="d-flex flex-column p-2 align-items-strech">
 												<MDBTypography listUnStyled style={{overflowY: 'auto', height: '49.5vh'}}>
 													{conversationTemplate(convoByCustomer)}
 												</MDBTypography>
@@ -269,7 +269,7 @@ function Sms() {
 												</Button>
 											</div>
 										</div>
-									</div>
+									{/* </div> */}
 								</div>
 							</div>
 						</CardBody>

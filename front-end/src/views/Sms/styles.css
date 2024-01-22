@@ -18,8 +18,8 @@
 
 .cmpt-customer-and-text {
   border-width: 0.5px;
-  border-style: solid;
-  border-radius: 5px;
+  border-style:dotted;
+  border-radius: 8px;
 }
 
 .cmpt-hr {
@@ -31,10 +31,10 @@
   box-shadow: 0 6px 10px 3px rgba(0, 0, 0, 0.15);
 }
 
-#cmpt-textbox {
+/* #cmpt-textbox {
   background: #fafafa;
   line-height: 1.2;
-}
+} */
 
 .cmpt-notifcation {
   position: relative;

@@ -36,31 +36,37 @@ const styles = StyleSheet.create({
 const SchedulePrintIndex = (props) => {
 	const sysUserContext = useContext(SystemUserContext);
 
-	const { selectedView, currentSchedulerDate } = props;
+	// const { selectedView, currentSchedulerDate, scheduleData } = props;
 
-	function getSDate() {
-		if (selectedView === 'Day') {
-			return moment(currentSchedulerDate).format('MM/DD/YYYY');
-		} else if (selectedView === 'Week') {
-			const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
-			return moment(currentSchedulerDate).subtract(dayNumOfWeek, 'days').format('MM/DD/YYYY');
-		} else {
-			return moment().startOf('month').format('MM/DD/YYYY');
-		}
-	}
+	// function getSDate() {
+	// 	if (selectedView.toLowerCase() === 'day') {
+	// 		return moment(currentSchedulerDate).format('MM/DD/YYYY');
+	// 	} else if (selectedView.toLowerCase() === 'week') {
+	// 		const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
+	// 		return moment(currentSchedulerDate).subtract(dayNumOfWeek, 'days').format('MM/DD/YYYY');
+	// 	} else if (selectedView.toLowerCase() === 'month') {
+	// 		return moment().startOf('month').format('MM/DD/YYYY');
+	// 	} else if (selectedView.toLowerCase() === 'custom') {
+	// 		// // This relies on the sorting on desc order.
+	// 		// return moment(scheduleData[scheduleData.length - 1].startDate).format('MM/DD/YYYY');
 
-	function getEDate() {
-		if (selectedView === 'Day') {
-			return moment(currentSchedulerDate).format('MM/DD/YYYY');
-		} else if (selectedView === 'Week') {
-			const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
+	// 	} else {
+	// 		return 'Unknown';
+	// 	}
+	// }
 
-			// return moment(currentSchedulerDate).add((6 - dayNumOfWeek) + dayNumOfWeek, 'days').format('MM/DD/YYYY');
-			return moment(currentSchedulerDate).add((6 - dayNumOfWeek), 'days').format('MM/DD/YYYY');
-		} else {
-			return moment().endOf('month').format('MM/DD/YYYY');
-		}
-	}
+	// function getEDate() {
+	// 	if (selectedView === 'Day') {
+	// 		return moment(currentSchedulerDate).format('MM/DD/YYYY');
+	// 	} else if (selectedView === 'Week') {
+	// 		const dayNumOfWeek = moment(currentSchedulerDate).format('d');	// starts at 0 as Sunday, 6 as Saturday.
+
+	// 		// return moment(currentSchedulerDate).add((6 - dayNumOfWeek) + dayNumOfWeek, 'days').format('MM/DD/YYYY');
+	// 		return moment(currentSchedulerDate).add((6 - dayNumOfWeek), 'days').format('MM/DD/YYYY');
+	// 	} else {
+	// 		return moment().endOf('month').format('MM/DD/YYYY');
+	// 	}
+	// }
 
 
 
@@ -73,10 +79,10 @@ const SchedulePrintIndex = (props) => {
 			<Text style={styles.label}>Snapshot:</Text>
 			<View>
 				<Text>{ `Date From: ` }
-					<Text style={styles.textValue}>{ getSDate() }</Text>
+					<Text style={styles.textValue}>{ moment(props.dateFrom).format('L') }</Text>
 				</Text>
 				<Text>{ `Date To: ` }
-					<Text style={styles.textValue}>{ getEDate() }</Text>
+					<Text style={styles.textValue}>{ moment(props.dateTo).format('L') }</Text>
 				</Text>
 				<Text>{ `Location: ` }
 					<Text style={styles.textValue}>{ sysUserContext.location }</Text>
