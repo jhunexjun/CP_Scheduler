@@ -1,4 +1,4 @@
-import { memo, useContext, useState, useEffect, useCallback } from 'react';
+import { memo, useContext, /** useState, useEffect, useCallback */ } from 'react';
 
 import Scheduler, { Resource, View } from 'devextreme-react/scheduler';
 import Query from 'devextreme/data/query';
@@ -15,7 +15,7 @@ import { schedFilter } from './schedulerData';
 import './custom.css';
 
 import Field from "./Field";
-import Item from './Item';
+import itemTemplate from './Item';
 
 
 const Sched = ({
@@ -252,7 +252,16 @@ const Sched = ({
 	}
 
 	function getWorkordersByScheduled(filter) {
-		return Query(workorders).filter(['scheduled', 'Y']).toArray();
+		console.log('filter:'. filter);
+
+		if (filter.value === 0)
+			return workorders;
+		else if (filter.value === 1)	// unscheduled
+			return Query(workorders).filter(['scheduled', 'N']).toArray();
+		else if (filter.value === 2)	// scheduled
+			return Query(workorders).filter(['scheduled', 'Y']).toArray();
+		else
+			return workorders;
 	}
 
 	// const filterWorkorder = useCallback(filter => {
@@ -278,23 +287,16 @@ const Sched = ({
 		form.option('items', [
 			{
 				label: { text: 'Filter by' },
+				name: 'schedFilter',
 				editorType: 'dxSelectBox',
 				colSpan: 2,
 				editorOptions: {
 					width: '100%',
 					items: schedFilter,
 					displayExpr: 'text',
-					valueExpr: 'text',
-					value: schedFilter[0].text,
-					// fieldRender: Field,
-					itemTemplate: Item,
-					// itemRender: Item,
-					onValueChanged(args) {
-						// filterWorkorder(args);
-						let wo = getWorkordersByScheduled(args);
-						console.log('wo: ', wo);
-						form.updateData('workorderNoForm', wo);
-					}
+					valueExpr: 'id',
+					value: schedFilter[0].id,
+					itemTemplate
 				},
 			},
 			{
@@ -411,11 +413,13 @@ const Sched = ({
 			},
 		]);
 
-		// const workorderNoForm = form.getEditor('workorderNoForm');
-		// workorderNoForm.option('onOpened', (e) => {
-		// 	console.log('e: ', e);
-		// 	// e.component.option('itemRender', Item);
-		// });
+		form.getEditor('schedFilter')
+			.option('onValueChanged', (args) => {
+				console.log('args: ', args);
+				let wo = getWorkordersByScheduled(args);
+				console.log('wo: ', wo);
+				form.getEditor('workorderNoForm').option('items', wo);
+			});
 
 		// The following is private API of scheduler time.
 		// Intends to override. Instead of 00, 01, 02... it becomes 00, 05, 10.. or 00, 55, 50...

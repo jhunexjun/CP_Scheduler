@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 const SchedulesRow = (props) => {
 	const { selectedView, scheduleData, currentSchedulerDate } = props;
 
-	let reduced = scheduleData?.reduce((prevValue, curValue) => {
+	const reduced = scheduleData?.reduce((prevValue, curValue) => {
 		const { startDate } = curValue;
 
 		let sDate, eDate;	// date ranges.
@@ -63,15 +63,15 @@ const SchedulesRow = (props) => {
 			styles.dataStyles.borderBottom = 0.5;
 
 		let markup = <View style={styles} key={ index + 1 }>
-						<Text style={[{width: 17}, styles.dataStyles, styles.text]}>{ index + 1 }</Text>
-						<Text style={[{width: 55}, styles.dataStyles, styles.text]}>{ formatDateOnly(item.startDate) }</Text>
-						<Text style={[{width: 45}, styles.dataStyles, styles.text]}>{ formatTimeOnly(item.startDate) }</Text>
-						<Text style={[{width: 50}, styles.dataStyles, styles.text]}>{ formatTimeOnly(item.endDate) }</Text>
-						<Text style={[{width: 35}, styles.dataStyles, styles.text]}>{ calcHrsWorked(item.endDate, item.startDate) }</Text>
-						<Text style={[{width: 200}, styles.dataStyles, styles.text]}>{ item.text }</Text>
-						<Text style={[{width: 180}, styles.dataStyles, styles.text]}>{ item.technicianIds.toString() }</Text>
-						<Text style={[{width: 72}, styles.dataStyles, styles.text]}>{ item.createdBy }</Text>
-					</View>
+									<Text style={[{width: 17}, styles.dataStyles, styles.text]}>{ index + 1 }</Text>
+									<Text style={[{width: 55}, styles.dataStyles, styles.text]}>{ formatDateOnly(item.startDate) }</Text>
+									<Text style={[{width: 45}, styles.dataStyles, styles.text]}>{ formatTimeOnly(item.startDate) }</Text>
+									<Text style={[{width: 50}, styles.dataStyles, styles.text]}>{ formatTimeOnly(item.endDate) }</Text>
+									<Text style={[{width: 35}, styles.dataStyles, styles.text]}>{ calcHrsWorked(item.endDate, item.startDate) }</Text>
+									<Text style={[{width: 200}, styles.dataStyles, styles.text]}>{ item.text }</Text>
+									<Text style={[{width: 180}, styles.dataStyles, styles.text]}>{ item.technicianIds.toString() }</Text>
+									<Text style={[{width: 72}, styles.dataStyles, styles.text]}>{ item.createdBy }</Text>
+								</View>
 		return markup;
 	});
 

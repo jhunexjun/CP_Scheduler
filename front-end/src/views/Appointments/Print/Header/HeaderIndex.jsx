@@ -76,7 +76,7 @@ const SchedulePrintIndex = (props) => {
 			<HeaderAddrsFrom />
 		</View>
 		<View style={styles.headerRightContainer}>
-			<Text style={styles.label}>Snapshot:</Text>
+			<Text style={styles.label}>Snapshot</Text>
 			<View>
 				<Text>{ `Date From: ` }
 					<Text style={styles.textValue}>{ moment(props.dateFrom).format('L') }</Text>

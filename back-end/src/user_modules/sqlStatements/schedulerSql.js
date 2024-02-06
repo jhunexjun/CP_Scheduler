@@ -10,11 +10,12 @@ module.exports = {
 
 function getAppointmentsByDateRange() {
 	// return "exec dbo.USER_SP_schedulesGet @sessionId, @technicianId, @robot";
-	return "exec dbo.USER_SP_schedulesGetByDateRange @sessionId, @technicianId, @utcDateFrom, @utcDateTo";
+	// return "exec dbo.USER_SP_schedulesGetByDateRange @sessionId, @technicianId, @utcDateFrom, @utcDateTo";
+	return "exec dbo.USER_SP_schedulesGetByDateRange @sessionId, @technicianIds, @utcDateFrom, @utcDateTo";
 }
 
 function getAppointments() {	// All appointments
-	return "exec dbo.USER_SP_schedulesGet @sessionId, @technicianId";
+	return "exec dbo.USER_SP_schedulesGet @sessionId, @technicianIds";
 }
 
 function addSchedule(allDay, recurrenceRule) {

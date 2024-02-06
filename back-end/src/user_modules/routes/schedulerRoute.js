@@ -5,17 +5,17 @@ let resData;
 
 module.exports = async function(req, res) {
 	try {
-		// if (!utils.isSet(req.query, 'sessionId')) {
-		// 	res.json({ status: "Error" , message: "sessionId is missing. Add it as url query parameter." });
-		// 	return;
-		// }
-
 		switch(req.method) {
 			case 'GET':
 				let errMsg = ' param is missing';
 
 				if (req.query.dateRange === undefined || req.query.dateRange === null) {
 					res.json({status: 'Error', message: 'dateRange' + errMsg});
+					return;
+				}
+
+				if (req.query.technicianIds === undefined || req.query.technicianIds === null) {
+					res.json({status: 'Error', message: 'technicianIds' + errMsg});
 					return;
 				}
 
@@ -32,16 +32,12 @@ module.exports = async function(req, res) {
 
 				const scheds = await scheduleModel.getScheduleAsync(req);
 
-				// if (scheds.length <= 0) {
-				// 	res.json({ status: "OK", data: [] });
-				// } else {
-					if (scheds.data.length > 0 && scheds.data[0].hasOwnProperty('errorNo'))
-						resData = { status: "Error", message: scheds.data[0].errMsg, data: [] };
-					else
-						resData = { status: "OK", data: scheds.data }
+				if (scheds.data.length > 0 && scheds.data[0].hasOwnProperty('errorNo'))
+					resData = { status: "Error", message: scheds.data[0].errMsg, data: [] };
+				else
+					resData = { status: "OK", data: scheds.data }
 
-					res.json(resData);
-				// }
+				res.json(resData);
 				break;
 			case 'POST':
 				resData = await addSchedule(req);

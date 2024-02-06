@@ -19,12 +19,10 @@ async function getScheduleAsync(req) {
     if (req.query.dateRange === 'custom') {
       sql = schedulerSql.getAppointmentsByDateRange();
 
-      // console.log('req.query: ', req.query);
-
       ret = msSqlConnect.getInstance().then(pool => {
               return pool.request()
                 .input('sessionId', msSql.VarChar, req.query.sessionId)
-                .input('technicianId', msSql.VarChar, req.query.technicianId)
+                .input('technicianIds', msSql.VarChar, req.query.technicianIds)
                 .input('utcDateFrom', msSql.DateTime, req.query.utcDateFrom)
                 .input('utcDateTo', msSql.DateTime, req.query.utcDateTo)
                 .query(sql)
@@ -35,7 +33,7 @@ async function getScheduleAsync(req) {
       ret = msSqlConnect.getInstance().then(pool => {
               return pool.request()
                 .input('sessionId', msSql.VarChar, req.query.sessionId)
-                .input('technicianId', msSql.VarChar, req.query.technicianId)
+                .input('technicianIds', msSql.VarChar, req.query.technicianIds)
                 .query(sql)
             });
     } else {
@@ -43,11 +41,8 @@ async function getScheduleAsync(req) {
     }
 
     return await ret.then(result => {
-      // console.log('recordset: ', result.recordset);
-
       if (result.recordset.length <= 0 || result.recordset[0].hasOwnProperty('errorNo')) {
         return { status: 'OK', data: result.recordset }
-        // return result.recordset;
       } else {
         let schedsGroupedById = result.recordset.reduce((prevValue, currentValue) => {
           const { id } = currentValue;
@@ -130,7 +125,7 @@ function datesAreValid(params) {
   let date2 = new Date(params.utcDateTo).getTime();
 
   if (date1 > date2)
-    return { status: "Error", "message": "From date is greater than to date." };
+    return { status: "Error", "message": "From date is greater than To date." };
   else
     return { status: "OK"};
   /*************************************************************/

@@ -6,10 +6,6 @@
 //   )
 // }
 
-export default function Item(data) {
-  console.log('data: ', data)
-
-  return (
-      <div className="fw-bolder">{ data.text + 'sdfsfsd' }</div>
-  );
+export default function itemTemplate(data) {
+  return `<div id="cmpt-sched-filter-by">${data.text}</div>`;
 }
