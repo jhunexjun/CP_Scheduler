@@ -1,11 +1,7 @@
-// export default function Item(data) {
-//   console.log('data: ', data);
-
-//   return (
-//     <div className="product-name" style={{fontWeight: 'bold'}}>{ `fsdfsdfs` }</div>
-//   )
-// }
-
 export default function itemTemplate(data) {
-  return `<div id="cmpt-sched-filter-by">${data.text}</div>`;
+  if (data.scheduled === 'N')
+    return `<div id="cmpt-sched-wo-bg-unscheduled">${data.text2}</div>`;
+  else
+    return `<div id="cmpt-sched-wo-bg-scheduled">${data.text2}</div>`;
+
 }

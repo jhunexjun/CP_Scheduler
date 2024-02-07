@@ -10,7 +10,7 @@ import { uriEncode, isSet } from '../../utils/util';
 
 import { SystemUserContext } from '../../Context/SystemUserContext';
 
-import { schedFilter } from './schedulerData';
+import { filters } from './schedulerData';
 
 import './custom.css';
 
@@ -119,10 +119,8 @@ const Sched = ({
 			body: uriEncoded,
 		};
 		return await fetch(`${url}`, optionHeaders)
-			.then((res) => {
-				return res.json()
-			})
-			.then((json) => {
+			.then(res => res.json())
+			.then(json => {
 				const newScheduleData = [...scheduleData];
 				newScheduleData[newScheduleData.length - 1].id = json.data.id;
 				newScheduleData[newScheduleData.length - 1].startDate = addSched.utcDateFrom;
@@ -244,6 +242,13 @@ const Sched = ({
 		return Query(workorders).filter(['id', id]).toArray()[0];
 	}
 
+	async function fetchAppointmentByWorkorderNo(workorderNo) {
+		const url = process.env.REACT_APP_API_DOMAIN + `/admin/workordersByworkorderNo?sessionId=${cookies.get('sessionId')}&workorderNo=${workorderNo}`;
+
+		const data = (await fetch(url).then(res => res.json())).data;
+		return data.map(val => val.description + '\n\n');
+	}
+
 	function dateIsValid(dateString) {
 		if (isNaN(Date.parse(dateString)))
 			return false;
@@ -252,8 +257,6 @@ const Sched = ({
 	}
 
 	function getWorkordersByScheduled(filter) {
-		console.log('filter:'. filter);
-
 		if (filter.value === 0)
 			return workorders;
 		else if (filter.value === 1)	// unscheduled
@@ -272,11 +275,6 @@ const Sched = ({
   //   // setWorkOrders(wo);
   // }, [workorders])
 
-	function name(params) {
-
-	}
-
-
 
 	function onAppointmentFormOpening(e) {
 		stopTimer();
@@ -292,11 +290,10 @@ const Sched = ({
 				colSpan: 2,
 				editorOptions: {
 					width: '100%',
-					items: schedFilter,
+					items: filters,
 					displayExpr: 'text',
 					valueExpr: 'id',
-					value: schedFilter[0].id,
-					itemTemplate
+					value: filters[1].id,
 				},
 			},
 			{
@@ -308,23 +305,26 @@ const Sched = ({
 				colSpan: 2,
 				editorOptions: {
 					width: '100%',
-					items: workorders,
+					items: getWorkordersByScheduled({value: 1}),	// this value corresponds to filter: scheduled, unscheduled.
 					displayExpr: 'text2',
 					valueExpr: 'id',
 					searchEnabled: true,
-					onValueChanged(args) {
-						let invoice = getWorkOrderById(args.value);
+					itemTemplate,
+					async onValueChanged(args) {
+						let workorder = getWorkOrderById(args.value);
 
-						if (isSet(invoice, "noteDate") && dateIsValid(invoice.noteDate)) {
-							form.updateData('noteDate', new Date(invoice.noteDate).toLocaleDateString('en-US'));
+						if (isSet(workorder, "noteDate") && dateIsValid(workorder.noteDate)) {
+							form.updateData('noteDate', new Date(workorder.noteDate).toLocaleDateString('en-US'));
 						} else {
 							form.updateData('noteDate', '');
 						}
 
-						// form.updateData('subject', (invoice && invoice.serviceType) || '');
-						form.updateData('subject', (invoice && invoice.text3) || '');
-						form.updateData('workOrderDetails', (invoice && invoice.text) || '');
-						form.updateData('noteUser', (invoice && invoice.noteUser) || '');
+						form.updateData('subject', (workorder && workorder.text3) || '');
+						form.updateData('workOrderDetails', (workorder && workorder.text) || '');
+						form.updateData('noteUser', (workorder && workorder.noteUser) || '');
+
+						const descr = await fetchAppointmentByWorkorderNo(workorder.id);
+						form.updateData('description', descr);
 					},
 				},
 			},
@@ -373,7 +373,7 @@ const Sched = ({
 				editorType: 'dxTextArea',
 				colSpan: 2,
 				editorOptions: {
-					height: '80px'
+					height: '140px'
 				}
 			},
 			{
@@ -415,13 +415,11 @@ const Sched = ({
 
 		form.getEditor('schedFilter')
 			.option('onValueChanged', (args) => {
-				console.log('args: ', args);
 				let wo = getWorkordersByScheduled(args);
-				console.log('wo: ', wo);
 				form.getEditor('workorderNoForm').option('items', wo);
 			});
 
-		// The following is private API of scheduler time.
+		// The following is private API of <Scheduler>.
 		// Intends to override. Instead of 00, 01, 02... it becomes 00, 05, 10.. or 00, 55, 50...
     const startDate = form.getEditor('startDate');
 		startDate.option('onOpened', (e) => {
@@ -448,8 +446,7 @@ const Sched = ({
 				defaultHandler(args);
 			});
     });
-
-		// e.popup.option('container', undefined);
+    // End 'Intends to override'.
 
 		e.popup.option('showTitle', true);
 		e.popup.option('title', e.appointmentData.text ? e.appointmentData.text : 'Create a new appointment');

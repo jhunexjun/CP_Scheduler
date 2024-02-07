@@ -82,7 +82,7 @@ function Appointment() {
         }
       });
 
-      await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianId=${selectedTechnicianId}&dateRange=All`)
+      await fetch(`${adminUrl}/schedule?sessionId=${cookies.get('sessionId')}&technicianIds=${selectedTechnicianId}&dateRange=All`)
       .then((res) => res.json())
       .then((scheds) => {
         if (!scheds.data.hasOwnProperty("error")) {

@@ -6,6 +6,7 @@ module.exports = {
 	getMembersById,
 	getTechnicians,
 	getWorkOrders,
+	getAppointmentByWorkorderNo,
 }
 
 function getAppointmentsByDateRange() {
@@ -48,4 +49,8 @@ function getTechnicians() {
 function getWorkOrders() {
 	// return "exec dbo.USER_SP_WorkOrdersGet @sessionId, @robot";
 	return "exec dbo.USER_SP_WorkOrdersGet @sessionId";
+}
+
+function getAppointmentByWorkorderNo() {
+	return 'select description from USR_schedules where invoiceNo = @workorderNo';
 }

@@ -20,6 +20,8 @@ const resendWorkOrderPdfRoute = require('./sendWorkOrderPdfRoute');
 const workorderPdfRoute = require('./workorderPdfRoute');
 // const workorderNewQtyRoute = require('./workorderNewQtyRoute');
 
+const workordersByworkorderNoRoute = require('./workordersByworkorderNoRoute');
+
 module.exports = function(app) {
   router.all('/schedule', schedulerRoute);    // http://localhost:8080/admin/scheduler
   router.get('/technicians', technicianRoute);   // http://localhost:8080/admin/technicians?sessionId=sessionId=6796B252-W-X-Y-Z
@@ -39,6 +41,8 @@ module.exports = function(app) {
   // router.all('/pdfannotation', pdfannotationRoute); // deprecated.
   router.all('/workorderpdf', workorderPdfRoute);
   //router.all('/workorder/newqty', workorderNewQtyRoute);
+
+  router.all('/workordersByworkorderNo', workordersByworkorderNoRoute);
 
   return router;
 }

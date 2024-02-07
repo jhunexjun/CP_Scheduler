@@ -9,19 +9,16 @@ import SelectBox from 'devextreme-react/select-box';
 
 import { Button } from 'devextreme-react/button';
 
-import ArrayStore from 'devextreme/data/array_store';
-import TagBox, { TagBoxTypes } from 'devextreme-react/tag-box';
-import DataSource from 'devextreme/data/data_source';
+// import ArrayStore from 'devextreme/data/array_store';
+import TagBox /*, { TagBoxTypes } */ from 'devextreme-react/tag-box';
+// import DataSource from 'devextreme/data/data_source';
 
 import moment from 'moment';
 import Datetime from 'react-datetime';  // Don't forget: mport "react-datetime/css/react-datetime.css";
 
-import { PDFViewer } from '@react-pdf/renderer';
-
-// import scheduleDocumentContainer from '../../Appointments/Print/scheduleDocumentContainer';
 import Print from './Print';
 
-import { isNullOrWhiteSpace, isSet } from '../../../utils/util';
+import { isNullOrWhiteSpace } from '../../../utils/util';
 
 function EmployeeTimeEntry(){
   const cookies = new Cookies();
@@ -63,7 +60,6 @@ function EmployeeTimeEntry(){
           }
 
           setTechs(lTech);
-          // setSelectedTechs(lTech);
         } else {
           navigate('/');
         }
@@ -136,89 +132,6 @@ function EmployeeTimeEntry(){
         }
       });
   } ,[]);
-
-  // function appendTechnicians(techs) {
-  //   const initTechs = [];
-
-  //   for(let x = 0; x < techs?.data?.length; x++) {
-  //     let obj = {
-  //       id: techs.data[x].id.toString(),
-  //       text: techs.data[x].text,
-  //       color: '#56ca85',
-  //       avatar: techs.data[x].avatar !== '' ? techs.data[x].avatar : 'coach-man.png',
-  //       age: null,
-  //       phone1: isSet(techs.data[x], "phone1") ?  techs.data[x].phone1.toString() : "",
-  //     }
-
-  //     initTechs.push(obj);
-  //   }
-
-  //   setTechnicians(initTechs);
-  //   appendTechniciansForSelectBox(techs)
-  // }
-
-  // function appendTechniciansForSelectBox(technicians) {
-  //   const initTechnicians = [];
-  //   initTechnicians.push(selectBoxTechnicians[0]);
-
-  //   for(let x = 0; x < technicians.data.length; x++) {
-  //     let obj = {
-  //       id: technicians.data[x].id.toString(),
-  //       text: technicians.data[x].text,
-  //       color: '#56ca85',
-  //       avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'coach-man.png',
-  //       age: null,
-  //       phone1: isSet(technicians.data[x], "phone1") ?  technicians.data[x].phone1.toString() : "",
-  //     }
-
-  //     initTechnicians.push(obj);
-  //     // store.push([{ type: "insert", data: obj }]);
-
-  //     // store.load().then()
-  //   }
-
-  //   setSelectBoxTechnicians(initTechnicians);
-
-  //   return initTechnicians;
-  // }
-
-  // function appendWorkOrders(fetchedWorkorders) {
-  //   const initWorkOrders2 = fetchedWorkorders.data.reduce((prevValue, curValue) => {
-  //     const { id } = curValue;
-
-  //     if (id !== null) {
-  //       let obj = prevValue.find(o => o.id === id);
-
-  //       if (obj === undefined) {
-  //         let x = {   id: curValue.id,
-  //               text: curValue.text,
-  //               text2: curValue.id.concat(' ~ ', moment(new Date(curValue.docDate)).format('MM/DD/YYYY'), ' ~ ',
-  //                   (curValue.billNam === null) ? '' : curValue.billNam,
-  //                   ' (#', curValue.billPhone1 ?? '',') ',
-  //                   ' ~ ',
-  //                   curValue.plateNo ?? ''),
-  //               custNo: curValue.custNo,
-  //               billNam: curValue.billNam,
-  //               noteDate: curValue.noteDate,
-  //               noteUser: curValue.noteUser,
-  //               serviceType: curValue.serviceType,
-  //               text3: curValue.id.concat(' ~ ',
-  //                                         (curValue.billNam === null) ? '' : curValue.billNam,
-  //                                         ' ~ ',
-  //                                         curValue.plateNo ?? ''),
-  //               scheduled: curValue.scheduled
-  //             };
-  //         prevValue.push(x);
-  //       } else {
-  //         obj.text += "\n" + curValue.text;
-  //       }
-  //     }
-
-  //     return prevValue;
-  //   }, []);
-
-  //   setWorkOrders(initWorkOrders2);
-  // }
 
   function appendScheds(scheds) {
     const initScheduleData = [];

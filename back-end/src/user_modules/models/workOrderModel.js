@@ -1,6 +1,7 @@
 const msSql = require('mssql');
 const msSqlConnect = require('../dbConnections/msSqlConnect');
 const invoiceSql = require('../sqlStatements/invoiceSql');
+const appointmentSql = require('../sqlStatements/schedulerSql');
 
 const fsPromises = require('fs').promises;
 
@@ -13,6 +14,7 @@ module.exports = {
   getPdfDocument,
   saveWorkorderPdfAsync,
   // workorderSetLineItemsAsync
+  getAppointmentByWorkorderNoAsync
 }
 
 async function getInvoice(req) {
@@ -224,5 +226,19 @@ async function saveWorkorderPdfAsync(req) {
   } catch(e) {
     return false;
     throw e;
+  }
+}
+
+async function getAppointmentByWorkorderNoAsync(req) {
+  try {
+    return await msSqlConnect.getInstance()
+            .then(pool => {
+              return pool.request()
+                .input('workorderNo', msSql.VarChar(15), req.query.workorderNo)
+                .query(appointmentSql.getAppointmentByWorkorderNo());
+            })
+            .catch(err => console.log(err));
+  } catch(e) {
+    return false;
   }
 }

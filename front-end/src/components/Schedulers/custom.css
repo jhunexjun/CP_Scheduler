@@ -6,6 +6,10 @@
 /* .dx-item.dx-list-item.dx-list-item-selected.dx-state-hover > */
   /* .dx-item-content.dx-list-item-content > */
 
-#cmpt-sched-filter-by {
-  font-weight: bold !important
+#cmpt-sched-wo-bg-unscheduled {
+  background-color: #e0f5e0;
+}
+
+#cmpt-sched-wo-bg-scheduled {
+  background-color: #f5e1e1;
 }
