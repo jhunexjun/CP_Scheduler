@@ -52,7 +52,7 @@ const SchedulesRow = (props) => {
 		const diff = new Date(date2) - new Date(date1);
 		const mm = Math.floor(diff / 1000 / 60) % 60;
 		const hh = Math.floor(diff / 1000 / 60 / 60);
-		return `${hh}:${mm}`;
+		return `${hh}.${mm}`;
 	}
 
 	if (reduced === null)

@@ -282,6 +282,8 @@ const Sched = ({
 		let invoiceInfo = getWorkOrderById(e.appointmentData.invoiceNo) || {};
 		const { form } = e;
 
+		const editing = e.appointmentData.text ? true : false;
+
 		form.option('items', [
 			{
 				label: { text: 'Filter by' },
@@ -293,7 +295,7 @@ const Sched = ({
 					items: filters,
 					displayExpr: 'text',
 					valueExpr: 'id',
-					value: filters[1].id,
+					value: editing ? filters[2].id : filters[1].id,
 				},
 			},
 			{
@@ -305,7 +307,7 @@ const Sched = ({
 				colSpan: 2,
 				editorOptions: {
 					width: '100%',
-					items: getWorkordersByScheduled({value: 1}),	// this value corresponds to filter: scheduled, unscheduled.
+					items: getWorkordersByScheduled({value: editing ? 2 : 1}),	// 0=All, 1=Unscheduled, 2=scheduled;
 					displayExpr: 'text2',
 					valueExpr: 'id',
 					searchEnabled: true,
