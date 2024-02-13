@@ -23,9 +23,8 @@ import { Nav } from "reactstrap";
 import PerfectScrollbar from "perfect-scrollbar";
 
 // import logo from "logo.svg";
-import logo from "../../assets/compuTant/img/poshighway-logo_black_green.jpg";
-// import logo from "../../assets/compuTant/img/POS Highway - CompuTant Logo White.png";
-// import logo from "../../assets/compuTant/img/POS Highway - CompuTant Logo Black.png";
+// import logo from "../../assets/compuTant/img/poshighway-logo_black_green.jpg";
+import logo from "../../assets/compuTant/img/pos_highway_green.png";
 import './sidebar.css';
 
 var ps;
