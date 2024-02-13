@@ -10,10 +10,9 @@ const util = require('../utils/util');
 module.exports = {
   getInvoice,
   getInvoiceNotes,
-  saveSignature, /*getInvoiceSignature,*/
+  saveSignature,
   getPdfDocument,
   saveWorkorderPdfAsync,
-  // workorderSetLineItemsAsync
   getAppointmentByWorkorderNoAsync
 }
 
@@ -81,23 +80,6 @@ async function saveSignature(req) {
   }
 }
 
-// async function getInvoiceSignature(req) {
-//   try {
-//     return await msSqlConnect.getInstance().then(pool => {
-//         return pool.request()
-//           .input('sessionId', msSql.VarChar, req.query.sessionId)
-//           .input('invoiceNo', msSql.VarChar, req.query.invoiceNo)
-//           .query('exec dbo.USER_SP_InvoiceSignatureGet @sessionId, @invoiceNo')
-//       }).then(result => {
-//         return result.recordset; // it should only retrieve one value of invoice.
-//       }).catch(err => {
-//         console.log(err);
-//       });
-//   } catch(e) {
-//     throw e;
-//   }
-// }
-
 /* If a record is already found in USER_workorders means the pdf in the front-end has been modified like added annotation then saved
  * it as flat file.
  */
@@ -116,32 +98,6 @@ async function getPdfDocument(workorderNo) {
     throw e;
   }
 }
-
-// async function workorderSetLineItemsAsync(reqBody) {
-//   try {
-//     return await msSqlConnect.getInstance().then(pool =>
-//         pool.request()
-//           .input('sessionId', msSql.NVarChar, reqBody.sessionId)
-//           .input('workorderNo', msSql.NVarChar, reqBody.workorderNo)
-//           .input('items', msSql.NText, reqBody.items)
-//           .output('outputErrNo', msSql.Int)
-//           .output('outputStatusMsg', msSql.NVarChar(500))
-//           .query('exec dbo.USER_SP_setWorkorderLineItems @sessionId, @workorderNo, @items, @outputErrNo OUTPUT, @outputStatusMsg OUTPUT')
-//       ).then(async (result) => {
-//         if (result.output.outputErrNo == 0) {
-//           await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workOrderNo}.pdf`, req.file.buffer);
-
-//           return { status: 'OK', message: 'New Id created.', data: result.recordset[0].newId };
-//         } else {
-//           return { status: 'Error', message: result.output.outputStatusMsg }
-//         }
-//       }).catch(err => {
-//         console.log(err);
-//       });
-//   } catch(e) {
-//     throw e;
-//   }
-// }
 
 async function saveWorkorderPdfAsync(req) {
   try {
@@ -201,28 +157,6 @@ async function saveWorkorderPdfAsync(req) {
                     console.log(err);
                     return false;
                   });
-
-
-
-    // return await fsPromises.writeFile(`${process.env.SIGNED_WORKORDERS_DIR}/${req.body.workOrderNo}.pdf`, req.file.buffer)
-    //         .then(async () => {
-    //           return await msSqlConnect.getInstance().then(pool =>
-    //             pool.request()
-    //               .input('sessionId', msSql.NVarChar, req.body.sessionId)
-    //               .input('workorderNo', msSql.NVarChar, req.body.workorderNo)
-    //               .input('documentIsSigned', msSql.NVarChar, req.body.documentIsSigned)
-    //               .input('jsonAnnotation', msSql.NText, req.body.instantJsonAnnotation)
-    //               .input('signatureImg', msSql.Text, req.body.signatureImg)
-    //               .output('outputErrNo', msSql.Int)
-    //               .output('outputStatusMsg', msSql.NVarChar(500))
-    //               .query('exec dbo.USER_SP_PDFSave @sessionId, @workorderNo, @documentIsSigned, @jsonAnnotation, @signatureImg, @outputErrNo OUTPUT, @outputStatusMsg OUTPUT')
-    //           )
-    //           .then(() => true
-    //           ).catch(err => {
-    //             console.log(err);
-    //             return false;
-    //           });
-    //         }).catch(e => false)
   } catch(e) {
     return false;
     throw e;

@@ -14,12 +14,8 @@ const smsRoute = require('./smsRoute');
 const sms2Route = require('./sms2Route');
 const smsByCustomerRoute = require('./smsByCustomerRoute');
 const notificationsRoute = require('./notificationsRoute');
-// const workOrderSignRoute = require('./workOrderSignRoute');
 const resendWorkOrderPdfRoute = require('./sendWorkOrderPdfRoute');
-// const pdfannotationRoute = require('./pdfannotationRoute');
 const workorderPdfRoute = require('./workorderPdfRoute');
-// const workorderNewQtyRoute = require('./workorderNewQtyRoute');
-
 const workordersByworkorderNoRoute = require('./workordersByworkorderNoRoute');
 
 module.exports = function(app) {
@@ -36,12 +32,8 @@ module.exports = function(app) {
   router.all('/sms2', sms2Route); // sending SMS from Scheduler.
   router.get('/sms/customer', smsByCustomerRoute);    // get all SMS by a Customer.
   router.get('/notifications', notificationsRoute);
-  // router.all('/workordersign', workOrderSignRoute);
   router.all('/sendworkorderpdf', resendWorkOrderPdfRoute);
-  // router.all('/pdfannotation', pdfannotationRoute); // deprecated.
   router.all('/workorderpdf', workorderPdfRoute);
-  //router.all('/workorder/newqty', workorderNewQtyRoute);
-
   router.all('/workordersByworkorderNo', workordersByworkorderNoRoute);
 
   return router;
