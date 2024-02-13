@@ -81,7 +81,8 @@ function Header(props) {
   const getBrand = () => {
     let brandName = "Default Brand";
     routes.map((prop, key) => {
-      if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+      // if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
+      if (window.location.href.indexOf(prop.searchKey) !== -1) {
         brandName = prop.name;
       }
       return null;

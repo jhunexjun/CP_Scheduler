@@ -89,6 +89,7 @@ let routes = [
     component: <Appointments />,
     category: 'main',
     layout: "/admin",
+    searchKey: 'appointment'
   },
   {
     path: "/sms/:custNo?",  // i.e. /admin/invoice/<sessionId>
@@ -97,14 +98,7 @@ let routes = [
     component: <Sms />,
     category: 'main',
     layout: "/admin",
-  },
-  {
-    path: "/reports/workorders",  // i.e. /admin/sms/<sessionId>
-    name: "Workorders",
-    icon: "nc-icon nc-single-copy-04",
-    component: <Workorder />,
-    category: 'sub',
-    layout: "/admin",
+    searchKey: 'sms'
   },
   {
     path: "/reports",
@@ -113,6 +107,16 @@ let routes = [
     component: <Reports />,
     category: 'main',
     layout: "/admin",
+    searchKey: '/reports'
+  },
+  {
+    path: "/reports/workorders",  // i.e. /admin/sms/<sessionId>
+    name: "Workorders",
+    icon: "nc-icon nc-single-copy-04",
+    component: <Workorder />,
+    category: 'sub',
+    layout: "/admin",
+    searchKey: 'workorders'
   },
   {
     path: "/reports/employee-time-entry",
@@ -121,6 +125,7 @@ let routes = [
     component: <EmployeeTimeEntry />,
     category: 'sub',
     layout: "/admin",
+    searchKey: 'employee-time-entry'
   },
   // {
   //   pro: true,

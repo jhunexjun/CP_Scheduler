@@ -177,7 +177,7 @@ async function saveWorkorderPdfAsync(req) {
                     table.columns.add('workorderNo', msSql.VarChar(15), { nullable: false });
                     table.columns.add('lineItemNo', msSql.SmallInt, { nullable: false });
                     table.columns.add('itemNo', msSql.VarChar(20), { nullable: false });
-                    table.columns.add('descr', msSql.VarChar(30), { nullable: false });
+                    table.columns.add('descr', msSql.VarChar(50), { nullable: false });
                     table.columns.add('qty', msSql.Decimal(15, 4), { nullable: true });
                     table.columns.add('reasonId', msSql.SmallInt(2), { nullable: true });
 
