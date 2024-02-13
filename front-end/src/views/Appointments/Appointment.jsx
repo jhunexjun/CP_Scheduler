@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import Cookies from 'universal-cookie';
 
-// reactstrap components
 import {
   Card,
   CardBody,
@@ -31,7 +30,7 @@ function Appointment() {
       id: 'ALL',
       text: 'ALL',
       color: '#56ca85',
-      avatar: 'coach-man.png',
+      avatar: 'man-placeholder.png',
       age: 0,
       phone1: "",
     };
@@ -121,7 +120,7 @@ function Appointment() {
         }
 
       });
-    }, 1000);
+    }, refreshInMinutes * 1000);
 
     setIntervalCounter(interval);
     return interval;
@@ -135,7 +134,7 @@ function Appointment() {
         id: technicians.data[x].id.toString(),
         text: technicians.data[x].text,
         color: '#56ca85',
-        avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'coach-man.png',
+        avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'man-placeholder.png',
         age: null,
         phone1: isSet(technicians.data[x], "phone1") ?  technicians.data[x].phone1.toString() : "",
       }
@@ -156,7 +155,7 @@ function Appointment() {
         id: technicians.data[x].id.toString(),
         text: technicians.data[x].text,
         color: '#56ca85',
-        avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'coach-man.png',
+        avatar: technicians.data[x].avatar !== '' ? technicians.data[x].avatar : 'man-placeholder.png',
         age: null,
         phone1: isSet(technicians.data[x], "phone1") ?  technicians.data[x].phone1.toString() : "",
       }
@@ -304,7 +303,7 @@ function Appointment() {
               <div className="p-2">
                 Technician
               </div>
-              <div className="p-2 mr-auto">
+              <div className="p-2">
                 <SelectBox dataSource={selectBoxTechnicians}
                   displayExpr="text"
                   searchEnabled={true}
@@ -345,6 +344,7 @@ function Appointment() {
                   startTimer={startTimer}
                   techniciansMaster={selectBoxTechnicians}
                   setScheduleData={setScheduleData}
+                  selectedView={selectedView}
                   setSelectedView={setSelectedView}
                   setCurrentSchedulerDate={setCurrentSchedulerDate}
                   // filterWorkorders={filterWorkorders}

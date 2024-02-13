@@ -13,9 +13,12 @@ import { SystemUserContext } from '../../Context/SystemUserContext';
 import { filters } from './schedulerData';
 
 import './custom.css';
+import './styles.css';
 
 import Field from "./Field";
 import itemTemplate from './Item';
+
+import ResourceCell from './ResourceCell';
 
 
 const Sched = ({
@@ -26,6 +29,7 @@ const Sched = ({
 				startTimer,
 				techniciansMaster,
 				setScheduleData,
+				selectedView,
 				setSelectedView,
 				setCurrentSchedulerDate,
 				// filterWorkorders
@@ -267,15 +271,6 @@ const Sched = ({
 			return workorders;
 	}
 
-	// const filterWorkorder = useCallback(filter => {
-  //   // console.log('filter: ', filter);
-
-  //   // let wo = [...workorders];
-  //   // wo.splice(0, 1);
-  //   // setWorkOrders(wo);
-  // }, [workorders])
-
-
 	function onAppointmentFormOpening(e) {
 		stopTimer();
 
@@ -464,14 +459,11 @@ const Sched = ({
 	}
 
 	const handlePropertyChange = (e) => {
-		// console.log('e: ', e);
-
 		if (e.name === 'currentView') {
 			setSelectedView(e.value);
 		}
 
 		if (e.name === 'currentDate') {
-			// console.log('currentDate: ', e);
 			setCurrentSchedulerDate(e.value);
 		}
 	}
@@ -481,7 +473,7 @@ const Sched = ({
 			<Scheduler height="74vh"
 				dataSource={scheduleData}
 				// dataCellComponent={DataCell}
-				// resourceCellComponent={ResourceCell}
+				resourceCellComponent={(e) =>  ResourceCell(e, selectedView)}
 				groups={groups}
 				defaultCurrentView="day"
 				defaultCurrentDate={new Date()}

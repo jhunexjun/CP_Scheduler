@@ -10,6 +10,7 @@
   position: relative;
   border: 0 none;
   transition: transform .3s cubic-bezier(.34,2,.6,1),box-shadow .2s ease;
+  margin: 0px 3px;
 }
 .div-box a {
   color: #66615b;

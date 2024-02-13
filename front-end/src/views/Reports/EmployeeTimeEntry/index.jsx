@@ -27,7 +27,7 @@ function EmployeeTimeEntry(){
   //   id: 'ALL',
   //   text: 'All',
   //   color: '#56ca85',
-  //   avatar: 'coach-man.png',
+  //   avatar: 'man-placeholder.png',
   //   age: 0,
   //   phone1: "",
   // };
